@@ -1,0 +1,356 @@
+<meta charset="utf-8">
+<title>Prakto · mockup</title>
+<style>
+  :root {
+    --ink-1:#12205A; --ink-2:#3E4468; --ink-3:#5A6079; --ink-4:#8990AD;
+    --blue:#1C49FF; --blue-hover:#1740E6; --blue-press:#1233B8;
+    --ghost:#C9CDD8; --panel:#F5F5F5; --cardg:#F8F8F8; --cardb:#EFEFF3; --navline:#ECECF2;
+    --quiet:#F1F1F4; --quiet-hover:#E8E8EE; --quiet-press:#DEDEE6;
+    --green:#27B07C; --warm:#C25E3C; --warmbg:#FAEDE6;
+    --t-quick:.1s; --t-base:.16s; --ease:cubic-bezier(.25,.46,.45,.94);
+  }
+  * { box-sizing:border-box; margin:0; }
+  body { font-family:-apple-system,"Helvetica Neue",Arial,sans-serif; background:var(--panel); color:var(--ink-1); }
+  :focus-visible { outline:1px solid var(--blue); outline-offset:2px; }
+
+  .narr { position:sticky; top:0; z-index:20; background:var(--ink-1); color:#fff; font-size:12.5px; padding:8px 16px; display:flex; justify-content:space-between; align-items:center;}
+  .narr a { color:#A9BAFF; cursor:pointer; text-decoration:underline; margin-left:14px;}
+  .screen { display:none; } .screen.on { display:block; }
+
+  /* app bar */
+  .appbar { max-width:1232px; margin:18px auto 0; background:#fff; border:1px solid var(--navline); border-radius:999px; padding:14px 30px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 14px rgba(18,32,90,.05);}
+  .appbar .logo { font-weight:600; font-size:25px; letter-spacing:-0.02em; }
+  .appbar .logo em { font-style:normal; color:var(--blue); }
+  .appbar nav { display:flex; gap:22px; font-size:14px; font-weight:500; color:var(--ink-4); align-items:center;}
+  .appbar nav b { color:var(--ink-1); font-weight:600; }
+
+  /* buttons */
+  .btn, .btnq { display:inline-flex; align-items:center; justify-content:center; gap:8px; border:none; border-radius:999px;
+    font-family:inherit; font-size:15px; font-weight:600; line-height:1; cursor:pointer; min-height:44px; padding:15px 28px;
+    transition:background-color var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease), transform var(--t-base) var(--ease); }
+  .btn { background:var(--blue); color:#fff; letter-spacing:-0.01em; }
+  .btn:hover { background:var(--blue-hover); box-shadow:0 4px 16px rgba(28,73,255,.28); }
+  .btn:active { background:var(--blue-press); box-shadow:none; transform:translateY(1px); }
+  .btnq { background:var(--quiet); color:var(--ink-1); }
+  .btnq:hover { background:var(--quiet-hover); }
+  .btnq:active { background:var(--quiet-press); transform:translateY(1px); }
+  .btn.sm, .btnq.sm { min-height:38px; padding:11px 20px; font-size:13.5px; }
+
+  /* metric primitive · D2 */
+  .metrics { display:flex; }
+  .metric { flex:1; padding-right:32px; }
+  .metric:last-child { padding-right:0; }
+  .mv { font-size:28px; font-weight:400; line-height:1.2; white-space:nowrap; }
+  .mv u { font-size:18.2px; font-weight:400; text-decoration:none; margin-left:2px; }
+  .ml { font-size:12px; font-weight:400; color:var(--ink-4); margin-top:4px; }
+  .ml b { font-weight:500; }
+  .dev { color:var(--warm); } .sol { color:var(--green); }
+  .ml .dev { font-weight:500; } .ml .sol { font-weight:500; }
+
+  /* tappable metric */
+  .mcell { border:none; background:transparent; font-family:inherit; color:inherit; text-align:left; cursor:pointer;
+    padding:12px 16px; border-radius:12px; flex:1; margin-right:6px;
+    transition:background-color var(--t-base) var(--ease); }
+  .mcell:last-child { margin-right:0; }
+  .mcell:hover { background:#fff; }
+  .mcell:active { background:var(--quiet-press); }
+  .mcell:hover .ml { color:var(--ink-2); }
+  .mcell.open { background:#fff; box-shadow:0 4px 20px rgba(18,32,90,.08); }
+
+  /* cards */
+  .card { background:#fff; border-radius:28px; box-shadow:0 6px 40px rgba(18,32,90,.07); margin-bottom:22px; overflow:hidden; }
+  .pad { padding:32px 36px; }
+  .wash { background:var(--panel); padding:22px 30px; }
+  .hair { border-top:1px solid var(--cardb); }
+  .eyebrow { font-size:11.5px; font-weight:600; letter-spacing:.08em; color:var(--ink-4); margin-bottom:16px; }
+
+  /* feed */
+  .cols { max-width:1232px; margin:26px auto 80px; display:flex; gap:26px; align-items:flex-start; padding:0 4px; }
+  .rail { width:330px; flex-shrink:0; } .feed { flex:1; min-width:0; }
+  .runcard { display:block; width:100%; text-align:left; border:none; font-family:inherit; color:inherit; cursor:pointer;
+    background:#fff; border-radius:28px; box-shadow:0 6px 40px rgba(18,32,90,.07); margin-bottom:22px; overflow:hidden;
+    transition:box-shadow var(--t-base) var(--ease), transform var(--t-base) var(--ease); }
+  .runcard:hover { box-shadow:0 12px 48px rgba(18,32,90,.12); transform:translateY(-2px); }
+  .runcard:active { box-shadow:0 4px 20px rgba(18,32,90,.09); transform:translateY(0); }
+  .who { display:flex; align-items:center; gap:13px; margin-bottom:18px; }
+  .av { width:46px; height:46px; border-radius:50%; background:#E6EAFB; color:var(--ink-1); font-weight:600; font-size:15px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .who .n { font-size:15.5px; font-weight:500; }
+  .who .m { font-size:13px; color:var(--ink-4); margin-top:3px; }
+  .runtitle { font-size:25px; font-weight:400; letter-spacing:-0.03em; margin-bottom:20px; }
+  .foot { display:flex; justify-content:space-between; align-items:center; padding:15px 36px; font-size:13.5px; color:var(--ink-4); font-weight:500; }
+  .railcard { background:#fff; border-radius:28px; box-shadow:0 6px 40px rgba(18,32,90,.07); margin-bottom:20px; overflow:hidden; }
+  .railcard .pad { padding:26px 28px; }
+  .railcard h3 { font-size:19px; font-weight:500; letter-spacing:-0.02em; }
+  .railcard .sub { font-size:13px; color:var(--ink-4); margin-top:4px; }
+  .chip { display:inline-block; background:var(--quiet); border:none; font-family:inherit; border-radius:999px; padding:9px 16px; font-size:13px; font-weight:600; color:var(--ink-1); margin:0 6px 8px 0; cursor:pointer;
+    transition:background-color var(--t-quick) var(--ease); }
+  .chip:hover { background:var(--quiet-hover); }
+  .plan { font-size:12.5px; color:var(--ink-4); text-align:center; }
+  .plan a { color:var(--ink-3); }
+
+  /* report */
+  .rwrap { max-width:1000px; margin:26px auto 90px; }
+  .rhead { font-size:32px; font-weight:400; letter-spacing:-0.03em; line-height:1.22; margin-bottom:10px; }
+  .rsub { font-size:15.5px; color:var(--ink-3); line-height:1.55; margin-bottom:26px; max-width:640px; }
+  .well { background:var(--cardg); border:1px solid var(--cardb); border-radius:20px; padding:22px 26px; margin-bottom:28px; }
+  .well .h { font-size:15.5px; font-weight:500; margin-bottom:8px; }
+  .well p { font-size:15px; line-height:1.6; color:var(--ink-3); }
+  .moments { display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; }
+  .mo { background:#fff; border:1px solid var(--cardb); border-radius:14px; padding:10px 15px; font-family:inherit; font-size:13.5px; font-weight:500; color:var(--ink-1); cursor:pointer;
+    transition:border-color var(--t-base) var(--ease), background-color var(--t-base) var(--ease); }
+  .mo:hover { border-color:var(--ghost); background:var(--cardg); }
+  .mo i { font-style:normal; color:var(--blue); font-weight:600; margin-right:7px; }
+  .rowline { display:flex; justify-content:space-between; align-items:baseline; gap:20px; padding:15px 0; border-bottom:1px solid var(--cardb); font-size:15px; }
+  .rowline:last-of-type { border-bottom:none; }
+  .rowline .k { font-weight:500; }
+  .rowline .val { color:var(--ink-3); text-align:right; }
+  .more { font-family:inherit; border:none; background:none; font-size:14.5px; font-weight:600; color:var(--blue); cursor:pointer; padding:18px 0 0; }
+  .more:hover { color:var(--blue-hover); }
+  .link { font-family:inherit; border:none; background:none; font-size:13.5px; font-weight:600; color:var(--blue); cursor:pointer; padding:0; }
+
+  /* metric breakdown drawer */
+  .drawer { display:none; padding:22px 30px 26px; }
+  .drawer.on { display:block; }
+  .drawer .dh { font-size:15.5px; font-weight:500; margin-bottom:8px; }
+  .drawer p { font-size:14.5px; line-height:1.6; color:var(--ink-3); max-width:640px; }
+  .spark { margin-top:16px; }
+
+  /* thread */
+  .thread .msg { border-radius:18px; padding:16px 20px; font-size:14.5px; line-height:1.55; margin-bottom:12px; max-width:80%; }
+  .thread .from-coach { background:var(--cardg); border:1px solid var(--cardb); color:var(--ink-2); }
+  .thread .from-coach b { color:var(--ink-1); display:block; margin-bottom:5px; font-size:13px; font-weight:600; }
+  .addendum b { font-weight:600; }
+  .fld { width:100%; background:#fff; border:1px solid var(--cardb); border-radius:16px; padding:14px 16px;
+    font-family:inherit; font-size:14.5px; line-height:1.5; color:var(--ink-1); resize:none; min-height:76px;
+    transition:border-color var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease); }
+  .fld::placeholder { color:var(--ink-4); }
+  .fld:hover { border-color:#DFDFE8; }
+  .fld:focus { outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(28,73,255,.12); }
+
+  .replay { background:var(--ink-1); border-radius:20px; height:200px; display:flex; align-items:center; justify-content:center; color:#A9BAFF; font-size:13.5px; }
+  .privacy { font-size:12.5px; color:var(--ink-4); margin-top:12px; }
+  .addendum { background:#EEF1FF; border:1px solid #D3DBFF; border-radius:20px; padding:22px 26px; font-size:14.5px; line-height:1.6; color:var(--ink-2); }
+  .addendum b { color:var(--ink-1); }
+
+  @media (prefers-reduced-motion: reduce) { * { transition-duration:.01ms !important; animation-duration:.01ms !important; } }
+</style>
+
+<div class="narr">
+  <span id="nt">Prakto mockup · coach feed</span>
+  <span><a onclick="go('feed')">Coach feed</a><a onclick="go('report')">Member report</a></span>
+</div>
+
+<!-- ========================= COACH FEED ========================= -->
+<div class="screen on" id="feed">
+  <div class="appbar">
+    <div class="logo">prakto<em>.</em></div>
+    <nav><b>Voyage Sales</b><span>Scenarios</span><span>Team</span><span>Billing</span></nav>
+  </div>
+
+  <div class="cols">
+    <div class="rail">
+      <div class="railcard">
+        <div class="pad"><h3>Voyage Sales</h3><div class="sub">You coach 3 people</div></div>
+        <div class="wash">
+          <div class="metrics">
+            <div class="metric"><div class="mv" style="font-size:22px">3</div><div class="ml">Seats</div></div>
+            <div class="metric"><div class="mv" style="font-size:22px">1</div><div class="ml">Scenario</div></div>
+            <div class="metric"><div class="mv" style="font-size:22px">4</div><div class="ml">Runs</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="railcard"><div class="pad">
+        <div class="eyebrow">NEEDS YOU</div>
+        <div style="font-size:14.5px;line-height:1.5;color:var(--ink-2)"><b style="color:var(--ink-1)">Ben Singh</b> finished Redundancy conversation just now.</div>
+        <div style="margin-top:18px"><button class="btn sm" onclick="go('report')">Review the run</button></div>
+      </div></div>
+
+      <div class="railcard"><div class="pad">
+        <div class="eyebrow">TEMPLATES</div>
+        <button class="chip">QBR delivery</button><button class="chip">Price rise</button><button class="chip">Renewal defence</button><button class="chip">Difficult conversation</button><button class="chip">Giving hard feedback</button>
+      </div></div>
+
+      <div class="plan">Free plan · 3 of 3 seats · <a href="#">manage</a></div>
+    </div>
+
+    <div class="feed">
+      <button class="runcard" onclick="go('report')">
+        <div class="pad">
+          <div class="who"><div class="av">BS</div><div><div class="n">Ben Singh</div><div class="m">Today at 2:41 PM · assigned by you · due tomorrow</div></div></div>
+          <div class="runtitle">Redundancy conversation</div>
+          <div class="metrics">
+            <div class="metric"><div class="mv dev">Developing</div><div class="ml">Overall</div></div>
+            <div class="metric"><div class="mv">1<u>of 3</u></div><div class="ml">Key messages landed</div></div>
+            <div class="metric"><div class="mv">162<u>wpm</u></div><div class="ml">Pace</div></div>
+            <div class="metric"><div class="mv">7</div><div class="ml">Fillers</div></div>
+          </div>
+        </div>
+        <div class="foot hair"><span>Not yet reviewed</span><span class="btn sm" style="pointer-events:none">Review the run</span></div>
+      </button>
+
+      <button class="runcard">
+        <div class="pad">
+          <div class="who"><div class="av">SW</div><div><div class="n">You</div><div class="m">Yesterday at 9:12 AM · your own run · featured as the showcase</div></div></div>
+          <div class="runtitle">Redundancy conversation</div>
+          <div class="metrics">
+            <div class="metric"><div class="mv sol">Solid</div><div class="ml">Overall</div></div>
+            <div class="metric"><div class="mv">3<u>of 3</u></div><div class="ml">Key messages landed</div></div>
+            <div class="metric"><div class="mv">141<u>wpm</u></div><div class="ml">Pace</div></div>
+            <div class="metric"><div class="mv">2</div><div class="ml">Fillers</div></div>
+          </div>
+        </div>
+        <div class="foot hair"><span>Private to you · featured to the team</span><span class="btnq sm" style="pointer-events:none">Open your report</span></div>
+      </button>
+
+      <button class="runcard">
+        <div class="pad">
+          <div class="who"><div class="av">AC</div><div><div class="n">Amy Chen</div><div class="m">2 August · QBR delivery · presentation segment 14 min</div></div></div>
+          <div class="runtitle">QBR delivery</div>
+          <div class="metrics">
+            <div class="metric"><div class="mv sol">Solid</div><div class="ml">Overall</div></div>
+            <div class="metric"><div class="mv">3<u>of 4</u></div><div class="ml">Key messages landed</div></div>
+            <div class="metric"><div class="mv">168<u>wpm</u></div><div class="ml">Pace</div></div>
+            <div class="metric"><div class="mv">4</div><div class="ml">Fillers</div></div>
+          </div>
+        </div>
+        <div class="foot hair"><span>Reviewed by you · 2 August</span><span class="btnq sm" style="pointer-events:none">Open the run</span></div>
+      </button>
+
+      <div class="card"><div class="pad" style="padding:26px 36px">
+        <div class="who" style="margin-bottom:14px"><div class="av" style="background:var(--quiet);color:var(--ink-4)">BS</div><div><div class="n">Ben Singh</div><div class="m">31 July · practised on his own</div></div></div>
+        <div style="font-size:14.5px;color:var(--ink-4);line-height:1.55">Self-practice stays private to Ben unless he shares it.</div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================= MEMBER REPORT ========================= -->
+<div class="screen" id="report">
+  <div class="appbar">
+    <div class="logo">prakto<em>.</em></div>
+    <nav><b>My practice</b><span>My reports</span></nav>
+  </div>
+
+  <div class="rwrap">
+    <div class="card">
+      <div class="pad">
+        <div class="who"><div class="av">BS</div><div><div class="n">Ben Singh</div><div class="m">Today at 2:41 PM · Redundancy conversation · 3 questions, 9 minutes</div></div></div>
+        <h1 class="rhead">Ben, you got the decision out in the first minute.</h1>
+        <div class="rsub">That is the hardest part of this conversation and you did it. Here is the whole picture.</div>
+
+        <div class="well">
+          <div class="h">What went well</div>
+          <p>Decision stated plainly at 0:22, no euphemisms. Pace steady at 162 wpm. No serial apologising under the emotional appeal at 3:40.</p>
+          <div class="moments">
+            <button class="mo"><i>▶</i>0:22 the decision</button>
+            <button class="mo"><i>▶</i>3:40 the emotional appeal</button>
+          </div>
+        </div>
+
+        <div class="metrics">
+          <div class="metric" style="flex:1.6"><div class="mv dev">Developing</div><div class="ml">Overall · 1 of 3 key messages landed</div></div>
+          <div class="metric"><div class="mv">1<u>of 3</u></div><div class="ml">Message control · <span class="dev">Developing</span></div></div>
+          <div class="metric"><div class="mv">2<u>of 4</u></div><div class="ml">Composure · <span class="dev">Developing</span></div></div>
+        </div>
+      </div>
+
+      <div class="wash">
+        <div class="metrics" id="strip">
+          <button class="mcell" onclick="openM(this,'talk')"><div class="mv">91<u>%</u></div><div class="ml">Talk time</div></button>
+          <button class="mcell" onclick="openM(this,'pause')"><div class="mv">9<u>%</u></div><div class="ml">Pause</div></button>
+          <button class="mcell" onclick="openM(this,'pace')"><div class="mv">162<u>wpm</u></div><div class="ml">Pace</div></button>
+          <button class="mcell" onclick="openM(this,'words')"><div class="mv">486</div><div class="ml">Words</div></button>
+          <button class="mcell" onclick="openM(this,'questions')"><div class="mv">0</div><div class="ml">Questions</div></button>
+          <button class="mcell" onclick="openM(this,'fillers')"><div class="mv">7</div><div class="ml">Fillers</div></button>
+          <button class="mcell" onclick="openM(this,'weak')"><div class="mv">5</div><div class="ml">Weak words</div></button>
+        </div>
+      </div>
+
+      <div class="drawer hair" id="drawer">
+        <div class="dh" id="dTitle"></div>
+        <p id="dBody"></p>
+        <div class="moments" id="dMoments"></div>
+        <div class="spark" id="dSpark"></div>
+      </div>
+
+      <div class="pad hair">
+        <div class="rowline"><span class="k">Answer economy</span><span class="val">18% longer than the question needed</span></div>
+        <div class="rowline"><span class="k">Fastest stretch</span><span class="val">190 wpm under the follow-up at 0:41</span></div>
+        <button class="more">More detail: clarity and structure · pauses · tone ▸</button>
+      </div>
+
+      <div class="pad hair">
+        <div class="eyebrow">AGAINST YOUR KEY MESSAGES</div>
+        <div class="rowline"><span class="k"><span class="sol">✓</span> The role is gone and the decision is made</span><span class="val">said at 0:22, unprompted</span></div>
+        <div class="rowline"><span class="k"><span class="dev">✗</span> Not about performance</span><span class="val">hedged: “your numbers were… it's complicated”</span></div>
+        <div class="rowline"><span class="k"><span class="dev">✗</span> Severance, early</span><span class="val">arrived at 2:10, only when asked</span></div>
+        <div class="moments">
+          <button class="mo"><i>▶</i>0:22</button><button class="mo"><i>▶</i>0:41</button><button class="mo"><i>▶</i>2:10</button>
+        </div>
+        <div style="margin-top:22px;display:flex;gap:22px;align-items:center">
+          <button class="link">Challenge this read ▸</button>
+          <span style="font-size:13px;color:var(--ink-4)">Was this useful? <button class="link" style="font-weight:500;margin-left:4px">Yes</button><span style="margin:0 8px;color:var(--ghost)">·</span><button class="link" style="font-weight:500">No</button></span>
+        </div>
+      </div>
+
+      <div class="pad hair">
+        <div class="eyebrow">ONE THING TO TRY</div>
+        <p style="font-size:19px;font-weight:400;line-height:1.5;color:var(--ink-1);max-width:680px">The severance package is your strongest supportive fact. Put it in your first answer, unprompted. Try that in the first 30 seconds of your next run.</p>
+        <div style="margin-top:24px"><button class="btnq">Praktise again</button></div>
+      </div>
+    </div>
+
+    <div class="card"><div class="pad">
+      <div class="thread">
+        <div class="msg from-coach"><b>Sarah</b>Good directness on the decision. Before tomorrow: name the severance package in your first answer, unprompted.</div>
+      </div>
+      <textarea class="fld" placeholder="Reply to Sarah…"></textarea>
+      <div style="margin-top:14px"><button class="btnq sm">Send reply</button></div>
+    </div></div>
+
+    <div class="card"><div class="pad">
+      <div class="replay">▶ video and transcript, with clickable timestamps</div>
+      <div class="privacy">Only you and Sarah can see this. Sarah can feature a standout run to your team as a showcase. Recordings auto-delete in 30 days.</div>
+    </div></div>
+
+    <div class="addendum"><b>Sarah reviewed this.</b> Composure · Prakto read it as Developing (2 of 4). Sarah read it as Solid: “the apology at 1:12 was appropriate empathy.” Both reads stay visible.</div>
+  </div>
+</div>
+
+<script>
+var NT={feed:'Prakto mockup · coach feed',report:'Prakto mockup · member report'};
+function go(id){document.querySelectorAll('.screen').forEach(function(e){e.classList.remove('on')});document.getElementById(id).classList.add('on');document.getElementById('nt').textContent=NT[id];window.scrollTo(0,0);}
+
+var M={
+ talk:{t:'Talk time · 91%',b:'You spoke for 91 per cent of the session. The employee got the other nine. In a conversation this hard, leaving more room usually lands better than filling it.',m:[]},
+ pause:{t:'Pause · 9%',b:'Your longest silence was 1.2 seconds. After you deliver a decision, a longer pause gives the other person somewhere to put it.',m:['0:24 right after the decision']},
+ pace:{t:'Pace · 162 words per minute',b:'Steady for most of the session, with one spike to 190 under the follow-up at 0:41. That is the moment the question got harder.',m:['0:41 the spike'],spark:1},
+ words:{t:'Words · 486',b:'Across three answers and three follow-ups. Your longest answer was 148 words, at 2:10, when the severance package finally arrived.',m:['2:10 the longest answer']},
+ questions:{t:'Questions asked · 0',b:'You did not ask the employee anything. These were the invitations you left on the table: after the emotional appeal at 3:40, and after they questioned their numbers at 0:41.',m:['3:40 the emotional appeal','0:41 the numbers']},
+ fillers:{t:'Fillers · 7',b:'“um” four times and “like” three times. Most of them cluster around the follow-up, which is normal and worth knowing.',m:['0:41 um','1:12 um','2:05 like']},
+ weak:{t:'Weak words · 5',b:'“It\'s complicated” and “I guess” both soften exactly where you needed to be plain. This is the same moment key message two got hedged.',m:['0:41 it\'s complicated','2:44 I guess']}
+};
+var cur=null;
+function openM(el,k){
+  var d=document.getElementById('drawer');
+  document.querySelectorAll('.mcell').forEach(function(b){b.classList.remove('open')});
+  if(cur===k){ cur=null; d.classList.remove('on'); return; }
+  cur=k; el.classList.add('open');
+  var o=M[k];
+  document.getElementById('dTitle').textContent=o.t;
+  document.getElementById('dBody').textContent=o.b;
+  document.getElementById('dMoments').innerHTML=o.m.map(function(x){return '<button class="mo"><i>▶</i>'+x+'</button>'}).join('');
+  document.getElementById('dSpark').innerHTML = o.spark ? sparkSVG() : '';
+  d.classList.add('on');
+}
+function sparkSVG(){
+  var pts=[150,158,162,190,171,160,155,163,168,158], w=560, h=64, max=200, min=130;
+  var step=w/(pts.length-1);
+  var d=pts.map(function(v,i){ return (i?'L':'M')+(i*step).toFixed(1)+' '+(h-((v-min)/(max-min))*h).toFixed(1); }).join(' ');
+  return '<svg width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'" fill="none">'+
+    '<path d="'+d+'" stroke="#1C49FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'+
+    '<circle cx="'+(3*step).toFixed(1)+'" cy="'+(h-((190-min)/(max-min))*h).toFixed(1)+'" r="4" fill="#1C49FF"/>'+
+    '</svg><div style="font-size:12px;color:var(--ink-4);margin-top:8px">Words per minute across each answer. The marked point is the follow-up at 0:41.</div>';
+}
+</script>
