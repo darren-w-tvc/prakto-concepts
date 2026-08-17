@@ -44,7 +44,10 @@
   .mv u { font-size:18.2px; font-weight:400; text-decoration:none; margin-left:2px; }
   .ml { font-size:12px; font-weight:400; color:var(--ink-4); margin-top:4px; }
   .ml b { font-weight:500; }
+  .gloss { font-size:13px; color:var(--ink-3); line-height:1.45; margin-top:7px; max-width:280px; }
   .dev { color:var(--warm); } .sol { color:var(--green); }
+  .tref { color:var(--blue); font-weight:500; cursor:pointer; }
+  .rowsub { font-size:13.5px; color:var(--ink-3); line-height:1.5; margin-top:5px; }
   .ml .dev { font-weight:500; } .ml .sol { font-weight:500; }
 
   /* tappable metric */
@@ -55,7 +58,8 @@
   .mcell:hover { background:#fff; }
   .mcell:active { background:var(--quiet-press); }
   .mcell:hover .ml { color:var(--ink-2); }
-  .mcell.open { background:#fff; box-shadow:0 4px 20px rgba(18,32,90,.08); }
+  .mcell.open { background:#fff; box-shadow:0 4px 20px rgba(18,32,90,.10); }
+  .mcell.open .ml { color:var(--ink-1); font-weight:500; }
 
   /* cards */
   .card { background:#fff; border-radius:28px; box-shadow:0 6px 40px rgba(18,32,90,.07); margin-bottom:22px; overflow:hidden; }
@@ -245,9 +249,9 @@
         </div>
 
         <div class="metrics">
-          <div class="metric" style="flex:1.6"><div class="mv dev">Developing</div><div class="ml">Overall · 1 of 3 key messages landed</div></div>
-          <div class="metric"><div class="mv">1<u>of 3</u></div><div class="ml">Message control · <span class="dev">Developing</span></div></div>
-          <div class="metric"><div class="mv">2<u>of 4</u></div><div class="ml">Composure · <span class="dev">Developing</span></div></div>
+          <div class="metric" style="flex:1.6"><div class="mv dev">Developing</div><div class="ml">Overall · 1 of 3 key messages landed</div><div class="gloss">Strong first minute. The middle is where it slipped.</div></div>
+          <div class="metric"><div class="mv">1<u>of 3</u></div><div class="ml">Message control · <span class="dev">Developing</span></div><div class="gloss">You opened with the decision, then let it be reopened.</div></div>
+          <div class="metric"><div class="mv">2<u>of 4</u></div><div class="ml">Composure · <span class="dev">Developing</span></div><div class="gloss">Steady, apart from the stretch after the follow-up.</div></div>
         </div>
       </div>
 
@@ -278,9 +282,9 @@
 
       <div class="pad hair">
         <div class="eyebrow">AGAINST YOUR KEY MESSAGES</div>
-        <div class="rowline"><span class="k"><span class="sol">✓</span> The role is gone and the decision is made</span><span class="val">said at 0:22, unprompted</span></div>
-        <div class="rowline"><span class="k"><span class="dev">✗</span> Not about performance</span><span class="val">hedged: “your numbers were… it's complicated”</span></div>
-        <div class="rowline"><span class="k"><span class="dev">✗</span> Severance, early</span><span class="val">arrived at 2:10, only when asked</span></div>
+        <div class="rowline"><span class="k"><span class="sol">✓</span> The role is gone and the decision is made<div class="rowsub">Clear and unhedged. You owned it before he could ask.</div></span><span class="val">said at 0:22, unprompted</span></div>
+        <div class="rowline"><span class="k"><span class="dev">✗</span> Not about performance<div class="rowsub">The one place you needed to be plain is the one place you softened.</div></span><span class="val">hedged: “your numbers were… it's complicated”</span></div>
+        <div class="rowline"><span class="k"><span class="dev">✗</span> Severance, early<div class="rowsub">It landed, but as an answer rather than as support you offered.</div></span><span class="val">arrived at 2:10, only when asked</span></div>
         <div class="moments">
           <button class="mo"><i>▶</i>0:22</button><button class="mo"><i>▶</i>0:41</button><button class="mo"><i>▶</i>2:10</button>
         </div>
@@ -321,7 +325,7 @@ function go(id){document.querySelectorAll('.screen').forEach(function(e){e.class
 var M={
  talk:{t:'Talk time · 91%',b:'You spoke for 91 per cent of the session. The employee got the other nine. In a conversation this hard, leaving more room usually lands better than filling it.',m:[]},
  pause:{t:'Pause · 9%',b:'Your longest silence was 1.2 seconds. After you deliver a decision, a longer pause gives the other person somewhere to put it.',m:['0:24 right after the decision']},
- pace:{t:'Pace · 162 words per minute',b:'Steady for most of the session, with one spike to 190 under the follow-up at 0:41. That is the moment the question got harder.',m:['0:41 the spike'],spark:1},
+ pace:{t:'Pace · 162 words per minute',b:'Conversational and clear for most of the session. You sped up to 190 under the follow-up at <span class="tref">0:41</span> and stayed quick until about <span class="tref">1:35</span>, which is common when we are moving through discomfort.',m:['0:41 the spike'],spark:1},
  words:{t:'Words · 486',b:'Across three answers and three follow-ups. Your longest answer was 148 words, at 2:10, when the severance package finally arrived.',m:['2:10 the longest answer']},
  questions:{t:'Questions asked · 0',b:'You did not ask the employee anything. These were the invitations you left on the table: after the emotional appeal at 3:40, and after they questioned their numbers at 0:41.',m:['3:40 the emotional appeal','0:41 the numbers']},
  fillers:{t:'Fillers · 7',b:'“um” four times and “like” three times. Most of them cluster around the follow-up, which is normal and worth knowing.',m:['0:41 um','1:12 um','2:05 like']},
@@ -335,18 +339,30 @@ function openM(el,k){
   cur=k; el.classList.add('open');
   var o=M[k];
   document.getElementById('dTitle').textContent=o.t;
-  document.getElementById('dBody').textContent=o.b;
+  document.getElementById('dBody').innerHTML=o.b;
   document.getElementById('dMoments').innerHTML=o.m.map(function(x){return '<button class="mo"><i>▶</i>'+x+'</button>'}).join('');
   document.getElementById('dSpark').innerHTML = o.spark ? sparkSVG() : '';
   d.classList.add('on');
 }
 function sparkSVG(){
-  var pts=[150,158,162,190,171,160,155,163,168,158], w=560, h=64, max=200, min=130;
-  var step=w/(pts.length-1);
-  var d=pts.map(function(v,i){ return (i?'L':'M')+(i*step).toFixed(1)+' '+(h-((v-min)/(max-min))*h).toFixed(1); }).join(' ');
-  return '<svg width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'" fill="none">'+
-    '<path d="'+d+'" stroke="#1C49FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'+
-    '<circle cx="'+(3*step).toFixed(1)+'" cy="'+(h-((190-min)/(max-min))*h).toFixed(1)+'" r="4" fill="#1C49FF"/>'+
-    '</svg><div style="font-size:12px;color:var(--ink-4);margin-top:8px">Words per minute across each answer. The marked point is the follow-up at 0:41.</div>';
+  // {t: seconds into the session, v: words per minute}
+  var pts=[{t:0,v:146},{t:41,v:190},{t:95,v:181},{t:150,v:159},{t:210,v:164},{t:270,v:154},
+           {t:330,v:167},{t:390,v:152},{t:450,v:161},{t:510,v:157},{t:540,v:160}];
+  var W=620,H=132,L=46,R=14,T=16,B=26, PW=W-L-R, PH=H-T-B, DUR=540, LO=120, HI=200;
+  var X=function(t){ return L+(t/DUR)*PW; }, Y=function(v){ return T+PH-((v-LO)/(HI-LO))*PH; };
+  var d=pts.map(function(p,i){ return (i?'L':'M')+X(p.t).toFixed(1)+' '+Y(p.v).toFixed(1); }).join(' ');
+  var s='<svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" fill="none" role="img" aria-label="Words per minute across the session, peaking at 190 at 41 seconds">';
+  [200,160,120].forEach(function(v){
+    s+='<text x="'+(L-10)+'" y="'+(Y(v)+4).toFixed(1)+'" text-anchor="end" font-size="11" fill="#8990AD" font-family="-apple-system,Helvetica Neue,Arial">'+v+'</text>';
+  });
+  [[0,'0:00'],[120,'2:00'],[240,'4:00'],[360,'6:00'],[480,'8:00']].forEach(function(p){
+    s+='<text x="'+X(p[0]).toFixed(1)+'" y="'+(H-6)+'" text-anchor="middle" font-size="11" fill="#8990AD" font-family="-apple-system,Helvetica Neue,Arial">'+p[1]+'</text>';
+  });
+  s+='<line x1="'+L+'" y1="'+(T+PH)+'" x2="'+(W-R)+'" y2="'+(T+PH)+'" stroke="#EFEFF3" stroke-width="1"/>';
+  s+='<path d="'+d+'" stroke="#1C49FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+  s+='<circle cx="'+X(41).toFixed(1)+'" cy="'+Y(190).toFixed(1)+'" r="4.5" fill="#1C49FF"/>';
+  s+='<text x="'+(X(41)+11).toFixed(1)+'" y="'+(Y(190)-9).toFixed(1)+'" font-size="12" font-weight="500" fill="#12205A" font-family="-apple-system,Helvetica Neue,Arial">190 wpm at 0:41</text>';
+  s+='</svg><div style="font-size:12px;color:var(--ink-4);margin-top:6px">Words per minute across the session.</div>';
+  return s;
 }
 </script>
