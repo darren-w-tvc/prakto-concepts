@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clovelly · coach feed · E</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* E · SECTION RHYTHM
+   Thesis: use the marketing page's own structure. Full-width bands alternating
+   paper and white, a two-column block per run with the sand media panel
+   flipping side to side, and the same 112px breathing room between them. The
+   app becomes the next chapter of the site rather than a different product. */
+:root{--paper:#f1f0ee;--ink:#101010;--black:#0a0a0a;--line:#d9d7d3;--muted:#5e5c58;
+  --sand:#e8e2d8;--sand-2:#d9cfc0;--stone:#cfc6b8;
+  --sans:"Inter",-apple-system,Helvetica,Arial,sans-serif;
+  --display:"Archivo",-apple-system,Helvetica,Arial,sans-serif;
+  --section:clamp(3.5rem,2.9rem + 4.9vw,6.5rem);--gutter:clamp(1.5rem,.87rem + 2.8vw,4rem);}
+*{box-sizing:border-box;margin:0}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:15.5px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:78rem;margin:0 auto;padding:0 var(--gutter)}
+section{padding:var(--section) 0}
+.white{background:#fff}
+:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+
+.nav{background:var(--black);color:#fff;min-height:70px;display:flex;align-items:center}
+.nav .wrap{display:flex;justify-content:space-between;align-items:center;width:100%}
+.mark{font-family:var(--display);font-weight:400;letter-spacing:.34em;font-size:17px}
+.nav .links{display:flex;gap:28px;font-size:14px;color:rgba(255,255,255,.62)}
+.nav .links .on{color:#fff;border-bottom:1px solid rgba(255,255,255,.5);padding-bottom:2px}
+
+.intro{padding:var(--section) 0 calc(var(--section) * .55)}
+.intro h1{font-family:var(--display);font-weight:300;letter-spacing:-.04em;line-height:1;
+  font-size:clamp(3rem,7vw,5.25rem)}
+.intro p{color:var(--muted);margin-top:20px;max-width:38ch;font-size:17px;line-height:1.6}
+.intro .meta{margin-top:34px;border-top:1px solid var(--line);padding-top:18px;
+  display:flex;gap:clamp(2rem,5vw,5rem);flex-wrap:wrap}
+.intro .meta div span{display:block;font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+.intro .meta div b{display:block;font-family:var(--display);font-weight:300;font-size:2rem;letter-spacing:-.02em;margin-top:7px;font-variant-numeric:tabular-nums}
+
+.eyebrow{display:inline-block;border:1px solid currentColor;border-radius:999px;padding:5px 13px;
+  font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;font-weight:500;color:var(--muted)}
+
+.two{display:grid;grid-template-columns:1fr;gap:clamp(2rem,1rem + 4.5vw,4.5rem);align-items:center}
+@media(min-width:920px){.two{grid-template-columns:1fr 1fr}}
+.two .lead h2{font-family:var(--display);font-weight:300;letter-spacing:-.035em;line-height:1.04;
+  font-size:clamp(2.25rem,4.4vw,3.5rem);margin-top:20px}
+.two .lead .scen{color:var(--muted);margin-top:14px;font-size:16px}
+.two .lead .body{margin:22px 0 0;max-width:34rem;line-height:1.65;font-size:16.5px}
+.two .lead .note{margin-top:14px;color:var(--muted);font-size:14.5px;max-width:34rem}
+.figs{margin-top:30px;display:flex;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:18px}
+.fig{padding-right:30px;margin-right:30px;border-right:1px solid var(--line)}
+.fig:last-child{border-right:none;margin-right:0;padding-right:0}
+.fig b{display:block;font-family:var(--display);font-weight:300;font-size:1.9rem;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.fig span{display:block;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.cta{margin-top:32px;display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:9px;border-radius:4px;padding:13px 20px;min-height:44px;
+  font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;font-family:inherit;
+  border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;
+  transition:background 160ms ease,color 160ms ease,border-color 160ms ease}
+.btn:hover{background:var(--ink);color:#fff}
+.btn.ghost{border-color:var(--line);color:var(--muted)}
+.btn.ghost:hover{border-color:var(--ink);color:var(--ink);background:transparent}
+.tri{width:0;height:0;border-left:6px solid currentColor;border-top:4px solid transparent;border-bottom:4px solid transparent}
+
+.ph{background:linear-gradient(160deg,var(--sand) 0%,var(--sand-2) 60%,var(--stone) 100%);
+  position:relative;overflow:hidden;border-radius:6px;aspect-ratio:4/3}
+@media(min-width:920px){.ph{aspect-ratio:1}}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 40%;filter:grayscale(.25)}
+@media(max-width:919px){.two.flip .lead{order:2}.two.flip .ph{order:1}}
+
+.tail{padding:var(--section) 0}
+.tail h3{font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);
+  border-bottom:1px solid var(--ink);padding-bottom:10px;margin-bottom:4px}
+.tail h3:not(:first-child){margin-top:3rem}
+.quiet{display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap;
+  padding:18px 0;border-bottom:1px solid var(--line);font-size:15px}
+.quiet .m{color:var(--muted)}
+footer{padding:0 0 4rem;font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="wrap"><span class="mark">CLOVELLY</span>
+<span class="links"><span class="on">Feed</span><span>Team</span><span>Scenarios</span><span>JS</span></span></div></nav>
+
+<div class="wrap intro">
+  <h1>Coach feed</h1>
+  <p>Your team's runs, newest first. Most need nothing beyond the read.</p>
+  <div class="meta">
+    <div><span>This week</span><b>3</b></div>
+    <div><span>Waiting on you</span><b>1</b></div>
+    <div><span>Not started</span><b>1</b></div>
+    <div><span>Runs in August</span><b>11</b></div>
+  </div>
+</div>
+
+<section class="white"><div class="wrap two">
+  <div class="lead">
+    <span class="eyebrow">Yesterday · Solid · 16 of 22</span>
+    <h2>Sarah Chen</h2>
+    <div class="scen">Price rise · Hard-nosed client · run 2 · with Alex Torres</div>
+    <p class="body">Held structure well; the pause after the anchor stretched to 3.4 seconds and the recovery leaned on fillers.</p>
+    <p class="note">Challenged the Composure band, and it is waiting for an answer in her report.</p>
+    <div class="figs">
+      <div class="fig"><b>135</b><span>Words per min</span></div>
+      <div class="fig"><b>12</b><span>Fillers</span></div>
+      <div class="fig"><b>5</b><span>Weak words</span></div>
+    </div>
+    <div class="cta"><button class="btn"><span class="tri"></span>Open her report</button>
+      <button class="btn ghost">Watch the pause · 3:10</button></div>
+  </div>
+  <div class="ph"><img src="assets/img/row-sales.jpg" alt=""></div>
+</div></section>
+
+<section><div class="wrap two flip">
+  <div class="lead">
+    <span class="eyebrow">Two hours ago · Strong · 19 of 22</span>
+    <h2>Ben Singh</h2>
+    <div class="scen">Renewal defense · Elusive buyer · showcased · with Morgan Ellis</div>
+    <p class="body">Held the price anchor through three pushes, then offered the concession at 6:40 before Morgan asked.</p>
+    <div class="figs">
+      <div class="fig"><b>142</b><span>Words per min</span></div>
+      <div class="fig"><b>4</b><span>Fillers</span></div>
+      <div class="fig"><b>3</b><span>Weak words</span></div>
+    </div>
+    <div class="cta"><button class="btn"><span class="tri"></span>Watch the moment · 6:40</button>
+      <button class="btn ghost">Open the report</button></div>
+  </div>
+  <div class="ph"><img src="assets/img/row-manager.jpg" alt=""></div>
+</div></section>
+
+<section class="white"><div class="wrap two">
+  <div class="lead">
+    <span class="eyebrow">Yesterday · Developing · 9 of 22</span>
+    <h2>Priya Nair</h2>
+    <div class="scen">QBR presentation · 12 minutes presenting · with Dana Whitfield</div>
+    <p class="body">The deck section ran long and the Q&amp;A answers compressed; the strongest minute was the churn-number defense at 9:12.</p>
+    <p class="note">One follow-up did not generate, noted in her report, bands unaffected.</p>
+    <div class="figs">
+      <div class="fig"><b>168</b><span>Words per min</span></div>
+      <div class="fig"><b>7</b><span>Fillers</span></div>
+      <div class="fig"><b>4</b><span>Weak words</span></div>
+    </div>
+    <div class="cta"><button class="btn"><span class="tri"></span>Watch the moment · 9:12</button>
+      <button class="btn ghost">Open the report</button></div>
+  </div>
+  <div class="ph"><img src="assets/img/row-comms.jpg" alt=""></div>
+</div></section>
+
+<div class="wrap tail">
+  <h3>Not started</h3>
+  <div class="quiet"><span>Marcus V. <span class="m">&nbsp;Onboarding · New lead · assigned 6 days ago · about 10 minutes</span></span><button class="btn ghost">See his briefing</button></div>
+  <h3>Housekeeping</h3>
+  <div class="quiet"><span>Yuri Wang <span class="m">&nbsp;3 of 3 free sessions used, resets 1 Sep</span></span><button class="btn ghost">See plans</button></div>
+  <div class="quiet"><span>l.perez@acmecorp.com <span class="m">&nbsp;invited 8 days ago, not joined</span></span><button class="btn ghost">Resend invite</button></div>
+  <footer style="padding-top:3rem">Clovelly &nbsp;·&nbsp; Coach feed, variant E, section rhythm</footer>
+</div>
+</body></html>

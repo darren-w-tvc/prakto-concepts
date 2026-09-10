@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clovelly · coach feed · A</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* A · EDITORIAL MASTHEAD
+   Thesis: the feed is the front page of a quiet weekly. Scale contrast does the
+   work the colour used to do: an 80px masthead over 15px body, ruled columns,
+   one scenario photograph per run to carry warmth. */
+:root{--paper:#f1f0ee;--ink:#101010;--black:#0a0a0a;--line:#d9d7d3;--muted:#5e5c58;
+  --sand:#e8e2d8;--sand-2:#d9cfc0;--stone:#cfc6b8;
+  --sans:"Inter",-apple-system,Helvetica,Arial,sans-serif;
+  --display:"Archivo",-apple-system,Helvetica,Arial,sans-serif;}
+*{box-sizing:border-box;margin:0}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:15.5px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:76rem;margin:0 auto;padding:0 clamp(1.5rem,3vw,4rem)}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+
+.nav{background:var(--black);color:#fff;min-height:64px;display:flex;align-items:center}
+.nav .wrap{display:flex;justify-content:space-between;align-items:center;width:100%}
+.mark{font-family:var(--display);font-weight:400;letter-spacing:.34em;font-size:15px}
+.nav .links{display:flex;gap:26px;font-size:13px;color:rgba(255,255,255,.6)}
+.nav .links .on{color:#fff}
+
+/* masthead */
+.mast{padding:clamp(3.5rem,6vw,7rem) 0 0}
+.mast .kicker{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.mast h1{font-family:var(--display);font-weight:300;letter-spacing:-.04em;line-height:.92;
+  font-size:clamp(3.5rem,9vw,7rem);margin:18px 0 0}
+.mastrule{margin-top:clamp(2rem,3vw,3rem);border-top:2px solid var(--ink);padding-top:14px;
+  display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.mastrule b{color:var(--ink);font-weight:500}
+
+/* section rule */
+.sec{margin-top:clamp(3rem,5vw,5rem);border-top:1px solid var(--ink);padding-top:12px;
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+.sec span{color:var(--muted);letter-spacing:.1em}
+
+/* run */
+.run{display:grid;grid-template-columns:150px 1fr;gap:clamp(1.5rem,3vw,3rem);
+  padding:clamp(2rem,3vw,3rem) 0;border-bottom:1px solid var(--line)}
+.shot{aspect-ratio:4/5;border-radius:2px;overflow:hidden;background:linear-gradient(160deg,var(--sand),var(--sand-2) 60%,var(--stone))}
+.shot img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(.28) contrast(.96)}
+.rday{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:10px}
+.rt{font-family:var(--display);font-weight:300;letter-spacing:-.03em;line-height:1.08;
+  font-size:clamp(1.75rem,3.1vw,2.6rem);max-width:20ch}
+.rt em{font-style:normal;color:var(--muted)}
+.band{font-family:var(--display);font-weight:500;font-size:12px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px;display:block}
+.body{margin-top:16px;max-width:52ch;font-size:16.5px;line-height:1.6}
+.stats{margin-top:22px;display:flex;gap:0;border-top:1px solid var(--line);flex-wrap:wrap}
+.stat{padding:12px 26px 0 0;margin-right:26px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:none}
+.stat b{display:block;font-family:var(--display);font-weight:300;font-size:26px;letter-spacing:-.02em;line-height:1}
+.stat span{display:block;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.aside{margin-top:18px;font-size:14px;color:var(--muted);max-width:52ch;font-style:italic}
+.acts{margin-top:24px;display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.lk{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;
+  border-bottom:1px solid var(--ink);padding-bottom:3px;cursor:pointer}
+.lk.q{border-color:var(--line);color:var(--muted)}
+.lk.q:hover{border-color:var(--ink);color:var(--ink)}
+
+.quiet{display:flex;justify-content:space-between;gap:20px;padding:18px 0;border-bottom:1px solid var(--line);font-size:14px;align-items:baseline;flex-wrap:wrap}
+.quiet b{font-weight:500}
+.quiet .m{color:var(--muted)}
+footer{padding:5rem 0 4rem;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+@media(max-width:760px){.run{grid-template-columns:1fr}.shot{aspect-ratio:16/9}}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="wrap"><span class="mark">CLOVELLY</span>
+<span class="links"><span class="on">Feed</span><span>Team</span><span>Scenarios</span><span>JS</span></span></div></nav>
+
+<div class="wrap">
+  <div class="mast">
+    <div class="kicker">Wednesday, 10 September</div>
+    <h1>Coach feed</h1>
+    <div class="mastrule">
+      <span>Your team's runs, newest first</span>
+      <span>Active scenario &nbsp;<b>Price rise · Hard-nosed client</b></span>
+      <span>3 of 5 assigned have run it &nbsp;·&nbsp; 11 runs in August</span>
+    </div>
+  </div>
+
+  <div class="sec">This week <span>Three runs</span></div>
+
+  <article class="run">
+    <div><div class="shot"><img src="assets/img/row-sales.jpg" alt=""></div><div class="rday">Yesterday</div></div>
+    <div>
+      <span class="band">Solid · 16 of 22 criteria</span>
+      <h2 class="rt">Sarah Chen <em>on</em> Price rise</h2>
+      <p class="body">Held structure well; the pause after the anchor stretched to 3.4 seconds and the recovery leaned on fillers.</p>
+      <div class="stats">
+        <div class="stat"><b>135</b><span>Words per min</span></div>
+        <div class="stat"><b>12</b><span>Fillers</span></div>
+        <div class="stat"><b>5</b><span>Weak words</span></div>
+        <div class="stat"><b>2</b><span>Run number</span></div>
+      </div>
+      <p class="aside">Challenged the Composure band, and it is waiting for an answer in her report.</p>
+      <div class="acts"><span class="lk">Open her report</span><span class="lk q">Watch the pause · 3:10</span></div>
+    </div>
+  </article>
+
+  <article class="run">
+    <div><div class="shot"><img src="assets/img/row-manager.jpg" alt=""></div><div class="rday">Two hours ago</div></div>
+    <div>
+      <span class="band">Strong · 19 of 22 criteria · Showcased</span>
+      <h2 class="rt">Ben Singh <em>on</em> Renewal defense</h2>
+      <p class="body">Held the price anchor through three pushes, then offered the concession at 6:40 before Morgan asked.</p>
+      <div class="stats">
+        <div class="stat"><b>142</b><span>Words per min</span></div>
+        <div class="stat"><b>4</b><span>Fillers</span></div>
+        <div class="stat"><b>3</b><span>Weak words</span></div>
+        <div class="stat"><b>Hard</b><span>Difficulty</span></div>
+      </div>
+      <div class="acts"><span class="lk">Watch the moment · 6:40</span><span class="lk q">Open the report</span></div>
+    </div>
+  </article>
+
+  <article class="run">
+    <div><div class="shot"><img src="assets/img/row-comms.jpg" alt=""></div><div class="rday">Yesterday</div></div>
+    <div>
+      <span class="band">Developing · 9 of 22 criteria</span>
+      <h2 class="rt">Priya Nair <em>on</em> QBR presentation</h2>
+      <p class="body">The deck section ran long and the Q&amp;A answers compressed; the strongest minute was the churn-number defense at 9:12.</p>
+      <div class="stats">
+        <div class="stat"><b>168</b><span>Words per min</span></div>
+        <div class="stat"><b>7</b><span>Fillers</span></div>
+        <div class="stat"><b>4</b><span>Weak words</span></div>
+        <div class="stat"><b>12</b><span>Minutes presenting</span></div>
+      </div>
+      <p class="aside">One follow-up did not generate, noted in her report, bands unaffected.</p>
+      <div class="acts"><span class="lk">Watch the moment · 9:12</span><span class="lk q">Open the report</span></div>
+    </div>
+  </article>
+
+  <div class="sec">Not started <span>One</span></div>
+  <article class="run">
+    <div><div class="shot"><img src="assets/img/row-service.jpg" alt=""></div><div class="rday">One week ago</div></div>
+    <div>
+      <span class="band">Assigned six days ago</span>
+      <h2 class="rt">Marcus V. <em>on</em> Onboarding</h2>
+      <p class="body">About ten minutes when he gets to it. Reminders stay yours to send.</p>
+      <div class="acts"><span class="lk q">See his briefing</span></div>
+    </div>
+  </article>
+
+  <div class="sec">Housekeeping <span>Two</span></div>
+  <div class="quiet"><span><b>Yuri Wang</b> <span class="m">&nbsp;3 of 3 free sessions used, resets 1 Sep</span></span><span class="lk q">See plans</span></div>
+  <div class="quiet"><span><b>l.perez@acmecorp.com</b> <span class="m">&nbsp;invited 8 days ago, not joined</span></span><span class="lk q">Resend invite</span></div>
+
+  <footer>Clovelly &nbsp;·&nbsp; Coach feed, variant A, editorial masthead</footer>
+</div>
+</body></html>

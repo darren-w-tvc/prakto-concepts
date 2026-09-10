@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clovelly · coach feed · C</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* C · THE LEDGER
+   Thesis: a bound book. A dark cover band at the top, then ruled entries with
+   tabular figures and a sticky rail that holds the week in view. No photography
+   at all: the calm is rhythm and restraint, and every number lines up. */
+:root{--paper:#f1f0ee;--ink:#101010;--black:#0a0a0a;--line:#d9d7d3;--muted:#5e5c58;
+  --sand:#e8e2d8;--sand-2:#d9cfc0;--stone:#cfc6b8;
+  --sans:"Inter",-apple-system,Helvetica,Arial,sans-serif;
+  --display:"Archivo",-apple-system,Helvetica,Arial,sans-serif;}
+*{box-sizing:border-box;margin:0}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:74rem;margin:0 auto;padding:0 clamp(1.5rem,3vw,4rem)}
+:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+
+/* cover band */
+.cover{background:var(--black);color:#fff;padding:clamp(1.25rem,2vw,1.5rem) 0 clamp(3rem,6vw,5rem)}
+.cover .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:clamp(2.5rem,5vw,4.5rem)}
+.mark{font-family:var(--display);font-weight:400;letter-spacing:.34em;font-size:15px}
+.cover .links{display:flex;gap:26px;font-size:13px;color:rgba(255,255,255,.6)}
+.cover .links .on{color:#fff}
+.cover h1{font-family:var(--display);font-weight:300;letter-spacing:-.04em;line-height:.95;
+  font-size:clamp(3rem,7.5vw,5.75rem)}
+.cover .sub{color:rgba(255,255,255,.66);margin-top:16px;max-width:42ch}
+.cover .strip{margin-top:clamp(2rem,4vw,3.25rem);border-top:1px solid rgba(255,255,255,.22);padding-top:16px;
+  display:flex;gap:clamp(2rem,5vw,5rem);flex-wrap:wrap}
+.cover .strip div span{display:block;font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.cover .strip div b{display:block;font-family:var(--display);font-weight:300;font-size:clamp(1.5rem,2.6vw,2.25rem);
+  letter-spacing:-.02em;margin-top:8px;font-variant-numeric:tabular-nums}
+
+/* body grid */
+.grid{display:grid;grid-template-columns:210px 1fr;gap:clamp(2rem,4vw,4.5rem);
+  padding:clamp(2.5rem,4vw,4rem) 0 0;align-items:start}
+.rail{position:sticky;top:32px}
+.rail h2{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  padding-bottom:10px;border-bottom:1px solid var(--ink)}
+.rail ul{list-style:none;padding:0;margin:0}
+.rail li{padding:11px 0;border-bottom:1px solid var(--line);font-size:13.5px;display:flex;justify-content:space-between;gap:10px}
+.rail li span{color:var(--muted);font-variant-numeric:tabular-nums}
+.rail .scen{margin-top:28px;font-size:13px;line-height:1.6}
+.rail .scen span{display:block;font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+
+/* ledger */
+.sec{font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);
+  border-bottom:1px solid var(--ink);padding-bottom:10px;margin-bottom:4px}
+.sec:not(:first-child){margin-top:clamp(2.5rem,4vw,3.5rem)}
+.ent{padding:26px 0;border-bottom:1px solid var(--line);
+  display:grid;grid-template-columns:1fr 260px;gap:clamp(1.5rem,3vw,3rem);align-items:start}
+.ent .nm{font-family:var(--display);font-weight:300;letter-spacing:-.02em;line-height:1.15;
+  font-size:clamp(1.4rem,2.3vw,1.9rem)}
+.ent .scen{font-size:13px;color:var(--muted);margin-top:5px}
+.ent .band{font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;font-weight:600;margin-top:14px}
+.ent p{margin-top:12px;max-width:50ch;font-size:15.5px;line-height:1.6}
+.ent .note{margin-top:12px;font-size:13.5px;color:var(--muted);max-width:50ch}
+.figs{border-top:1px solid var(--ink)}
+.fig{display:flex;justify-content:space-between;gap:24px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.fig .k{color:var(--muted);letter-spacing:.02em;white-space:nowrap}
+.fig .v{font-variant-numeric:tabular-nums;font-weight:500}
+.acts{margin-top:20px;display:flex;gap:20px;flex-wrap:wrap}
+.lk{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;
+  border-bottom:1px solid var(--ink);padding-bottom:3px;cursor:pointer}
+.lk.q{border-color:var(--line);color:var(--muted)}.lk.q:hover{border-color:var(--ink);color:var(--ink)}
+.quiet{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--line);font-size:14px;flex-wrap:wrap}
+.quiet .m{color:var(--muted)}
+footer{padding:5rem 0 4rem;font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.rail{position:static}.ent{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="cover"><div class="wrap">
+  <div class="top"><span class="mark">CLOVELLY</span>
+    <span class="links"><span class="on">Feed</span><span>Team</span><span>Scenarios</span><span>JS</span></span></div>
+  <h1>Coach feed</h1>
+  <p class="sub">Your team's runs, newest first. Most need nothing beyond the read.</p>
+  <div class="strip">
+    <div><span>Runs this week</span><b>3</b></div>
+    <div><span>Waiting on you</span><b>1</b></div>
+    <div><span>Not started</span><b>1</b></div>
+    <div><span>Runs in August</span><b>11</b></div>
+  </div>
+</div></div>
+
+<div class="wrap grid">
+  <aside class="rail">
+    <h2>Your team</h2>
+    <ul>
+      <li>Sarah Chen <span>4</span></li>
+      <li>Ben Singh <span>3</span></li>
+      <li>Priya Nair <span>2</span></li>
+      <li>Marcus V. <span>0</span></li>
+      <li>Yuri Wang <span>3</span></li>
+    </ul>
+    <div class="scen"><span>Active scenario</span>Price rise · Hard-nosed client. 3 of 5 assigned have run it.</div>
+  </aside>
+
+  <main>
+    <div class="sec">This week</div>
+
+    <article class="ent">
+      <div>
+        <div class="nm">Sarah Chen</div>
+        <div class="scen">Price rise · Hard-nosed client · run 2 · yesterday</div>
+        <div class="band">Solid · 16 of 22 criteria</div>
+        <p>Held structure well; the pause after the anchor stretched to 3.4 seconds and the recovery leaned on fillers.</p>
+        <p class="note">Challenged the Composure band, and it is waiting for an answer in her report.</p>
+        <div class="acts"><span class="lk">Open her report</span><span class="lk q">Watch the pause · 3:10</span></div>
+      </div>
+      <div class="figs">
+        <div class="fig"><span class="k">Pace</span><span class="v">135</span></div>
+        <div class="fig"><span class="k">Fillers</span><span class="v">12</span></div>
+        <div class="fig"><span class="k">Weak words</span><span class="v">5</span></div>
+        <div class="fig"><span class="k">Length</span><span class="v">14:02</span></div>
+        <div class="fig"><span class="k">Counterpart</span><span class="v">Alex Torres</span></div>
+        <div class="fig"><span class="k">Difficulty</span><span class="v">Medium</span></div>
+      </div>
+    </article>
+
+    <article class="ent">
+      <div>
+        <div class="nm">Ben Singh</div>
+        <div class="scen">Renewal defense · Elusive buyer · showcased · two hours ago</div>
+        <div class="band">Strong · 19 of 22 criteria</div>
+        <p>Held the price anchor through three pushes, then offered the concession at 6:40 before Morgan asked.</p>
+        <div class="acts"><span class="lk">Watch the moment · 6:40</span><span class="lk q">Open the report</span></div>
+      </div>
+      <div class="figs">
+        <div class="fig"><span class="k">Pace</span><span class="v">142</span></div>
+        <div class="fig"><span class="k">Fillers</span><span class="v">4</span></div>
+        <div class="fig"><span class="k">Weak words</span><span class="v">3</span></div>
+        <div class="fig"><span class="k">Length</span><span class="v">11:38</span></div>
+        <div class="fig"><span class="k">Counterpart</span><span class="v">Morgan Ellis</span></div>
+        <div class="fig"><span class="k">Difficulty</span><span class="v">Hard</span></div>
+      </div>
+    </article>
+
+    <article class="ent">
+      <div>
+        <div class="nm">Priya Nair</div>
+        <div class="scen">QBR presentation · 12 minutes presenting · yesterday</div>
+        <div class="band">Developing · 9 of 22 criteria</div>
+        <p>The deck section ran long and the Q&amp;A answers compressed; the strongest minute was the churn-number defense at 9:12.</p>
+        <p class="note">One follow-up did not generate, noted in her report, bands unaffected.</p>
+        <div class="acts"><span class="lk">Watch the moment · 9:12</span><span class="lk q">Open the report</span></div>
+      </div>
+      <div class="figs">
+        <div class="fig"><span class="k">Pace</span><span class="v">168</span></div>
+        <div class="fig"><span class="k">Fillers</span><span class="v">7</span></div>
+        <div class="fig"><span class="k">Weak words</span><span class="v">4</span></div>
+        <div class="fig"><span class="k">Length</span><span class="v">18:20</span></div>
+        <div class="fig"><span class="k">Counterpart</span><span class="v">Dana Whitfield</span></div>
+        <div class="fig"><span class="k">Difficulty</span><span class="v">Medium</span></div>
+      </div>
+    </article>
+
+    <div class="sec">Not started</div>
+    <div class="quiet"><span>Marcus V. <span class="m">&nbsp;Onboarding · New lead · assigned 6 days ago · about 10 minutes</span></span><span class="lk q">See his briefing</span></div>
+
+    <div class="sec">Housekeeping</div>
+    <div class="quiet"><span>Yuri Wang <span class="m">&nbsp;3 of 3 free sessions used, resets 1 Sep</span></span><span class="lk q">See plans</span></div>
+    <div class="quiet"><span>l.perez@acmecorp.com <span class="m">&nbsp;invited 8 days ago, not joined</span></span><span class="lk q">Resend invite</span></div>
+
+    <footer>Clovelly &nbsp;·&nbsp; Coach feed, variant C, the ledger</footer>
+  </main>
+</div>
+</body></html>
