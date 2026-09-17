@@ -1,0 +1,270 @@
+/*
+ * Layout and type measured from Darren's design at
+ * matt-package/clovelly-site/homepage-design/index.html (6 Sep 2026).
+ *
+ * That file carries a single 960px breakpoint its own handoff calls "a rough
+ * fallback". Everything below 1100px here is designed rather than inherited:
+ * the scale is fluid so it holds at every width instead of snapping once.
+ */
+
+:root {
+  --paper: #f1f0ee;
+  --ink: #101010;
+  --black: #0a0a0a;
+  --line: #d9d7d3;
+  --muted: #5e5c58;
+  --sand: #e8e2d8;
+  --sand-2: #d9cfc0;
+  --stone: #cfc6b8;
+
+  --sans: var(--font-inter), -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --display: var(--font-archivo), -apple-system, "Helvetica Neue", Arial, sans-serif;
+
+  /* min at 360px, max at 1312px */
+  --step-1: clamp(2.25rem, 1.42rem + 3.7vw, 5rem);      /* h1  36 -> 80 */
+  --step-2: clamp(1.875rem, 1.27rem + 2.7vw, 3.75rem);  /* h2  30 -> 60 */
+  --step-3: clamp(1.5rem, 1.14rem + 1.6vw, 2.75rem);    /* h3  24 -> 44 */
+  --step-4: clamp(1.125rem, 1.03rem + 0.42vw, 1.25rem); /* step 18 -> 20 */
+  --body: clamp(0.9375rem, 0.92rem + 0.08vw, 1rem);     /* 15 -> 16 */
+
+  --gutter: clamp(1.5rem, 0.87rem + 2.8vw, 4rem);       /* 24 -> 64 */
+  --section: clamp(4rem, 2.9rem + 4.9vw, 7rem);         /* 64 -> 112 */
+  --measure: 33rem;
+  --wrap: 82rem;
+  --radius: 4px;
+  --radius-card: 6px;
+}
+
+* { box-sizing: border-box; margin: 0 }
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } }
+
+/* The nav is sticky, so an anchor target would otherwise land underneath it. */
+[id] { scroll-margin-top: 88px }
+
+body {
+  font-family: var(--sans);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: var(--body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none }
+
+/* The image pipeline writes intrinsic width/height attributes, which act as
+   presentational hints. Any image sized in CSS on one axis needs the other to
+   be auto or the attribute wins. Measured: it stretched the Dana ring to 900px. */
+img, svg { max-width: 100%; display: block }
+img[width][height] { height: auto }
+
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.h { font-family: var(--display); font-weight: 300; line-height: 1.1 }
+h1 { font-size: var(--step-1); letter-spacing: -0.03em; line-height: 1.06 }
+h2 { font-size: var(--step-2); letter-spacing: -0.03em; line-height: 1.1 }
+h3 { font-size: var(--step-3); letter-spacing: -0.03em; line-height: 1.1 }
+
+.wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter) }
+section { padding: var(--section) 0 }
+.white { background: #fff }
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: #fff;
+  color: var(--ink);
+  padding: 12px 20px;
+  z-index: 100;
+  font-size: 14px;
+  font-weight: 600;
+}
+.skip:focus { left: 8px; top: 8px }
+
+/* buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: var(--radius);
+  padding: 13px 20px;
+  min-height: 44px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: inherit;
+  border: 1px solid var(--ink);
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+.btn.ghost { background: transparent; border-color: var(--line) }
+.btn.ghost:hover { border-color: var(--ink) }
+.btn.onblack { border-color: #fff; color: #fff; background: transparent }
+.btn.onblack:hover { background: #fff; color: var(--ink) }
+.btn.white { background: #fff; color: var(--ink); border-color: #fff }
+.btn.white:hover { background: transparent; color: #fff; border-color: #fff }
+.btn.dark { background: var(--ink); color: #fff; border-color: var(--ink) }
+.btn.dark:hover { background: transparent; color: var(--ink) }
+.btn[disabled] { opacity: 0.55; cursor: default }
+
+.eyebrow {
+  display: inline-block;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.check {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: var(--body);
+}
+.check li { display: flex; gap: 12px; align-items: baseline }
+.check li::before { content: "\2713"; opacity: 0.8; flex: none }
+.check.circle li::before { content: "\25CF"; font-size: 9px }
+
+/* nav */
+/*
+ * Sticky. On a phone the hero's own copy is longer than any viewport, so its
+ * button sits below the fold whatever the spacing: measured 725px against a
+ * 664px viewport with everything already tightened. Keeping the bar means the
+ * call to action is reachable from anywhere rather than only at two scroll
+ * positions on the page.
+ */
+.nav {
+  background: var(--black);
+  color: #fff;
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100% }
+.mark { font-family: var(--display); font-weight: 400; letter-spacing: 0.32em; font-size: 20px }
+.nav .links { display: flex; gap: clamp(16px, 2.2vw, 32px); font-size: 14px; align-items: center }
+@media (max-width: 720px) {
+  .nav .links a:not(.btn) { display: none }
+  .mark { font-size: 17px; letter-spacing: 0.28em }
+  .nav .btn { padding: 11px 14px; font-size: 11px }
+}
+
+/* hero */
+.hero {
+  position: relative;
+  color: #fff;
+  overflow: hidden;
+  /* Minus the nav, or the hero alone fills the viewport and everything in it
+     starts below the fold. svh is the SMALL viewport height, so it is the
+     height with the mobile browser's toolbars showing rather than hidden. */
+  min-height: min(880px, calc(100svh - 72px));
+  display: flex;
+}
+.hero img.bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 68% 40%;
+}
+/*
+ * Narrow first. The copy runs the full width on a phone, so it crosses whatever
+ * is behind it: over the bright window in this photograph white text on the
+ * default wash was not readable. The desktop wash is the lighter one, below.
+ */
+.hero .shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,.16) 0%, rgba(0,0,0,.42) 38%, rgba(0,0,0,.8) 100%);
+}
+.hero .in {
+  position: relative;
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: var(--section) var(--gutter);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+.hero h1 { max-width: 15ch; margin: 22px 0 20px }
+.hero p { max-width: var(--measure); margin-bottom: 22px }
+.hero .check { margin-bottom: 34px }
+
+/*
+ * Darren, 6 Sep: keep the listener on the right in frame when it crops.
+ *
+ * ⚠ The top padding is deliberately small. An earlier version pushed the
+ * content down to lift the subject into view and cost 163px of empty
+ * photograph between the nav and the eyebrow, which put the hero's own button
+ * below the fold on every phone. The crop does that job now, not the padding.
+ */
+@media (max-width: 899px) {
+  /* ⚠ Only the horizontal value does anything below 900px. The photograph is
+     3:2 and the hero is taller than it is wide there, so cover scales it by
+     height and leaves zero vertical overflow for the second value to move.
+     At 62% the listener lands in the clear space beside "count." and the
+     ragged right edge of the paragraph, rather than behind them. */
+  .hero img.bg { object-position: 62% 50% }
+  .hero .in { padding-top: clamp(2rem, 7vh, 3.5rem); padding-bottom: clamp(2rem, 5vh, 3.5rem) }
+  .hero h1 { margin: 16px 0 14px }
+  .hero p { margin-bottom: 18px }
+  .hero .check { margin-bottom: 24px; gap: 8px }
+}
+@media (min-width: 900px) {
+  .hero img.bg { object-position: 50% 40% }
+  .hero .shade {
+    background: linear-gradient(180deg, rgba(0,0,0,.05) 0%, rgba(0,0,0,.15) 45%, rgba(0,0,0,.62) 100%);
+  }
+}
+
+/* two-column blocks */
+.two {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2rem, 1rem + 4.5vw, 5rem);
+  align-items: center;
+}
+.two .body { line-height: 1.6; margin: clamp(1.25rem, 2.5vw, 2.5rem) 0 1.5rem; max-width: var(--measure) }
+.two .lead h2 { margin-top: 18px }
+.two .cta { margin-top: 2rem }
+@media (min-width: 900px) { .two { grid-template-columns: 1fr 1fr } }
+
+/* media panels */
+.ph {
+  background: linear-gradient(160deg, var(--sand) 0%, var(--sand-2) 60%, var(--stone) 100%);
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+}
+.ph.tall { aspect-ratio: 4 / 3 }
+.ph.wide { aspect-ratio: 16 / 9 }
+.ph img.fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40% }
+@media (min-width: 900px) { .ph.tall { aspect-ratio: 1 } }
+
+/* order: on narrow screens the picture leads, per Darren's handoff */
+@media (max-width: 899px) {
+  .two.flip .lead { order: 2 }
+  .two.flip .ph { order: 1 }
+}

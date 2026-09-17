@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clovelly · sign in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/report.css?v=6">
+<script src="app.js?v=8"></script>
+<style>
+.who{display:grid;grid-template-columns:48px 1fr auto;gap:16px;align-items:center;padding:22px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.who:hover .nm{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.who .d{width:44px;height:44px;border-radius:50%;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font-size:13px;letter-spacing:.04em}
+.who .nm{font-family:var(--display);font-weight:300;font-size:1.6rem;letter-spacing:-.02em}
+.who .rl{font-size:13.5px;color:var(--muted);margin-top:2px}
+</style></head>
+<body>
+<nav class="nav"><div class="in"><span class="mark">CLOVELLY</span></div></nav>
+<div class="split">
+  <aside class="canvas">
+    <img src="assets/img/hero.jpg" alt="" style="object-position:30% 45%">
+    <div class="shade"></div>
+    <div class="in">
+      <div class="klab">Clovelly</div>
+      <div class="ctitle">Coach your team through the conversations that count</div>
+    </div>
+  </aside>
+  <main class="read">
+    <h1 class="ph">Sign in</h1>
+    <p class="p16">Pick whose seat you want to sit in.</p>
+    <div class="sec"><h2>Sign in as</h2><span>A simulation built from the designs</span></div>
+    <div class="who" id="sarah" data-go="onboarding.html"><div class="d">SC</div>
+      <div><div class="nm">Sarah Chen</div><div class="rl">Team member with a renewal conversation waiting</div></div><button class="lk">Continue</button></div>
+    <div class="who" data-go="coach.html"><div class="d">JS</div>
+      <div><div class="nm">Jane Smith</div><div class="rl">Lead Coach for the Voyage sales team</div></div><button class="lk">Continue</button></div>
+    <div class="who" onclick="SIM.newCoach();location.href='signup.html'"><div class="d">+</div>
+      <div><div class="nm">Jane, starting fresh</div><div class="rl">A new coach creating a workspace, building a scenario, and inviting the team</div></div><button class="lk">Continue</button></div>
+    <p class="aside" style="margin-top:28px">Sarah's path runs setup, her runs, the briefing, a spoken conversation with Cleo, and the report that follows. Turn your sound on, since Cleo speaks her questions aloud.</p>
+    <p class="aside"><a href="notes-for-matt.html" style="color:var(--ink)">Notes for Matt</a> explain what is real, what is pretend, and what is still open.</p>
+    <footer>Clovelly &nbsp;·&nbsp; Demo</footer>
+  </main>
+</div>
+<script>try{var st=JSON.parse(sessionStorage.getItem("clovelly-sim")||"{}");if(st.onboarded)document.getElementById("sarah").dataset.go="home.html";}catch(e){}</script>
+</body></html>

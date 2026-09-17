@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clovelly · your team</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/report.css?v=6">
+<script src="app.js?v=8"></script>
+<style>
+.strip{margin-top:clamp(1.25rem,2vw,1.75rem);border-top:1px solid rgba(255,255,255,.2);padding-top:16px;display:flex;gap:clamp(1.25rem,2.5vw,2.25rem);flex-wrap:wrap}
+.strip div span{display:block;font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.strip div b{display:block;font-family:var(--display);font-weight:300;font-size:1.75rem;letter-spacing:-.02em;margin-top:5px;font-variant-numeric:tabular-nums}
+.inv{max-width:44rem}
+.inv label span{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin:18px 0 8px}
+.inv textarea{display:block;width:100%;min-height:96px;background:#fff;border:1px solid var(--line);border-radius:4px;padding:13px 14px;font:inherit;font-size:15px;line-height:1.55;resize:vertical}
+.inv textarea:focus{outline:none;border-color:var(--ink)}
+.inv .row{margin-top:12px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.inv .m{font-size:13px;color:var(--muted)}
+.err{font-size:13px;color:#8a2a1a;margin-top:8px;min-height:1px}
+.wall{margin-top:18px;max-width:44rem;background:linear-gradient(160deg,#f4f1ec 0%,var(--sand) 50%,var(--sand-2) 100%);border-radius:6px;padding:clamp(1.25rem,2.5vw,1.75rem)}
+.wall b{display:block;font-family:var(--display);font-weight:300;font-size:1.5rem;letter-spacing:-.02em}
+.wall p{margin-top:6px;font-size:14.5px;max-width:50ch}
+.wall .row{margin-top:16px;display:flex;gap:12px;flex-wrap:wrap}
+.tbl{max-width:44rem}
+.tr{display:grid;grid-template-columns:1fr 170px auto;gap:16px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.tr .who b{font-weight:500;display:block}.tr .who span{font-size:13px;color:var(--muted)}
+.st{display:flex;align-items:center;gap:8px;font-size:13px}
+.st .dot{margin-top:0;width:10px;height:10px}
+.tr .acts2{display:flex;gap:16px}
+.empty{padding:16px 0;font-size:14px;color:var(--muted);border-bottom:1px solid var(--line)}
+.mail{max-width:44rem;margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:4px}
+.mail .hd{padding:12px 16px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted);line-height:1.7}
+.mail .hd b{color:var(--ink);font-weight:500}
+.mail .bd2{padding:20px 16px 22px;font-size:15px;line-height:1.6}
+.mail .bd2 .btn{display:inline-block;margin:14px 0;background:var(--ink);color:#fff;border-radius:4px;padding:11px 16px;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.mail .bd2 small{display:block;font-size:12.5px;color:var(--muted)}
+.fine{margin-top:10px;font-size:12.5px;color:var(--muted);max-width:50ch}
+.nextbar{margin-top:clamp(2rem,3.5vw,2.75rem);max-width:44rem;border-top:1px solid var(--ink);padding-top:18px;display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+.nextbar p{font-size:14px;color:var(--muted);max-width:40ch}
+@media(max-width:700px){.tr{grid-template-columns:1fr}}
+</style></head>
+<body>
+<nav class="nav"><div class="in"><span class="mark">CLOVELLY</span><span class="links" id="links"></span></div></nav>
+<div class="split">
+  <aside class="canvas">
+    <img src="assets/img/hero.jpg" alt="" style="object-position:62% 40%">
+    <div class="shade"></div>
+    <div class="in">
+      <div class="klab" id="wsName">Voyage Sales</div>
+      <div class="ctitle">Your team</div>
+      <div class="cmeta">Invite the people you coach. Each one gets a single email with a link that signs them straight in.</div>
+      <div class="strip">
+        <div><span>Seats used</span><b id="seats">1 of 3</b></div>
+        <div><span>Joined</span><b id="joined">0</b></div>
+        <div><span>Plan</span><b id="plan">Free</b></div>
+      </div>
+    </div>
+  </aside>
+  <main class="read">
+    <h1 class="ph">Invite your team</h1>
+    <p class="p16" id="lead">Add the people you want practicing. You can assign them a scenario as soon as the invites are out.</p>
+
+    <div class="inv">
+      <label><span>Email addresses</span><textarea id="emails" placeholder="sarah.chen@voyage.co, ben.singh@voyage.co"></textarea></label>
+      <div class="err" id="err"></div>
+      <div class="row"><span class="m" id="seatLine">Separate addresses with commas or new lines.</span><button class="bk" id="send">Send invites</button></div>
+    </div>
+    <div class="wall" id="wall" hidden>
+      <b>Your team is growing</b>
+      <p id="wallP"></p>
+      <div class="row"><button class="bk" data-later="Plans and billing are still to be designed.">Upgrade to Team</button><button class="bg" id="keep">Keep three seats</button></div>
+    </div>
+
+    <div class="sec"><h2 id="tblH">Invites</h2><span id="tblN"></span></div>
+    <div class="tbl" id="tbl"></div>
+
+    <div class="sec"><h2>What they'll receive</h2><span>One email each</span></div>
+    <div class="mail">
+      <div class="hd"><b>Jane Smith via Clovelly</b><br>Subject: <b id="subj">Jane has set up practice for you at Voyage Sales</b></div>
+      <div class="bd2">Hi,<br><br><span id="mbody">Jane Smith has invited you to Voyage Sales on Clovelly, where you can practice the conversations that matter out loud before you have them.</span><br>
+        <span class="btn">Join Voyage Sales</span>
+        <small>This link signs you in once and expires in seven days.</small></div>
+    </div>
+    <p class="fine">Besides the invite, the only email Clovelly sends your team is a note when something is waiting for them.</p>
+
+    <div class="nextbar" id="nextbar" hidden><p>With your invites out, the next step is giving your team the scenario you built.</p><button class="bk" data-go="assign.html?scenario=cleo">Assign your scenario</button></div>
+    <footer>Clovelly &nbsp;·&nbsp; Your team</footer>
+  </main>
+</div>
+<script>
+(function(){
+  var S=SIM.state, NEW=!!S.newCoach, LIMIT=3;
+  document.getElementById('links').innerHTML=SIM.coachNav('Team');
+  var ws=S.workspace||'Voyage Sales';
+  document.getElementById('wsName').textContent=ws;
+  document.getElementById('subj').textContent='Jane has set up practice for you at '+ws;
+  document.getElementById('mbody').textContent='Jane Smith has invited you to '+ws+' on Clovelly, where you can practice the conversations that matter out loud before you have them.';
+  document.querySelector('.mail .btn').textContent='Join '+ws;
+
+  var MEMBERS=[["Sarah Chen","sarah.chen@voyage.co","Active","2 runs this month"],["Ben Singh","ben.singh@voyage.co","Active","1 run this month"],
+    ["Priya Nair","priya.nair@voyage.co","Active","1 run this month"],["Marcus V.","marcus.v@voyage.co","Active","Nothing run yet"],
+    ["Yuri Wang","yuri.wang@voyage.co","Reached limit","3 of 3 sessions used this month"]];
+  S.invites=S.invites||(NEW?[]:[{email:'l.perez@acmecorp.com',status:'sent',old:true}]);
+  function live(){return S.invites.filter(function(i){return i.status!=='cancelled'});}
+  function nameOf(e){var p=e.split('@')[0].split(/[._-]/);return p.map(cap).join(' ');}
+  function seatsUsed(){return 1+live().length;}
+
+  function paint(){
+    var inv=live(), used=NEW?seatsUsed():1+MEMBERS.length+inv.length;
+    document.getElementById('seats').textContent=NEW?(used+' of '+LIMIT):String(used);
+    document.getElementById('plan').textContent=NEW?'Free':'Team';
+    document.getElementById('joined').textContent=NEW?inv.filter(function(i){return i.status==='joined'}).length:MEMBERS.length;
+    document.getElementById('seatLine').textContent=NEW?(used>=LIMIT?'All three free seats are in use, including yours.':'You count as one of the '+LIMIT+' free seats, so '+(LIMIT-used)+' '+(LIMIT-used===1?'is':'are')+' left.'):'Separate addresses with commas or new lines.';
+    var h='';
+    if(!NEW){h+=MEMBERS.map(function(m){return '<div class="tr"><div class="who"><b>'+m[0]+'</b><span>'+m[1]+'</span></div><div class="st"><span class="dot '+(m[2]==='Active'?'on':'half')+'"></span>'+m[2]+'</div><div class="acts2"><span class="m" style="font-size:13px;color:var(--muted)">'+m[3]+'</span></div></div>'}).join('');}
+    h+=inv.map(function(i){var lab={sent:'Sent',opened:'Opened',joined:'Joined'}[i.status], dot={sent:'',opened:'half',joined:'on'}[i.status];
+      return '<div class="tr"><div class="who"><b>'+(i.status==='joined'?nameOf(i.email):i.email)+'</b><span>'+(i.status==='joined'?i.email+' · joined just now':(i.old?'Invited 8 days ago':'Invited just now'))+'</span></div>'+
+        '<div class="st"><span class="dot '+dot+'"></span>'+lab+'</div><div class="acts2">'+(i.status==='joined'?'':'<button class="lkq" data-resend="'+i.email+'">Resend</button><button class="lkq" data-cancel="'+i.email+'">Cancel</button>')+'</div></div>';}).join('');
+    if(!h) h='<div class="empty">Nobody invited yet.</div>';
+    document.getElementById('tbl').innerHTML=h;
+    document.getElementById('tblH').textContent=NEW?'Invites':'Team and invites';
+    document.getElementById('tblN').textContent=NEW?(inv.length?inv.length+' sent':''):(MEMBERS.length+' members · '+inv.length+' waiting to join');
+    document.querySelectorAll('[data-resend]').forEach(function(b){b.onclick=function(){SIM.toast('Invite sent again to '+b.dataset.resend+'.');};});
+    document.querySelectorAll('[data-cancel]').forEach(function(b){b.onclick=function(){S.invites.forEach(function(i){if(i.email===b.dataset.cancel)i.status='cancelled';});SIM.save();paint();SIM.toast('Invite cancelled, and the link no longer works.');};});
+    document.getElementById('nextbar').hidden=!(NEW&&inv.length&&!(S.setup&&S.setup.assigned));
+    if(!NEW) document.getElementById('lead').textContent='Add more people to Voyage Sales. The Team plan covers everyone you invite.';
+  }
+
+  // simulated delivery: sent, then opened, then joined
+  function progress(email){
+    setTimeout(function(){var i=S.invites.filter(function(x){return x.email===email})[0];if(i&&i.status==='sent'){i.status='opened';SIM.save();paint();}},4000);
+    setTimeout(function(){var i=S.invites.filter(function(x){return x.email===email})[0];if(i&&i.status==='opened'){i.status='joined';SIM.save();paint();SIM.toast(nameOf(email)+' joined '+ws+'.');}},9000);
+  }
+
+  var ta=document.getElementById('emails'), err=document.getElementById('err'), pend=[];
+  ta.oninput=function(){err.textContent='';};
+  function sendList(list){
+    list.forEach(function(e){S.invites.push({email:e,status:'sent',at:Date.now()});progress(e);});
+    S.setup=S.setup||{}; if(list.length)S.setup.invited=true; SIM.save(); paint();
+    if(list.length) SIM.toast(list.length===1?'Invite sent to '+list[0]+'.':list.length+' invites sent.');
+  }
+  document.getElementById('send').onclick=function(){
+    var raw=ta.value.split(/[,;\n]+/).map(function(x){return x.trim().toLowerCase()}).filter(Boolean);
+    if(!raw.length){err.textContent='Add at least one email address.';return;}
+    var bad=raw.filter(function(e){return !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)});
+    if(bad.length){err.textContent=(bad.length===1?bad[0]+' doesn\'t look like an email address.':'These don\'t look like email addresses: '+bad.join(', ')+'.');return;}
+    var have=S.invites.map(function(i){return i.status!=='cancelled'&&i.email});
+    var list=raw.filter(function(e,i){return raw.indexOf(e)===i&&have.indexOf(e)<0});
+    if(!list.length){err.textContent='Everyone on that list already has an invite.';return;}
+    ta.value='';
+    if(NEW){var room=LIMIT-seatsUsed();
+      if(list.length>room){pend=list.slice(room);sendList(list.slice(0,room));
+        document.getElementById('wallP').textContent='The free plan covers three people including you, so '+pend.join(', ')+' '+(pend.length===1?'is':'are')+' waiting for a seat. The Team plan lifts the seat and session limits, at AUD 19 per seat each month.';
+        document.getElementById('wall').hidden=false;return;}}
+    sendList(list);
+  };
+  document.getElementById('keep').onclick=function(){document.getElementById('wall').hidden=true;SIM.toast((pend.length===1?pend[0]+' was':pend.length+' people were')+' left off, and you can invite them after upgrading.');pend=[];};
+
+  S.invites.forEach(function(i){if(i.status==='sent'&&!i.old)progress(i.email);});
+  if(NEW&&!S.invites.length) ta.value='sarah.chen@voyage.co, ben.singh@voyage.co';
+  paint();
+})();
+</script>
+</body></html>

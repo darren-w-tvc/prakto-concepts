@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clovelly · new scenario</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/report.css?v=6">
+<script src="app.js?v=8"></script>
+<style>
+.canvas.sand .in{justify-content:space-between}
+.prog{margin-top:clamp(1.5rem,2.5vw,2rem);border-top:1px solid rgba(16,16,16,.25)}
+.pr{display:grid;grid-template-columns:20px 1fr;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid rgba(16,16,16,.12);font-size:14px;color:rgba(16,16,16,.45);background:none;border-left:0;border-right:0;border-top:0;width:100%;text-align:left;font-family:inherit}
+.pr .dot{margin-top:0;border-color:rgba(16,16,16,.4)}
+.pr.on{color:var(--ink)}.pr.on .dot{border-color:var(--ink);background:linear-gradient(90deg,var(--ink) 50%,transparent 50%)}
+.pr.done{color:rgba(16,16,16,.75);cursor:pointer}.pr.done .dot{border-color:var(--ink);background:var(--ink)}
+.pr.done:hover span:last-child{text-decoration:underline;text-underline-offset:3px}
+.over{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);background:none;border:0;padding:0;cursor:pointer;align-self:flex-start;margin-top:18px}
+.over:hover{color:var(--ink)}
+.confirm{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:4px;padding:14px 16px;font-size:13.5px}
+.confirm div{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+.confirm button{padding:9px 14px;min-height:0}
+
+.step{display:none}.step.on{display:block}
+.eyebrow{font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+textarea.ctx{display:block;width:100%;max-width:44rem;min-height:190px;margin-top:clamp(1.5rem,2.5vw,2rem);background:#fff;border:1px solid var(--line);border-radius:4px;padding:16px 18px;font:inherit;font-size:16px;line-height:1.6;color:var(--ink);resize:vertical}
+textarea.ctx:focus{outline:none;border-color:var(--ink)}
+.row2{display:flex;justify-content:space-between;align-items:center;gap:16px;max-width:44rem;margin-top:10px;flex-wrap:wrap}
+.row2 .m{font-size:12.5px;color:var(--muted)}
+.tpl{margin-top:clamp(1.75rem,3vw,2.25rem);max-width:44rem}
+.tpl small{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:10px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);border-radius:999px;background:transparent;padding:8px 14px;font:inherit;font-size:13.5px;color:var(--ink);cursor:pointer}
+.chip:hover{border-color:var(--ink)}.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.err{font-size:13px;color:#8a2a1a;margin-top:10px;min-height:18px}
+.foot{margin-top:clamp(2rem,3.5vw,2.75rem);display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.foot .hint{font-size:13px;color:var(--muted)}
+
+.drafting{margin-top:clamp(1.5rem,2.5vw,2rem);font-size:14px;color:var(--muted);display:flex;align-items:center;gap:10px}
+.drafting .dot{margin-top:0;background:linear-gradient(90deg,var(--ink) 50%,transparent 50%)}
+.reveal{opacity:0;transform:translateY(6px);transition:opacity .35s ease,transform .35s ease}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{transition:none}}
+.edhint{font-size:12.5px;color:var(--muted);margin-top:10px}
+.ed{border-radius:3px;outline:none;cursor:text;transition:background .15s ease;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.ed:hover{background:rgba(16,16,16,.05)}
+.ed:focus{background:#fff;box-shadow:0 0 0 1px var(--ink)}
+h1.ph.ed{display:inline}
+.blk{margin-top:clamp(1.75rem,3vw,2.5rem);max-width:44rem}
+.blk>small{display:flex;justify-content:space-between;font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;font-weight:600;border-bottom:1px solid var(--ink);padding-bottom:10px}
+.blk>small i{font-style:normal;font-weight:400;letter-spacing:.02em;text-transform:none;color:var(--muted);font-size:13px}
+.line{display:grid;grid-template-columns:28px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.line .n{font-family:var(--display);font-weight:300;font-size:18px;color:var(--stone);line-height:1.3}
+.line .t{font-family:var(--display);font-weight:300;font-size:clamp(1.1rem,1.6vw,1.3rem);letter-spacing:-.01em;line-height:1.35}
+.line .w{display:block;font-size:13.5px;color:var(--muted);margin-top:4px}
+.plain{padding:14px 0;border-bottom:1px solid var(--line);font-size:15.5px;line-height:1.6}
+
+.card{margin-top:clamp(1.75rem,3vw,2.5rem);max-width:30rem;background:linear-gradient(162deg,#f4f1ec 0%,var(--sand) 44%,var(--sand-2) 100%);border-radius:6px;padding:clamp(1.5rem,3vw,2rem)}
+.card .lab{font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:var(--muted)}
+.card .cdisc{margin:16px 0 14px}
+.card .cn{font-family:var(--display);font-weight:300;font-size:clamp(1.8rem,3vw,2.4rem);letter-spacing:-.03em;line-height:1.05}
+.card .cr{font-size:14px;color:var(--muted);margin-top:6px}
+.card .cs{margin-top:16px;border-top:1px solid rgba(16,16,16,.2);padding-top:14px;font-size:15px;line-height:1.55}
+.card .traits{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.card .traits span{border:1px solid rgba(16,16,16,.3);border-radius:999px;padding:3px 10px;font-size:12px}
+
+.opt{display:grid;grid-template-columns:22px 1fr;gap:14px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:16px 0;font:inherit;color:var(--ink);cursor:pointer}
+.opt .dot{margin-top:5px}
+.opt.on .dot{background:var(--ink)}
+.opt b{font-weight:500;font-size:15.5px}
+.opt span{display:block;font-size:13.5px;color:var(--muted);margin-top:3px}
+.opt:hover b{text-decoration:underline;text-underline-offset:3px}
+.tog{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:16px 0;border-bottom:1px solid var(--line)}
+.tog b{font-weight:500;font-size:15.5px}.tog span{display:block;font-size:13.5px;color:var(--muted);margin-top:3px;max-width:44ch}
+.sw{width:44px;height:26px;border-radius:13px;border:1px solid var(--ink);background:transparent;position:relative;cursor:pointer;flex:none}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--ink);transition:left .15s ease}
+.sw[aria-checked="true"]{background:var(--ink)}.sw[aria-checked="true"]::after{left:21px;background:#fff}
+.mins{display:flex;align-items:center;gap:10px;padding:14px 0;border-bottom:1px solid var(--line);font-size:14px}
+.mins input{width:70px;background:#fff;border:1px solid var(--line);border-radius:4px;padding:8px 10px;font:inherit}
+
+.form label{display:block;margin-top:16px}
+.form label>span{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:6px}
+.form input,.form textarea,.form select{display:block;width:100%;background:#fff;border:1px solid var(--line);border-radius:4px;padding:11px 13px;font:inherit;font-size:15px;color:var(--ink)}
+.form textarea{min-height:64px;resize:vertical;line-height:1.5}
+.form input:focus,.form textarea:focus,.form select:focus{outline:none;border-color:var(--ink)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+details.judge{margin-top:clamp(1.75rem,3vw,2.5rem);max-width:44rem;border-top:1px solid var(--ink)}
+details.judge summary{cursor:pointer;padding:14px 0;font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;font-weight:600;list-style:none;display:flex;justify-content:space-between}
+details.judge summary::-webkit-details-marker{display:none}
+details.judge summary i{font-style:normal;font-weight:400;letter-spacing:.02em;text-transform:none;color:var(--muted);font-size:13px}
+.jattr{padding:10px 0 14px;border-bottom:1px solid var(--line)}
+.jattr h3{font-size:14.5px;font-weight:500}
+.jattr ol{margin:6px 0 0;padding-left:20px;font-size:14px;line-height:1.55}
+.jattr li{padding:3px 0}
+.flag{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.flag::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;border:1px solid var(--ink);background:linear-gradient(90deg,var(--ink) 50%,transparent 50%);margin-right:6px;vertical-align:0}
+.save{margin-top:clamp(2rem,3.5vw,2.75rem);border-top:1px solid var(--ink);padding-top:22px;max-width:44rem}
+.save p{font-size:13.5px;color:var(--muted);margin-top:12px;max-width:50ch}
+@media(max-width:700px){.two{grid-template-columns:1fr}}
+</style></head>
+<body>
+<nav class="nav"><div class="in"><span class="mark">CLOVELLY</span><span class="links" id="links"></span></div></nav>
+<div class="split">
+  <aside class="canvas sand">
+    <div class="in">
+      <div>
+        <div class="klab">New scenario</div>
+        <div class="ctitle" id="ctitle" style="font-size:clamp(1.9rem,3vw,2.6rem)">Your team's next hard conversation</div>
+        <div class="cmeta" id="cmeta">Describe it once, and each part appears for you to check.</div>
+      </div>
+      <div>
+        <div class="prog" id="prog"></div>
+        <button class="over" id="overBtn">Start over</button>
+        <div class="confirm" id="overBox" hidden>Start over? This clears the draft and every change you've made.
+          <div><button class="bd" id="overYes">Start over</button><button class="bg" id="overNo">Keep editing</button></div></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="read">
+    <!-- 0 describe -->
+    <section class="step on" data-s="0">
+      <div class="eyebrow" id="hello">Your first scenario</div>
+      <h1 class="ph">What's the next hard conversation?</h1>
+      <p class="p16">Describe it the way you'd brief a colleague: who it's with, what your person needs to get across, and how the other side is likely to take it.</p>
+      <textarea class="ctx" id="ctx" placeholder="Sarah has her renewal with Northwind next week…"></textarea>
+      <div class="row2"><span class="m">A few sentences is plenty.</span><button class="lkq" id="example">Use an example</button></div>
+      <div class="tpl"><small>Or start from a template</small>
+        <div class="chips" id="tpls"></div></div>
+      <div class="err" id="ctxErr"></div>
+      <div class="foot"><button class="bk" id="build">Build the scenario</button></div>
+    </section>
+
+    <!-- 1 scenario -->
+    <section class="step" data-s="1">
+      <div class="eyebrow">1 of 4 · The scenario</div>
+      <div class="drafting" data-draft>Drafting the scenario<span class="dot pulse"></span></div>
+      <div class="body" hidden>
+        <h1 class="ph ed reveal" contenteditable="true" data-k="title"></h1>
+        <p class="edhint reveal">Click any line to change it.</p>
+        <div class="blk reveal"><small>The situation</small><div class="plain ed" contenteditable="true" data-k="situation"></div></div>
+        <div class="blk reveal"><small>The other side will press on <i>Three questions, each with a follow-up</i></small><div id="press"></div></div>
+        <div class="foot reveal"><button class="bg" data-back>Back</button><button class="bk" data-next>Looks right</button></div>
+      </div>
+    </section>
+
+    <!-- 2 key messages -->
+    <section class="step" data-s="2">
+      <div class="eyebrow">2 of 4 · What good looks like</div>
+      <div class="drafting" data-draft>Writing what good looks like<span class="dot pulse"></span></div>
+      <div class="body" hidden>
+        <h1 class="ph reveal">What should they get across?</h1>
+        <p class="edhint reveal">Click any line to change it.</p>
+        <div class="blk reveal"><small>Key messages <i>What your team needs to land</i></small><div id="kms"></div></div>
+        <div class="blk reveal"><small>How to carry it</small><div id="carry"></div></div>
+        <div class="foot reveal"><button class="bg" data-back>Back</button><button class="bk" data-next>Looks right</button></div>
+      </div>
+    </section>
+
+    <!-- 3 other side -->
+    <section class="step" data-s="3">
+      <div class="eyebrow">3 of 4 · The other side</div>
+      <div class="drafting" data-draft>Casting the other side<span class="dot pulse"></span></div>
+      <div class="body" hidden>
+        <h1 class="ph reveal">Who will they be talking to?</h1>
+        <p class="p16 reveal">Your team sees this card before they start, and hears this person in the conversation. Change who they are or how they take it.</p>
+        <div class="card reveal">
+          <div class="lab">They'll be speaking with</div>
+          <div class="cdisc" id="odisc">CB</div>
+          <div class="cn ed" contenteditable="true" data-k="other.name"></div>
+          <div class="cr ed" contenteditable="true" data-k="other.role"></div>
+          <div class="cs ed" contenteditable="true" data-k="other.stance"></div>
+          <div class="traits" id="traits"></div>
+        </div>
+        <div class="foot reveal"><button class="bg" data-back>Back</button><button class="bk" data-next>Looks right</button></div>
+      </div>
+    </section>
+
+    <!-- 4 room -->
+    <section class="step" data-s="4">
+      <div class="eyebrow">4 of 4 · The room</div>
+      <h1 class="ph">Set the room</h1>
+      <div class="blk"><small>Difficulty <i>What your team sees while they talk</i></small>
+        <div id="diffs"></div></div>
+      <div class="blk"><small>Presentation first <i>Optional</i></small>
+        <div class="tog"><div><b>Start with a presentation</b><span>Your team presents first, then takes the three questions. Their slides stay on their screen and are never recorded.</span></div>
+          <button class="sw" id="present" role="switch" aria-checked="false" aria-label="Start with a presentation"></button></div>
+        <div class="mins" id="minsRow" hidden>About <input type="number" id="mins" min="2" max="30" value="10"> minutes as a guide, and they end the presentation when they're ready.</div>
+      </div>
+      <div class="foot"><button class="bg" data-back>Back</button><button class="bk" data-next>Check it over</button></div>
+    </section>
+
+    <!-- 5 summary -->
+    <section class="step" data-s="5">
+      <div class="eyebrow">Check it over</div>
+      <h1 class="ph">Everything in one place</h1>
+      <p class="p16">Change anything here before you save.</p>
+      <div class="form" id="form"></div>
+      <details class="judge" id="judge"><summary>How runs are judged <i>Open</i></summary><div id="crit"></div>
+        <p class="edhint">Pace, fillers, pauses and answer length are measured automatically from the recording.</p></details>
+      <div class="save">
+        <div style="display:flex;gap:12px;flex-wrap:wrap"><button class="bk" id="saveRun">Save and run it yourself</button><button class="bg" id="saveAssign">Save and assign it</button></div>
+        <p>A run of your own takes about fifteen minutes, and afterwards you can offer it to your team as an example. You can also assign it straight away.</p>
+      </div>
+      <div class="foot"><button class="bg" data-back>Back</button></div>
+    </section>
+
+    <footer>Clovelly &nbsp;·&nbsp; New scenario</footer>
+  </main>
+</div>
+
+<script>
+(function(){
+  var S=SIM.state;
+  document.getElementById('links').innerHTML=SIM.coachNav('Scenarios');
+  if(!S.newCoach) document.getElementById('hello').textContent='New scenario';
+
+  var EXAMPLE="Sarah has her renewal with Cleo Barnes at Northwind next week. Cleo is friendly but never commits, and last year she pushed us to next quarter twice. I want Sarah to land that we've hit every milestone, that renewing for twelve months holds today's rate, and to ask for a decision by the end of the month.";
+  var TPL=[["renewal","Renewal defense"],["price","Price rise"],["qbr","QBR presentation"],["difficult","Difficult conversation"],["feedback","Giving hard feedback"]];
+  function draft(){return {
+    title:"Renewal defense with Cleo Barnes",
+    situation:"A twelve-month renewal with Northwind, where the buyer likes the work and keeps finding reasons to wait.",
+    press:[["Timing","“Could we pick this up again next quarter, once budgets are clearer?”"],
+           ["Risk","“Twelve months is a long time. What if our priorities shift?”"],
+           ["Authority","“I'll need to take this to our leadership team first.”"]],
+    kms:[["We have delivered every milestone on this contract","This is their ground, where the record does the arguing."],
+         ["A twelve month renewal holds your current rate","Expect to make this offer more than once."],
+         ["I need a decision by the end of the month","The ask, and the date they need before the conversation ends."]],
+    carry:["Lead with results in the first answer","Ask for the date before Cleo can suggest next quarter","Hold the rate steady when she stalls"],
+    other:{name:"Cleo Barnes",role:"Head of Procurement, Northwind",stance:"Warm and easy to talk to. She agrees with everything you say, then finds a reason the timing is difficult whenever a date comes up.",traits:["Warm","Agrees easily","Stalls on dates"]},
+    difficulty:"medium", present:false, mins:10,
+    crit:[["Message control",[["States a delivered milestone in the first answer",0],["Offers the twelve-month rate before timing comes up",1],["Asks for a decision date unprompted",2],["Returns to a key message after each stall",null]]],
+          ["Composure under pushback",[["Holds the rate through the second push",1],["Lets a pause sit after making the offer",null],["Keeps an even pace when Cleo stalls",null]]],
+          ["Clarity and structure",[["Answers the question asked before adding context",null],["Keeps each answer to one main point",null],["Closes by restating the ask",2]]],
+          ["Linguistic tone",[["Speaks with confidence and commits to each point",null],["Stays warm while holding the line",null],["Uses plain, everyday language",null]]]],
+    edited:{}, visited:{}};}
+  var D=S.draft||null, cur=S.draftStep||0;
+  function save(){S.draft=D;S.draftStep=cur;SIM.save();}
+
+  // templates
+  var tp=document.getElementById('tpls'), tsel=null;
+  tp.innerHTML=TPL.map(function(t){return '<button class="chip" data-t="'+t[0]+'">'+t[1]+'</button>'}).join('');
+  tp.querySelectorAll('.chip').forEach(function(c){c.onclick=function(){
+    if(c.dataset.t!=='renewal'){SIM.toast('This demo builds the renewal example, and every template follows the same steps.');return;}
+    tsel=tsel===c.dataset.t?null:c.dataset.t; tp.querySelectorAll('.chip').forEach(function(x){x.classList.toggle('on',x.dataset.t===tsel)});
+    document.getElementById('ctxErr').textContent='';
+    var ctx=document.getElementById('ctx'); ctx.placeholder=tsel?'Add your own details, or build it as the template stands':'Sarah has her renewal with Northwind next week…';};});
+  var qp=new URLSearchParams(location.search).get('template'); if(qp==='renewal'){tp.querySelector('[data-t=renewal]').click();}
+  document.getElementById('example').onclick=function(){var c=document.getElementById('ctx');c.value=EXAMPLE;c.focus();document.getElementById('ctxErr').textContent='';};
+  document.getElementById('ctx').oninput=function(){document.getElementById('ctxErr').textContent='';};
+  document.getElementById('build').onclick=function(){
+    var v=document.getElementById('ctx').value.trim();
+    if(!v&&!tsel){document.getElementById('ctxErr').textContent='Describe the conversation, or pick a template, first.';return;}
+    D=draft(); D.context=v; D.template=tsel; go(1);};
+
+  // progress
+  var NAMES=["Describe it","The scenario","What good looks like","The other side","The room","Check it over"];
+  function prog(){document.getElementById('prog').innerHTML=NAMES.map(function(n,i){
+    var st=i===cur?'on':(i<cur||(D&&D.visited[i]&&i!==cur)?'done':'');
+    return '<button class="pr '+st+'" data-p="'+i+'"'+(st==='done'?'':' tabindex="-1"')+'><span class="dot"></span><span>'+n+'</span></button>';}).join('');
+    document.querySelectorAll('.pr.done').forEach(function(b){b.onclick=function(){go(+b.dataset.p)};});
+    var ready=D&&D.shown;
+    document.getElementById('ctitle').textContent=ready?D.title:"Your team's next hard conversation";
+    document.getElementById('cmeta').textContent=ready?(cap(D.difficulty)+(D.present?' · presentation first':'')+' · 3 questions'+(D.template?' · from the Renewal defense template':'')):'Describe it once, and each part appears for you to check.';
+  }
+
+  function get(k){return k.split('.').reduce(function(o,p){return o[p]},D);}
+  function set(k,v){var p=k.split('.'),o=D;while(p.length>1)o=o[p.shift()];o[p[0]]=v;}
+  function bindEd(root){root.querySelectorAll('.ed').forEach(function(e){
+    if(e.dataset.k) e.textContent=get(e.dataset.k);
+    e.onkeydown=function(ev){if(ev.key==='Enter'){ev.preventDefault();e.blur();}};
+    function commit(){var v=e.textContent.trim();if(!v)return false;
+      if(e.dataset.k){if(v!==get(e.dataset.k)){set(e.dataset.k,v);D.edited[e.dataset.k]=true;}}
+      else if(e.onchanged) e.onchanged(v);
+      e.dataset.saved=v;save();return true;}
+    e.oninput=commit;
+    e.onblur=function(){if(!commit()){e.textContent=e.dataset.k?get(e.dataset.k):(e.dataset.saved||e.dataset.last||'');}prog();};
+    e.onfocus=function(){e.dataset.last=e.textContent;};});}
+
+  function paint(s){
+    if(s===1){document.getElementById('press').innerHTML=D.press.map(function(p,i){return '<div class="line"><div class="n">'+(i+1)+'</div><div><span class="t ed" contenteditable="true" data-i="'+i+'">'+p[1]+'</span><span class="w">'+p[0]+'</span></div></div>'}).join('');
+      document.querySelectorAll('#press .ed').forEach(function(e){e.onchanged=function(v){D.press[+e.dataset.i][1]=v;};});}
+    if(s===2){document.getElementById('kms').innerHTML=D.kms.map(function(k,i){return '<div class="line"><div class="n">'+(i+1)+'</div><div><span class="t ed" contenteditable="true" data-km="'+i+'">'+k[0]+'</span><span class="w ed" contenteditable="true" data-why="'+i+'">'+k[1]+'</span></div></div>'}).join('');
+      document.getElementById('carry').innerHTML=D.carry.map(function(c,i){return '<div class="plain ed" contenteditable="true" data-c="'+i+'">'+c+'</div>'}).join('');
+      document.querySelectorAll('[data-km]').forEach(function(e){e.onchanged=function(v){var i=+e.dataset.km;if(v!==D.kms[i][0]){D.kms[i][0]=v;D.kmChanged=D.kmChanged||{};D.kmChanged[i]=true;}};});
+      document.querySelectorAll('[data-why]').forEach(function(e){e.onchanged=function(v){D.kms[+e.dataset.why][1]=v;};});
+      document.querySelectorAll('[data-c]').forEach(function(e){e.onchanged=function(v){D.carry[+e.dataset.c]=v;};});}
+    if(s===3){document.getElementById('traits').innerHTML=D.other.traits.map(function(t){return '<span>'+t+'</span>'}).join('');}
+    if(s===4){var L=[["easy","Easy","Key messages stay on screen while they talk, and the questions are gentler."],
+                     ["medium","Medium","Key messages sit one click away, and the questions are firmer."],
+                     ["hard","Hard","Key messages leave the screen once they start, and the questions push hardest."]];
+      var dd=document.getElementById('diffs');
+      dd.innerHTML=L.map(function(l){return '<button class="opt'+(D.difficulty===l[0]?' on':'')+'" data-d="'+l[0]+'" role="radio" aria-checked="'+(D.difficulty===l[0])+'"><span class="dot"></span><span><b>'+l[1]+'</b><span>'+l[2]+'</span></span></button>'}).join('')+
+        '<p class="edhint">Their own notes stay with them on every level.</p>';
+      dd.querySelectorAll('.opt').forEach(function(o){o.onclick=function(){D.difficulty=o.dataset.d;save();paint(4);prog();};});
+      var sw=document.getElementById('present');sw.setAttribute('aria-checked',D.present);document.getElementById('minsRow').hidden=!D.present;document.getElementById('mins').value=D.mins;
+      sw.onclick=function(){D.present=!D.present;save();paint(4);prog();};
+      document.getElementById('mins').oninput=function(){D.mins=+this.value||10;save();};}
+    if(s===5) summary();
+    bindEd(document.querySelector('.step[data-s="'+s+'"]'));
+  }
+
+  function summary(){
+    function f(label,key,val,area){return '<label><span>'+label+'</span>'+(area?'<textarea data-f="'+key+'" rows="'+Math.max(2,val.split('\n').length+1)+'" style="min-height:0">'+val+'</textarea>':'<input data-f="'+key+'" value="'+val.replace(/"/g,'&quot;')+'">')+'</label>';}
+    var h='<div class="blk"><small>The scenario</small>'+f('Title','title',D.title)+f('The situation','situation',D.situation,1)+
+      D.press.map(function(p,i){return f('Question '+(i+1)+' · '+p[0],'press.'+i,p[1])}).join('')+'</div>';
+    h+='<div class="blk"><small>What good looks like</small>'+D.kms.map(function(k,i){return f('Key message '+(i+1),'km.'+i,k[0])}).join('')+
+      f('How to carry it','carry',D.carry.join('\n'),1)+'</div>';
+    h+='<div class="blk"><small>The other side</small><div class="two">'+f('Name','other.name',D.other.name)+f('Role','other.role',D.other.role)+'</div>'+f('How they take it','other.stance',D.other.stance,1)+'</div>';
+    h+='<div class="blk"><small>The room</small><div class="two"><label><span>Difficulty</span><select data-f="difficulty">'+['easy','medium','hard'].map(function(d){return '<option value="'+d+'"'+(D.difficulty===d?' selected':'')+'>'+cap(d)+'</option>'}).join('')+'</select></label>'+
+      '<label><span>Presentation first</span><select data-f="present"><option value="0"'+(!D.present?' selected':'')+'>No</option><option value="1"'+(D.present?' selected':'')+'>Yes, about '+D.mins+' minutes</option></select></label></div></div>';
+    document.getElementById('form').innerHTML=h;
+    document.querySelectorAll('[data-f]').forEach(function(el){el.onchange=function(){var k=el.dataset.f,v=el.value;
+      if(k.indexOf('press.')===0)D.press[+k.split('.')[1]][1]=v;
+      else if(k.indexOf('km.')===0){var i=+k.split('.')[1];if(v!==D.kms[i][0]){D.kms[i][0]=v;D.kmChanged=D.kmChanged||{};D.kmChanged[i]=true;crit();}}
+      else if(k==='carry')D.carry=v.split('\n').filter(Boolean);
+      else if(k==='present')D.present=v==='1';
+      else set(k,v);
+      save();prog();};});
+    crit();
+  }
+  function crit(){
+    var ch=D.kmChanged||{};
+    document.getElementById('crit').innerHTML=D.crit.map(function(a,ai){return '<div class="jattr"><h3>'+a[0]+'</h3><ol>'+a[1].map(function(c,ci){
+      var flag='';
+      if(c[1]!==null&&ch[c[1]]) flag=D.edited['crit.'+ai+'.'+ci]?'<span class="flag">Key message '+(c[1]+1)+' changed. Check this line still fits.</span>':'<span class="flag">Rewritten to match key message '+(c[1]+1)+'.</span>';
+      return '<li><span class="ed" contenteditable="true" data-ai="'+ai+'" data-ci="'+ci+'">'+c[0]+'</span>'+flag+'</li>';}).join('')+'</ol></div>';}).join('');
+    document.querySelectorAll('#crit .ed').forEach(function(e){e.onchanged=function(v){var a=+e.dataset.ai,c=+e.dataset.ci;if(v!==D.crit[a][1][c][0]){D.crit[a][1][c][0]=v;D.edited['crit.'+a+'.'+c]=true;}};});
+    bindEd(document.getElementById('crit'));
+    document.querySelector('#judge summary i').textContent=Object.keys(ch).length?'A key message changed':'Up to four checks per attribute';
+  }
+
+  function go(n){
+    cur=n; D&&(D.visited[n]=D.visited[n]||0);
+    document.querySelectorAll('.step').forEach(function(s){s.classList.toggle('on',+s.dataset.s===n)});
+    var sec=document.querySelector('.step[data-s="'+n+'"]'), dr=sec.querySelector('[data-draft]'), body=sec.querySelector('.body');
+    if(n>0) paint(n);
+    if(dr){
+      var first=!D.visited[n]; D.visited[n]=1;
+      var rv=body.querySelectorAll('.reveal');
+      if(first){dr.hidden=false;body.hidden=true;rv.forEach(function(r){r.classList.remove('in')});
+        setTimeout(function(){dr.hidden=true;body.hidden=false;D.shown=true;save();prog();rv.forEach(function(r,i){setTimeout(function(){r.classList.add('in')},90*i)});},1300);}
+      else{D.shown=true;dr.hidden=true;body.hidden=false;rv.forEach(function(r){r.classList.add('in')});}
+    } else if(D) D.visited[n]=1;
+    save();prog();window.scrollTo(0,0);
+  }
+  document.querySelectorAll('[data-next]').forEach(function(b){b.onclick=function(){go(cur+1)};});
+  document.querySelectorAll('[data-back]').forEach(function(b){b.onclick=function(){go(cur-1)};});
+
+  // start over
+  var ob=document.getElementById('overBox');
+  document.getElementById('overBtn').onclick=function(){ob.hidden=false;};
+  document.getElementById('overNo').onclick=function(){ob.hidden=true;};
+  document.getElementById('overYes').onclick=function(){ob.hidden=true;D=null;delete S.draft;cur=0;SIM.save();document.getElementById('ctx').value='';go(0);SIM.toast('The draft is cleared.');};
+
+  function commit(){S.scenario=D;S.setup=S.setup||{};S.setup.scenario=true;S.difficulty=D.difficulty;delete S.draft;delete S.draftStep;SIM.save();}
+  document.getElementById('saveRun').onclick=function(){commit();S.mode='coachRun';S.notes='';S.retakeUsed=false;SIM.save();location.href='briefing.html';};
+  document.getElementById('saveAssign').onclick=function(){commit();location.href='assign.html?scenario=cleo';};
+
+  if(D){go(cur);} else {prog();}
+})();
+</script>
+</body></html>

@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clovelly · coach feed</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* F · SPLIT LEDGER  (D's canvas + C's detail)
+   A photograph holds the left and stays put while runs scroll past it, so the
+   warmth of the marketing page survives the sign-in. Each run carries C's ruled
+   figure table, so three runs stay comparable at a glance. */
+:root{--paper:#f1f0ee;--ink:#101010;--black:#0a0a0a;--line:#d9d7d3;--muted:#5e5c58;
+  --sand:#e8e2d8;--sand-2:#d9cfc0;--stone:#cfc6b8;
+  --sans:"Inter",-apple-system,Helvetica,Arial,sans-serif;
+  --display:"Archivo",-apple-system,Helvetica,Arial,sans-serif;}
+*{box-sizing:border-box;margin:0}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+
+.nav{background:var(--black);color:#fff;min-height:62px;display:flex;align-items:center;
+  padding:0 clamp(1.25rem,2.5vw,2.5rem);position:sticky;top:0;z-index:20}
+.nav .in{display:flex;justify-content:space-between;align-items:center;width:100%}
+.mark{font-family:var(--display);font-weight:400;letter-spacing:.34em;font-size:14px}
+.nav .links{display:flex;gap:24px;font-size:13px;color:rgba(255,255,255,.6)}
+.nav .links .on{color:#fff;border-bottom:1px solid rgba(255,255,255,.45);padding-bottom:2px}
+
+.split{display:grid;grid-template-columns:minmax(300px,34%) 1fr;min-height:calc(100vh - 62px)}
+
+/* left canvas */
+.canvas{position:sticky;top:62px;height:calc(100vh - 62px);overflow:hidden;background:var(--black)}
+.canvas img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 40%;filter:grayscale(.35) contrast(.95)}
+.canvas .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,.26) 0%,rgba(10,10,10,.5) 44%,rgba(10,10,10,.9) 100%)}
+.canvas .in{position:absolute;inset:0;padding:clamp(1.75rem,3vw,3rem);display:flex;flex-direction:column;justify-content:flex-end;color:#fff}
+.canvas h1{font-family:var(--display);font-weight:300;letter-spacing:-.04em;line-height:.95;font-size:clamp(2.5rem,4.2vw,3.85rem)}
+.canvas p{color:rgba(255,255,255,.7);margin-top:14px;max-width:30ch;font-size:14.5px}
+.scen{margin-top:clamp(1.5rem,2.5vw,2.25rem);border-top:1px solid rgba(255,255,255,.2);padding-top:16px;font-size:13px;color:rgba(255,255,255,.7);line-height:1.6}
+.scen span{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:6px}
+.scen b{color:#fff;font-weight:500}
+.strip{margin-top:clamp(1.25rem,2vw,1.75rem);border-top:1px solid rgba(255,255,255,.2);padding-top:16px;display:flex;gap:clamp(1.25rem,2.5vw,2.25rem);flex-wrap:wrap}
+.strip div span{display:block;font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.strip div b{display:block;font-family:var(--display);font-weight:300;font-size:1.75rem;letter-spacing:-.02em;margin-top:5px;font-variant-numeric:tabular-nums}
+
+/* right ledger */
+.list{padding:clamp(2.25rem,3.5vw,3.75rem) clamp(1.5rem,3.5vw,3.75rem) 5rem}
+.sec{font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);
+  border-bottom:1px solid var(--ink);padding-bottom:10px;display:flex;justify-content:space-between}
+.sec:not(:first-child){margin-top:clamp(2.25rem,3.5vw,3.25rem)}
+
+.ent{padding:26px 0;border-bottom:1px solid var(--line);
+  display:grid;grid-template-columns:1fr 250px;gap:clamp(1.5rem,3vw,3rem);align-items:start}
+.nm{font-family:var(--display);font-weight:300;letter-spacing:-.025em;line-height:1.1;font-size:clamp(1.45rem,2.2vw,1.95rem)}
+.sub{font-size:13px;color:var(--muted);margin-top:6px}
+.band{font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;font-weight:600;margin-top:14px}
+.ent p{margin-top:12px;max-width:50ch;font-size:15.5px;line-height:1.6}
+.note{margin-top:12px;font-size:13.5px;color:var(--muted);max-width:50ch}
+.figs{border-top:1px solid var(--ink)}
+.fig{display:flex;justify-content:space-between;gap:20px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.fig .k{color:var(--muted);white-space:nowrap}
+.fig .v{font-variant-numeric:tabular-nums;font-weight:500;text-align:right}
+.fig .band-ok{color:var(--muted);font-size:11px;letter-spacing:.04em;display:block;margin-top:2px}
+.acts{margin-top:20px;display:flex;gap:20px;flex-wrap:wrap}
+.lk{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;
+  border-bottom:1px solid var(--ink);padding-bottom:3px;cursor:pointer}
+.lk.q{border-color:var(--line);color:var(--muted)}.lk.q:hover{border-color:var(--ink);color:var(--ink)}
+.quiet{display:flex;justify-content:space-between;gap:16px;padding:15px 0;border-bottom:1px solid var(--line);font-size:14px;flex-wrap:wrap;align-items:baseline}
+.quiet .m{color:var(--muted)}
+.cacts{margin-top:18px;display:flex;gap:18px;flex-wrap:wrap}
+.lk.w{color:#fff;border-color:rgba(255,255,255,.55)}.lk.w:hover{border-color:#fff}
+.setup{border-bottom:1px solid var(--line)}
+.su{display:grid;grid-template-columns:22px 1fr auto;gap:14px;padding:16px 0;border-bottom:1px solid var(--line);align-items:start}
+.su:last-child{border-bottom:0}
+.su .dot{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--ink);margin-top:6px}
+.su.done .dot{background:var(--ink)}
+.su b{font-weight:500;font-size:15.5px}.su span.d{display:block;font-size:13.5px;color:var(--muted);margin-top:3px}
+.su.done b{color:var(--muted)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;padding:16px 0}
+.chip{border:1px solid var(--line);border-radius:999px;background:transparent;padding:8px 14px;font:inherit;font-size:13.5px;color:var(--ink);cursor:pointer}
+.chip:hover{border-color:var(--ink)}
+.tl{font-size:12.5px;color:var(--muted);padding-top:14px}
+footer{margin-top:3.5rem;font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+@media(max-width:980px){.split{grid-template-columns:1fr}.canvas{position:static;height:48vh}.ent{grid-template-columns:1fr}}
+</style>
+<script src="app.js?v=8"></script>
+</head>
+<body>
+<nav class="nav"><div class="in"><span class="mark">CLOVELLY</span>
+<span class="links"><span class="on" data-go="coach.html" style="cursor:pointer">Feed</span><span data-go="team.html" style="cursor:pointer">Team</span><span data-go="builder.html" style="cursor:pointer">Scenarios</span><span>JS</span></span></div></nav>
+
+<div class="split">
+  <aside class="canvas">
+    <img src="assets/img/hero.jpg" alt="">
+    <div class="shade"></div>
+    <div class="in">
+      <h1>Coach feed</h1>
+      <p>Your team's runs appear here newest first, and most of them just need a quick read.</p>
+      <div class="cacts"><span class="lk w" data-go="builder.html">New scenario</span><span class="lk w" data-go="assign.html">Assign a scenario</span></div>
+      <div class="scen"><span>Active scenario</span><b>Price rise · Hard-nosed client</b><br>3 of 5 assigned have run it</div>
+      <div class="strip">
+        <div><span>This week</span><b>3</b></div>
+        <div><span>Waiting on you</span><b>1</b></div>
+        <div><span>Waiting to start</span><b>1</b></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="list">
+    <div class="sec"><span>This week</span><span id="weekCount">Three runs</span></div><div id="justDone"></div>
+
+    <article class="ent">
+      <div>
+        <div class="nm">Sarah Chen</div>
+        <div class="sub">Price rise with Alex Torres, the hard-nosed client · run 2 · yesterday</div>
+        <div class="band">Solid · 16 of 22 criteria</div>
+        <p>Held structure well; the pause after the anchor stretched to 3.4 seconds and the recovery leaned on fillers.</p>
+        <p class="note">Her challenge to the Composure band is waiting for your answer in her report.</p>
+        <div class="acts"><span class="lk" data-go="review.html?run=alex" style="cursor:pointer" id="alexBtn">Review her run</span><span class="lk q" data-later="That view is still to be designed." style="cursor:pointer">Watch the pause · 3:10</span></div>
+      </div>
+      <div class="figs">
+        <div class="fig"><span class="k">Pace</span><span class="v">135 wpm<span class="band-ok">Within 120 to 160</span></span></div>
+        <div class="fig"><span class="k">Talk share</span><span class="v">54%<span class="band-ok">Above 30 to 50</span></span></div>
+        <div class="fig"><span class="k">Fillers</span><span class="v">12</span></div>
+        <div class="fig"><span class="k">Weak words</span><span class="v">5</span></div>
+        <div class="fig"><span class="k">Length</span><span class="v">14:02</span></div>
+      </div>
+    </article>
+
+    <article class="ent">
+      <div>
+        <div class="nm">Ben Singh</div>
+        <div class="sub">Renewal defense with Morgan Ellis, the elusive buyer · showcased · two hours ago</div>
+        <div class="band">Strong · 19 of 22 criteria</div>
+        <p>Held the price anchor through three pushes, then offered the concession at 6:40 before Morgan asked.</p>
+        <div class="acts"><span class="lk" data-later="That view is still to be designed." style="cursor:pointer">Watch the moment · 6:40</span><span class="lk q" data-later="That view is still to be designed." style="cursor:pointer">Open the report</span></div>
+      </div>
+      <div class="figs">
+        <div class="fig"><span class="k">Pace</span><span class="v">142 wpm<span class="band-ok">Within 120 to 160</span></span></div>
+        <div class="fig"><span class="k">Talk share</span><span class="v">46%<span class="band-ok">Within 30 to 50</span></span></div>
+        <div class="fig"><span class="k">Fillers</span><span class="v">4</span></div>
+        <div class="fig"><span class="k">Weak words</span><span class="v">3</span></div>
+        <div class="fig"><span class="k">Length</span><span class="v">11:38</span></div>
+      </div>
+    </article>
+
+    <article class="ent">
+      <div>
+        <div class="nm">Priya Nair</div>
+        <div class="sub">QBR presentation to Dana Whitfield · 12 minutes presenting · yesterday</div>
+        <div class="band">Developing · 9 of 22 criteria</div>
+        <p>The deck section ran long and squeezed the Q&amp;A answers, though her strongest minute came at 9:12 with the churn-number defense.</p>
+        <p class="note">Her report explains a skipped follow-up question and confirms her bands are unchanged.</p>
+        <div class="acts"><span class="lk" data-later="That view is still to be designed." style="cursor:pointer">Watch the moment · 9:12</span><span class="lk q" data-later="That view is still to be designed." style="cursor:pointer">Open the report</span></div>
+      </div>
+      <div class="figs">
+        <div class="fig"><span class="k">Pace</span><span class="v">168 wpm<span class="band-ok">Above 120 to 160</span></span></div>
+        <div class="fig"><span class="k">Talk share</span><span class="v">71%<span class="band-ok">Above 30 to 50</span></span></div>
+        <div class="fig"><span class="k">Fillers</span><span class="v">7</span></div>
+        <div class="fig"><span class="k">Weak words</span><span class="v">4</span></div>
+        <div class="fig"><span class="k">Length</span><span class="v">18:20</span></div>
+      </div>
+    </article>
+
+    <div class="sec"><span>Waiting to start</span><span>One</span></div>
+    <div class="quiet"><span>Marcus V. <span class="m">&nbsp;Onboarding · New lead · assigned 6 days ago · about 10 minutes</span></span><span class="lk q" data-later="That view is still to be designed." style="cursor:pointer">See his briefing</span></div>
+
+    <div class="sec"><span>Housekeeping</span><span>Two</span></div>
+    <div class="quiet"><span>Yuri Wang <span class="m">&nbsp;3 of 3 free sessions used until they reset on 1 Oct</span></span><span class="lk q" data-later="That view is still to be designed." style="cursor:pointer">See plans</span></div>
+    <div class="quiet"><span>l.perez@acmecorp.com <span class="m">&nbsp;invited 8 days ago and yet to join</span></span><span class="lk q" data-go="team.html" style="cursor:pointer">Resend invite</span></div>
+
+    <footer>Clovelly &nbsp;·&nbsp; Coach feed, split ledger</footer>
+  </main>
+</div>
+<script>
+(function(){
+  var S=SIM.state;
+  if(!S.newCoach) return;
+  var su=S.setup||{}, ws=S.workspace||'Voyage Sales', inv=(S.invites||[]).filter(function(i){return i.status!=='cancelled'});
+  var joined=inv.filter(function(i){return i.status==='joined'}).length, A=S.assignments||[];
+  var c=document.querySelector('.canvas .in');
+  var waiting=0; A.forEach(function(a){waiting+=a.people.length;});
+  c.innerHTML='<h1>Welcome, Jane</h1><p>'+ws+' is ready. Your team\'s runs appear here as they finish them, newest first.</p>'+
+    '<div class="cacts"><span class="lk w" data-go="builder.html">New scenario</span><span class="lk w" data-go="assign.html">Assign a scenario</span></div>'+
+    (su.scenario?'<div class="scen"><span>Active scenario</span><b>Renewal defense · Elusive buyer</b><br>'+(waiting?waiting+' assigned, nobody has run it yet':'Not assigned yet')+'</div>':'')+
+    '<div class="strip"><div><span>This week</span><b>0</b></div><div><span>Waiting on you</span><b>0</b></div><div><span>Waiting to start</span><b>'+waiting+'</b></div></div>';
+  var steps=[
+    ['scenario','Build your first scenario',su.scenario?'Renewal defense with Cleo Barnes':'Turn a conversation your team has coming up into a practice run.','builder.html','Build it'],
+    ['run','Run it yourself',su.run?(S.showcase?'Done, and featured as your team\'s example':'Done, and private to you'):'Hear what your team will, before they do.','run','Run it'],
+    ['invited','Invite your team',su.invited?(inv.length+' invited, '+joined+' joined'):'Each person gets one email with a sign-in link.','team.html','Invite'],
+    ['assigned','Assign your scenario',su.assigned?'Assigned to '+A[0].people.map(function(p){return p.split(' ')[0].split('@')[0]}).join(' and '):'Choose who practices it, with a due date if you want one.','assign.html?scenario=cleo','Assign']];
+  var nDone=steps.filter(function(s){return su[s[0]]}).length;
+  var h='';
+  if(nDone<4){
+    h+='<div class="sec"><span>Getting set up</span><span>'+nDone+' of 4 done</span></div><div class="setup">'+steps.map(function(s,i){var d=!!su[s[0]];
+      var act=d?'':(s[3]==='run'?'<span class="lk" id="runIt">'+s[4]+'</span>':'<span class="lk" data-go="'+s[3]+'">'+s[4]+'</span>');
+      if(!d&&s[0]==='assigned'&&!su.scenario)act='';
+      return '<div class="su'+(d?' done':'')+'"><span class="dot"></span><div><b>'+(i+1)+'. '+s[1]+'</b><span class="d">'+s[2]+'</span></div>'+act+'</div>';}).join('')+'</div>';
+  }
+  var done=S.cleoDone, rv=(S.reviews||{}).cleo;
+  if(done){
+    h+='<div class="sec"><span>This week</span><span>One run</span></div>'+
+     '<article class="ent"><div><div class="nm">Sarah Chen</div><div class="sub">Renewal defense with Cleo Barnes, the elusive buyer · run 1 · just now</div>'+
+     '<div class="band">Developing · 13 of 22 criteria</div>'+
+     '<p>She opened well on milestones, and the twelve-month offer stalled once Cleo followed up, so the date is still to be asked for.</p>'+
+     '<p class="note">'+(rv?((S.replies||{}).cleo?'You reviewed this run, and Sarah has replied to your note.':'You reviewed this run just now.'):'This run is waiting for your review.')+'</p>'+
+     '<div class="acts"><span class="lk" data-go="'+(rv?'report.html?run=cleo&role=coach':'review.html?run=cleo')+'">'+(rv?'See her report':'Review her run')+'</span></div></div>'+
+     '<div class="figs"><div class="fig"><span class="k">Pace</span><span class="v">142 wpm<span class="band-ok">Within 120 to 160</span></span></div>'+
+     '<div class="fig"><span class="k">Talk share</span><span class="v">58%<span class="band-ok">Above 30 to 50</span></span></div>'+
+     '<div class="fig"><span class="k">Fillers</span><span class="v">4</span></div><div class="fig"><span class="k">Weak words</span><span class="v">7</span></div>'+
+     '<div class="fig"><span class="k">Length</span><span class="v">11:24</span></div></div></article>';
+  } else h+='<div class="sec"><span>This week</span><span>No runs yet</span></div><div class="quiet"><span class="m">Nothing needs you yet. When someone finishes a run, it lands here for a quick read.</span></div>';
+  var wlist=[];A.forEach(function(a){a.people.forEach(function(p){if(!(done&&/Sarah|sarah/.test(p)))wlist.push([p,a]);});});
+  waiting=wlist.length;
+  if(wlist.length){h+='<div class="sec"><span>Waiting to start</span><span>'+waiting+'</span></div>';
+    wlist.forEach(function(w){var p=w[0],a=w[1];h+='<div class="quiet"><span>'+p+' <span class="m">&nbsp;'+a.scenario+' · assigned just now'+(a.due?' · due '+new Date(a.due+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'}):'')+'</span></span><span class="lk q" data-later="The briefing preview is still to be designed." style="cursor:pointer">See the briefing</span></div>';});}
+  h+='<div class="sec"><span>Templates</span><span>Start from a proven scenario</span></div><div class="chips">'+
+    ['Price rise','Renewal defense','QBR presentation','Difficult conversation','Giving hard feedback'].map(function(t){return '<button class="chip" data-go="builder.html'+(t==='Renewal defense'?'?template=renewal':'')+'">'+t+'</button>'}).join('')+'</div>';
+  h+='<div class="sec"><span>Plan</span><span></span></div><div class="quiet"><span>Free plan <span class="m">&nbsp;'+(1+inv.length)+' of 3 seats · '+(su.scenario?1:0)+' of 1 custom scenario · 3 sessions each a month</span></span><span class="lk q" data-later="Plans and billing are still to be designed." style="cursor:pointer">See plans</span></div>';
+  h+='<footer>Clovelly &nbsp;·&nbsp; Coach feed</footer>';
+  document.querySelector('main.list').innerHTML=h;
+  var sb=document.querySelectorAll('.canvas .strip b'); if(sb.length){sb[0].textContent=done?'1':'0';sb[1].textContent=(done&&!rv)?'1':'0';sb[2].textContent=String(waiting);}
+  var sc=document.querySelector('.canvas .scen'); if(sc&&done) sc.innerHTML='<span>Active scenario</span><b>Renewal defense · Elusive buyer</b><br>1 of '+(waiting+1)+' assigned '+(waiting+1===1?'has':'have')+' run it';
+  var r=document.getElementById('runIt'); if(r) r.onclick=function(){S.mode='coachRun';S.retakeUsed=false;S.notes='';SIM.save();location.href='briefing.html';};
+  if(!su.scenario){var rr=document.querySelector('.su:nth-child(2) .lk');if(rr)rr.remove();}
+})();
+(function(){
+  var S=SIM.state, R=S.reviews||{};
+  if(S.newCoach) return;
+  var pending=1+(S.cleoDone?1:0)-(R.alex?1:0)-(R.cleo&&S.cleoDone?1:0);
+  if(R.alex){var a=document.getElementById('alexBtn');a.textContent='See her report';a.dataset.go='report.html?run=alex&role=coach';
+    a.onclick=function(e){e.preventDefault();e.stopImmediatePropagation();location.href='report.html?run=alex&role=coach';};
+    var n=a.closest('.ent').querySelector('.note'); if(n) n.textContent='You reviewed this run and her challenge to the Composure band.';}
+  var strip0=document.querySelectorAll('.strip div b'); if(strip0.length) strip0[1].textContent=String(pending);
+  if(!S.cleoDone) return;
+  document.getElementById('weekCount').textContent='Four runs';
+  var strip=document.querySelectorAll('.strip div b'); if(strip.length){strip[0].textContent='4';}
+  document.getElementById('justDone').innerHTML='<article class="ent"><div><div class="nm">Sarah Chen</div>'+
+   '<div class="sub">Renewal defense with Cleo Barnes, the elusive buyer · run 1 · just now</div>'+
+   '<div class="band">Developing · 13 of 22 criteria</div>'+
+   '<p>She opened well on milestones, and the twelve-month offer stalled once Cleo followed up, so the date is still to be asked for.</p>'+
+   '<p class="note" id="cleoNote">This run is waiting for your review.</p>'+
+   '<div class="acts"><span class="lk" style="cursor:pointer" id="cleoBtn" onclick="location.href=\'review.html?run=cleo\'">Review her run</span></div></div>'+
+   '<div class="figs"><div class="fig"><span class="k">Pace</span><span class="v">142 wpm<span class="band-ok">Within 120 to 160</span></span></div>'+
+   '<div class="fig"><span class="k">Talk share</span><span class="v">58%<span class="band-ok">Above 30 to 50</span></span></div>'+
+   '<div class="fig"><span class="k">Fillers</span><span class="v">4</span></div><div class="fig"><span class="k">Weak words</span><span class="v">7</span></div>'+
+   '<div class="fig"><span class="k">Length</span><span class="v">11:24</span></div></div></article>';
+  if(R.cleo){document.getElementById('cleoNote').textContent=(S.replies||{}).cleo?'You reviewed this run, and Sarah has replied to your note.':'You reviewed this run just now.';
+    var b=document.getElementById('cleoBtn');b.textContent='See her report';b.onclick=function(){location.href='report.html?run=cleo&role=coach';};}
+})();
+</script>
+</body></html>

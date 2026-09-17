@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clovelly · review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/report.css?v=6">
+<script src="app.js?v=8"></script><script src="runs.js?v=7"></script>
+<style>
+.canvas.plain{background:var(--black)}
+.canvas.plain .in{justify-content:flex-start;gap:0;overflow:auto}
+.player{position:relative;aspect-ratio:16/10;border-radius:6px;background:linear-gradient(160deg,#2b2a27,#141312);margin-top:16px}
+.play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:58px;height:58px;border-radius:50%;border:1px solid rgba(255,255,255,.7);background:rgba(0,0,0,.25);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.play i{width:0;height:0;border-left:14px solid #fff;border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:4px}
+.play.on i{width:14px;height:16px;border:0;border-left:4px solid #fff;border-right:4px solid #fff;margin:0}
+.ptime{position:absolute;left:12px;bottom:10px;font-size:11.5px;color:rgba(255,255,255,.7);font-variant-numeric:tabular-nums}
+.scrub{position:relative;height:3px;background:rgba(255,255,255,.18);margin-top:12px;border-radius:2px;cursor:pointer}
+.scrub .fill{position:absolute;left:0;top:0;bottom:0;background:#fff;border-radius:2px;width:0}
+.scrub .mk{position:absolute;top:-4px;width:1px;height:11px;background:rgba(255,255,255,.75)}
+.jumps{margin-top:20px;border-top:1px solid rgba(255,255,255,.2)}
+.jump{display:grid;grid-template-columns:18px 1fr auto;gap:12px;align-items:center;width:100%;background:none;border:0;border-bottom:1px solid rgba(255,255,255,.14);
+  color:#fff;padding:12px 0;text-align:left;cursor:pointer;font-family:inherit}
+.jump:hover .jt{text-decoration:underline;text-underline-offset:3px}
+.jump .dot{border-color:rgba(255,255,255,.8);margin-top:0}
+.jump .dot.on{background:#fff}.jump .dot.half{background:linear-gradient(90deg,#fff 50%,transparent 50%)}
+.jump .jt{font-size:14px}.jump .js{display:block;font-size:11.5px;color:rgba(255,255,255,.55);margin-top:2px}
+.jump .jc{font-size:11px;letter-spacing:.1em;color:rgba(255,255,255,.7);font-variant-numeric:tabular-nums}
+.context{margin-top:16px;display:flex;gap:10px 18px;flex-wrap:wrap;font-size:13px;color:var(--muted);align-items:baseline}
+.context b{color:var(--ink);font-weight:500}
+.ra{padding:24px 0;border-bottom:1px solid var(--line)}
+.ra .top{display:flex;justify-content:space-between;gap:20px;align-items:baseline;flex-wrap:wrap}
+.ra h3{font-size:16px;font-weight:500}
+.ra .ai{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-top:5px}
+.ra .ai i{font-style:normal;color:var(--muted);font-weight:500;letter-spacing:.04em;text-transform:none;font-size:12px}
+.ra blockquote{margin-top:12px;font-family:var(--display);font-weight:300;font-size:16.5px;line-height:1.5;max-width:46ch}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.seg button{background:transparent;border:0;border-right:1px solid var(--line);padding:10px 16px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);cursor:pointer;min-height:40px}
+.seg button:last-child{border-right:0}
+.seg button:hover{color:var(--ink)}
+.seg button.on{background:var(--ink);color:#fff}
+.miss{margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:4px;padding:16px 18px;max-width:40rem}
+.miss small{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:8px}
+.bands{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.bands button{border:1px solid var(--line);border-radius:4px;background:transparent;padding:8px 13px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);cursor:pointer}
+.bands button.on{border-color:var(--ink);color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.miss textarea,.notebox{display:block;width:100%;min-height:74px;resize:vertical;background:#fff;border:1px solid var(--line);border-radius:4px;padding:12px 14px;font-family:inherit;font-size:14.5px;line-height:1.6;color:var(--ink)}
+.miss textarea:focus,.notebox:focus{outline:none;border-color:var(--ink)}
+.miss p{margin-top:10px;font-size:12.5px;color:var(--muted)}
+.challenge{margin-top:14px;border-left:1px solid var(--ink);padding:2px 0 2px 14px;max-width:46ch}
+.challenge small{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.challenge p{margin-top:5px;font-size:14.5px}
+.notebox{min-height:120px;margin-top:14px;max-width:44rem}
+.sub2{font-size:13.5px;color:var(--muted);margin-top:12px;max-width:52ch}
+.send{margin-top:22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.nextrow{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:16px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.nextrow b{font-weight:500}.nextrow span{display:block;font-size:13px;color:var(--muted);margin-top:2px}
+.sent{margin-top:22px;background:linear-gradient(160deg,#f4f1ec 0%,var(--sand) 50%,var(--sand-2) 100%);border-radius:6px;padding:20px 24px}
+.sent b{display:block;font-family:var(--display);font-weight:300;font-size:1.5rem;letter-spacing:-.015em}
+.sent p{margin-top:6px;font-size:14px;color:var(--muted)}
+</style>
+</head><body>
+<nav class="nav"><div class="in"><span class="mark">CLOVELLY</span>
+<span class="links"><span class="on" data-go="coach.html" style="cursor:pointer">Feed</span><span data-later>Team</span><span data-later>Scenarios</span><span>JS</span></span></div></nav>
+<div class="split">
+  <aside class="canvas plain">
+    <div class="in">
+      <div class="klab">Review</div>
+      <div class="ctitle" id="who">Sarah Chen</div>
+      <div class="cmeta" id="meta"></div>
+      <div class="player"><button class="play" id="play" aria-label="Play the recording"><i></i></button><span class="ptime" id="ptime">0:00</span></div>
+      <div class="scrub" id="scrub"><div class="fill" id="fill"></div></div>
+      <div class="jumps" id="jumps"></div>
+    </div>
+  </aside>
+  <main class="read" id="read"></main>
+</div>
+<script>
+(function(){
+  var S=SIM.state, key=new URLSearchParams(location.search).get('run')||'cleo', R=RUNS[key], lvl=R.level||cap(S.difficulty);
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+  function secs(t){var p=t.split(':');return (+p[0])*60+(+p[1]);}
+  function fmt(n){return Math.floor(n/60)+':'+String(Math.floor(n%60)).padStart(2,'0');}
+  var total=secs(R.length), now=0, timer=null;
+  document.getElementById('meta').textContent=R.title+' · '+lvl+' · '+R.runLabel+' · '+R.meta2.split(' · ')[0].toLowerCase();
+
+  // player
+  var fill=document.getElementById('fill'), pt=document.getElementById('ptime'), play=document.getElementById('play'), scrub=document.getElementById('scrub');
+  function setT(t){now=Math.max(0,Math.min(total,t));fill.style.width=(now/total*100)+'%';pt.textContent=fmt(now)+' / '+R.length;}
+  setT(0);
+  R.kms.forEach(function(k){var m=document.createElement('span');m.className='mk';m.style.left=(secs(k.t)/total*100)+'%';scrub.appendChild(m);});
+  play.onclick=function(){if(timer){clearInterval(timer);timer=null;play.classList.remove('on');}else{play.classList.add('on');timer=setInterval(function(){setT(now+1);if(now>=total){clearInterval(timer);timer=null;play.classList.remove('on');}},1000);}};
+  scrub.onclick=function(e){var r=scrub.getBoundingClientRect();setT((e.clientX-r.left)/r.width*total);};
+  function jumpTo(t){setT(secs(t));if(!timer)play.click();}
+  document.getElementById('jumps').innerHTML=R.kms.map(function(k,i){return '<button class="jump" data-t="'+k.t+'"><span class="dot '+k.dot+'"></span><span><span class="jt">'+KMSHORT[key][i]+'</span><span class="js">'+k.out+'</span></span><span class="jc">'+k.t+'</span></button>';}).join('');
+  document.addEventListener('click',function(e){var j=e.target.closest('[data-t]');if(j)jumpTo(j.dataset.t);});
+
+  // review
+  var saved=(S.reviews&&S.reviews[key])||null;
+  var reads=R.attrs.filter(function(a){return JUDGED.indexOf(a.n)>=0;});
+  var h='<h1 class="ph">Review Sarah\'s run</h1>';
+  h+='<p class="p16">Watch the moments that matter, then say where you agree with each read. All of it is optional, and Sarah sees your note on her report.</p>';
+  h+='<div class="context"><span><b>'+R.verdict+'</b> · '+R.verdictSub+'</span><span>Pace <b>'+R.nums[0][1]+'</b></span><span>Fillers <b>'+R.nums[2][1]+'</b></span>'+
+     '<button class="lk" data-go="report.html?run='+key+'&amp;role=coach">Open her full report</button></div>';
+  h+='<div class="sec"><h2>Your read</h2><span>Four judged attributes</span></div>';
+  h+='<p class="sub2">Pace, fillers and the other measured numbers are counted from the recording, so they stay above as context.</p>';
+  reads.forEach(function(a,i){
+    var ch=(R.challenge&&R.challenge.attr===a.n)?'<div class="challenge"><small>Sarah challenged this read · '+R.challenge.reason+'</small><p>'+esc(R.challenge.text)+'</p></div>':'';
+    h+='<div class="ra" data-i="'+i+'"><div class="top"><div><h3>'+a.n+'</h3><div class="ai">'+a.b+' <i>· '+a.c+' · the read from this run</i></div></div>'+
+       '<div class="seg"><button data-v="agree">Agree</button><button data-v="partly">Partly</button><button data-v="disagree">Disagree</button></div></div>'+
+       '<blockquote>'+esc(a.q)+' <button class="lk" data-t="'+a.t+'">'+a.t+'</button></blockquote>'+ch+
+       '<div class="miss" hidden><div class="bandwrap"><small>Your band</small><div class="bands">'+['Developing','Solid','Strong'].map(function(b){return '<button data-b="'+b+'"'+(b===a.b?' disabled style="opacity:.35;cursor:default"':'')+'>'+b+'</button>'}).join('')+'</div></div>'+
+       '<small class="mq">What did the read miss?</small><textarea placeholder="Say what you saw, with a time if it helps."></textarea>'+
+       '<p class="mp">Sarah sees your band beside the original one, and your reason helps future reads get better.</p></div></div>';
+  });
+  h+='<div class="sec"><h2>Your note to Sarah</h2><span>Optional</span></div>';
+  h+='<textarea class="notebox" id="note" placeholder="One thing to take into the real conversation"></textarea>';
+  h+='<p class="sub2">This starts a thread on her report, and she can reply to it.</p>';
+  h+='<div class="send" id="sendRow"><button class="bd" id="send">Send review</button><span class="sub2" style="margin:0" id="tally">Nothing marked yet</span></div><div id="sendErr" style="font-size:13px;color:#8a2a1a;margin-top:10px"></div>';
+  h+='<div id="sentBox"></div>';
+  h+='<div class="sec"><h2>What next?</h2></div>';
+  h+='<div class="nextrow"><div><b>Ask for another run</b><span>Sarah gets the same scenario with fresh questions, and a due date if you want one.</span></div><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><label style="font-size:13px;color:var(--muted)">Due (optional) <input type="date" id="dueDate" style="font:inherit;font-size:13.5px;color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:8px 10px;background:#fff"></label><button class="bg" id="askAgain">Ask Sarah</button></div></div>';
+  h+='<div class="nextrow"><div><b>Assign a different scenario</b><span>Pick from your scenarios or write a new one.</span></div><button class="bg" id="chooseBtn">Choose</button></div>';
+  h+='<footer>Clovelly &nbsp;·&nbsp; Review</footer>';
+  document.getElementById('read').innerHTML=h;
+
+  var state=reads.map(function(){return {v:null,b:null,why:''};});
+  function tally(){var n=state.filter(function(x){return x.v}).length;document.getElementById('tally').textContent=n?(n+' of 4 reads marked'):'Nothing marked yet';}
+  document.querySelectorAll('.ra').forEach(function(row){
+    var i=+row.dataset.i, box=row.querySelector('.miss');
+    row.querySelectorAll('.seg button').forEach(function(b){b.onclick=function(){
+      state[i].v=b.dataset.v; row.querySelectorAll('.seg button').forEach(function(x){x.classList.toggle('on',x===b)});
+      var dis=b.dataset.v==='disagree', part=b.dataset.v==='partly';
+      box.hidden=!(dis||part); row.querySelector('.bandwrap').hidden=!dis;
+      if(!dis){state[i].b=null;row.querySelectorAll('.bands button').forEach(function(x){x.classList.remove('on')});}
+      row.querySelector('.mq').textContent=dis?'What did the read miss?':'What would you add? (optional)';
+      row.querySelector('.mp').textContent=dis?'Sarah sees your band beside the original one, and your reason helps future reads get better.':'Sarah sees this under “Jane partly agrees”.';
+      tally();};});
+    row.querySelectorAll('.bands button').forEach(function(b){b.onclick=function(){if(b.disabled)return;state[i].b=b.dataset.b;row.querySelectorAll('.bands button').forEach(function(x){x.classList.toggle('on',x===b)});};});
+    row.querySelector('.miss textarea').oninput=function(){state[i].why=this.value;};
+  });
+  if(saved){document.getElementById('note').value=saved.note||'';
+    saved.reads.forEach(function(r,i){var row=document.querySelectorAll('.ra')[i];if(!row||!r.v)return;
+      row.querySelector('.seg [data-v="'+r.v+'"]').click();
+      if(r.b)row.querySelector('.bands [data-b="'+r.b+'"]').click();
+      if(r.why){var t=row.querySelector('.miss textarea');t.value=r.why;state[i].why=r.why;}});
+    document.getElementById('send').textContent='Update review';}
+  document.getElementById('chooseBtn').onclick=function(){location.href='assign.html?member=sarah';};
+  var dd=document.getElementById('dueDate');dd.min=new Date().toISOString().slice(0,10);
+  document.getElementById('askAgain').onclick=function(){var d=dd.value?new Date(dd.value+'T12:00:00').toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}):null;
+    S.askedAgain=dd.value||true;SIM.save();SIM.toast('Sarah now has a new run waiting'+(d?', due '+d:'')+'.');};
+  document.getElementById('send').onclick=function(){
+    var miss=reads.filter(function(a,i){return state[i].v==='disagree'&&!state[i].b;})[0];
+    var er=document.getElementById('sendErr');
+    if(miss){er.textContent='Pick your band for '+miss.n+', or change your read.';var r=document.querySelectorAll('.ra')[reads.indexOf(miss)];r.scrollIntoView({block:'center'});return;}
+    er.textContent='';
+    S.reviews=S.reviews||{};
+    S.reviews[key]={note:document.getElementById('note').value.trim(),reads:reads.map(function(a,i){return {n:a.n,ai:a.b,v:state[i].v,b:state[i].b,why:state[i].why.trim()};}),at:Date.now()};
+    SIM.save();
+    document.getElementById('sendRow').hidden=true;
+    document.getElementById('sentBox').innerHTML='<div class="sent"><b>Review sent</b><p>Sarah will see your note and your reads on her report.</p>'+
+      '<div style="margin-top:14px;display:flex;gap:18px;flex-wrap:wrap"><button class="lk" data-go="coach.html">Back to the feed</button><button class="lk" data-go="report.html?run='+key+'&amp;role=coach">See it on her report</button></div></div>';
+    document.querySelectorAll('#sentBox [data-go]').forEach(function(el){el.onclick=function(){location.href=el.dataset.go;};});
+  };
+})();
+</script>
+</body></html>

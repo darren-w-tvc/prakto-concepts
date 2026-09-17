@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clovelly · run report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/report.css?v=6">
+<script src="app.js?v=8"></script><script src="runs.js?v=7"></script>
+<style>
+.coachbar{background:#2a2926;color:#e8e2d8;padding:12px clamp(1.25rem,2.5vw,2.5rem);font-size:13.5px;display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap}
+.coachbar button{background:none;border:0;border-bottom:1px solid rgba(255,255,255,.4);color:#fff;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;padding:0 0 2px}
+.empty{padding:22px 0;border-bottom:1px solid var(--line);color:var(--muted);font-size:15px}
+</style>
+</head><body>
+<nav class="nav"><div class="in"><span class="mark">CLOVELLY</span><span class="links" id="links"></span></div></nav>
+<div id="coachbar"></div>
+<div class="split">
+  <aside class="canvas">
+    <img src="assets/img/loop.jpg" alt="" style="object-position:94% 60%">
+    <div class="shade"></div>
+    <div class="in">
+      <div class="klab">Run report</div>
+      <div class="ctitle" id="title"></div>
+      <div class="cmeta" id="meta"></div>
+      <div class="verdict"><div class="v" id="verdict"></div><div class="s" id="vsub"></div></div>
+      <div class="acts" id="acts"></div>
+    </div>
+  </aside>
+  <main class="read" id="read"></main>
+</div>
+<script>
+(function(){
+  var q=new URLSearchParams(location.search), key=q.get('run')||'alex', coach=q.get('role')==='coach', self=q.get('self')==='1';
+  var R=RUNS[key], lvl=R.level||cap(SIM.state.difficulty);
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+  document.getElementById('links').innerHTML = coach
+    ? '<span class="on" data-go="coach.html" style="cursor:pointer">Feed</span><span data-later>Team</span><span data-later>Scenarios</span><span>JS</span>'
+    : '<span class="on" data-go="home.html" style="cursor:pointer">My runs</span><span data-later>Practice on my own</span><span>SC</span>';
+  if(self) document.getElementById('links').innerHTML=SIM.coachNav('Scenarios');
+  var REV=self?null:(SIM.state.reviews||{})[key];
+  var REPLY=(SIM.state.replies||{})[key]||null;
+  if(coach) document.getElementById('coachbar').innerHTML='<div class="coachbar"><span>You are reading Sarah\'s report as her coach'+(REV?', with your review included.':'.')+'</span><button data-go="'+(REV?'coach.html':'review.html?run='+key)+'">'+(REV?'Back to the feed':'Review this run')+'</button></div>';
+  document.getElementById('title').textContent=R.title;
+  document.getElementById('meta').innerHTML=esc(R.title.split(' with ')[0]==='Price rise'?'The hard-nosed client':'The elusive buyer')+' · '+lvl+' · '+R.runLabel+'<br>'+R.meta2;
+  document.getElementById('verdict').textContent=R.verdict;
+  document.getElementById('vsub').textContent=R.verdictSub;
+  document.getElementById('acts').innerHTML = coach
+    ? '<button class="bw solid" data-go="review.html?run='+key+'">'+(REV?'Change your review':'Review this run')+'</button><button class="bw line" data-later="The replay player is still to be designed."><span class="tri"></span>Watch the full run · '+R.length+'</button>'
+    : '<button class="bw solid" data-go="briefing.html">Run it again</button><button class="bw line" data-later="The replay player is still to be designed."><span class="tri"></span>Watch the full run · '+R.length+'</button><div class="small">Counts as one of your monthly sessions</div>';
+  var h='';
+  h+='<p class="lede">'+esc(R.lede)+'</p><div class="src">From this run\'s transcript</div>';
+  h+='<div class="sec"><h2>Did you land your key messages?</h2><span>'+R.kmCount+'</span></div>';
+  R.kms.forEach(function(k){h+='<div class="kmr"><div class="dot '+k.dot+'"></div><div><q>'+esc(k.q)+'</q><div class="why">'+esc(k.why)+'</div></div><div class="out"><b>'+k.out+'</b><button class="lk" data-t="'+k.t+'">'+k.t+'</button></div></div>';});
+  h+='<div class="sec"><h2>How did you handle it?</h2><span>'+R.crit+'</span></div>';
+  function janeRead(n){if(!REV)return '';var r=REV.reads.filter(function(x){return x.n===n})[0];if(!r||!r.v)return '';
+    if(r.v==='agree')return '<div class="band" style="margin-top:8px;color:var(--muted)">Jane agrees</div>';
+    if(r.v==='partly')return '<div class="band" style="margin-top:8px;color:var(--muted)">Jane partly agrees</div>';
+    return '<div class="band" style="margin-top:8px">Jane\'s read · '+(r.b||'different')+'</div>';}
+  function janeWhy(n){if(!REV)return '';var r=REV.reads.filter(function(x){return x.n===n})[0];
+    if(!r||r.v==='agree'||!r.why)return '';return '<div class="better"><small>Jane on this read</small><p>'+esc(r.why)+'</p></div>';}
+  R.attrs.forEach(function(a){h+='<div class="attr"><div><h3>'+a.n+'</h3><div class="band">'+a.b+' <i>· '+a.c+'</i></div>'+janeRead(a.n)+'</div><div><blockquote>'+esc(a.q)+'</blockquote>'+janeWhy(a.n)+
+    (a.better?'<div class="better"><small>A stronger version of what you said</small><p>'+esc(a.better)+'</p><em>Examples like this sit outside your bands.</em></div>':'')+
+    '<div class="at"><button class="lk" data-t="'+a.t+'">'+a.t+'</button></div></div></div>';});
+  h+='<div class="sec"><h2>What did the numbers say?</h2><span>Measured from the recording</span></div><div class="nums">';
+  R.nums.forEach(function(n){h+='<div class="num"><span class="k">'+n[0]+'</span><span class="v">'+n[1]+(n[2]?'<small>'+n[2]+'</small>':'')+'</span></div>';});
+  h+='</div>'+(R.aside?'<p class="aside">'+esc(R.aside)+'</p>':'');
+  var noteText=(REV&&REV.note)?REV.note:(R.coach?R.coach.text:null), when=(REV&&REV.note)?'Just now':(R.coach?R.coach.when:(REV?'Just now':'Waiting on her review'));
+  if(self){h+='<div class="sec"><h2>Who sees this report?</h2><span>Only you</span></div><p class="empty">This is your own run, so nobody reviews it. Your team only sees the recording if you feature it as their example.</p>';noteText=null;}
+  else h+='<div class="sec"><h2>What did Jane say?</h2><span>'+when+'</span></div>';
+  if(noteText){
+    h+='<div class="coach"><div class="disc">JS</div><div><div class="who">Jane Smith <span>· Lead Coach</span></div><p>'+esc(noteText)+'</p>'+
+       (REPLY?replyHTML():coach?'':'<div id="replyWrap" style="margin-top:14px"><textarea class="notebox2" id="reply" placeholder="Reply to Jane" style="display:block;width:100%;max-width:40rem;min-height:70px;background:#fff;border:1px solid var(--line);border-radius:4px;padding:12px 14px;font:inherit;font-size:14.5px"></textarea><button class="lk" id="replyBtn" style="margin-top:10px">Send reply</button></div>')+
+       '</div></div>';
+  } else if(!self){
+    h+='<p class="empty">'+esc(REV?'Jane reviewed this run and marked her reads above.':R.coachEmpty)+'</p>';
+  }
+  h+='<div class="transfer"><small>Before the real conversation</small><p>'+esc(R.transfer)+'</p></div>';
+  if(!coach) h+='<div class="again"><button class="bd" data-go="briefing.html">Run it again</button><span>This uses the same scenario with fresh questions and counts as one of your monthly sessions.</span></div>';
+  h+='<footer>Clovelly &nbsp;·&nbsp; Run report</footer>';
+  document.getElementById('read').innerHTML=h;
+  function replyHTML(){return '<div class="coach" style="grid-template-columns:48px 1fr;border-bottom:0;padding-bottom:0;margin-top:14px"><div class="disc">SC</div><div><div class="who">'+(coach?'Sarah Chen':'You')+' <span>· just now</span></div><p>'+esc(REPLY)+'</p></div></div>';}
+  var rb=document.getElementById('replyBtn');
+  if(rb) rb.onclick=function(){var t=document.getElementById('reply');if(!t.value.trim()){SIM.toast('Write a reply first.');return;}
+    SIM.state.replies=SIM.state.replies||{};SIM.state.replies[key]=t.value.trim();SIM.save();REPLY=t.value.trim();
+    document.getElementById('replyWrap').outerHTML=replyHTML();
+    SIM.toast('Your reply is on its way to Jane.');};
+  document.addEventListener('click',function(e){var t=e.target.closest('[data-t]');if(t)SIM.toast('The replay would open at '+t.dataset.t+'.');
+    var g=e.target.closest('[data-go]');if(g){e.preventDefault();location.href=g.dataset.go;}
+    var l=e.target.closest('[data-later]');if(l){e.preventDefault();SIM.toast(l.dataset.later||'This screen is still to be designed.');}});
+  if(key==='cleo'&&!coach&&!self){SIM.state.cleoDone=true;SIM.save();}
+  if(self){var ra=document.querySelector('#acts .bw');if(ra)ra.onclick=function(e){e.stopImmediatePropagation();SIM.state.mode='coachRun';SIM.state.retakeUsed=false;SIM.save();location.href='briefing.html';};}
+})();
+</script>
+</body></html>

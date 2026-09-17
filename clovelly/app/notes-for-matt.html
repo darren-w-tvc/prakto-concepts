@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clovelly · notes for Matt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/report.css?v=6">
+<style>
+.wrap{max-width:52rem;margin:0 auto;padding:clamp(2rem,4vw,3.5rem) 16px 5rem}
+.meta{margin-top:12px;font-size:13px;color:var(--muted)}
+.wrap p,.wrap li{font-size:15px;line-height:1.65;max-width:64ch}
+.wrap p{margin-top:12px}
+.wrap ol,.wrap ul{margin:12px 0 0;padding-left:22px}
+.wrap li{margin-top:6px}
+.wrap h3{font-size:15px;font-weight:500;margin-top:22px}
+.go{margin-top:22px;display:flex;gap:12px;flex-wrap:wrap}
+.go a{text-decoration:none}
+table{width:100%;border-collapse:collapse;margin-top:14px;font-size:14px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px 10px 0;border-bottom:1px solid var(--line)}
+th{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;border-bottom:1px solid var(--ink)}
+td:first-child{font-weight:500;width:32%}
+.box{margin-top:18px;background:linear-gradient(160deg,#f4f1ec 0%,var(--sand) 50%,var(--sand-2) 100%);border-radius:6px;padding:20px 22px}
+.box p:first-child{margin-top:0}
+code{font-size:13px;background:#fff;border:1px solid var(--line);border-radius:3px;padding:1px 5px}
+@media(max-width:640px){td:first-child{width:auto}}
+</style></head>
+<body>
+<nav class="nav"><div class="in"><span class="mark">CLOVELLY</span><span class="links"><a href="index.html" style="color:#fff;text-decoration:none">Open the app</a></span></div></nav>
+<main class="wrap">
+  <h1 class="ph">Notes for Matt</h1>
+  <p class="meta">17 September 2026 · Darren and Claude · written to go with the clickable app built from the designs</p>
+  <p class="p16">The app is a simulation of the MVP flow, built so the designs can be used end to end. It runs in the browser with made-up data, it is not product code, and nothing in it talks to a server.</p>
+  <div class="go"><a class="bd" href="index.html">Open the app</a></div>
+
+  <div class="sec"><h2>1. Please run the whole loop yourself</h2></div>
+  <p>We found most of what we changed by playing it through, so it's worth doing once from both seats. Use Chrome on a laptop with the sound on, and allow the microphone and camera when asked. Cleo speaks through the browser's own voice.</p>
+  <ol>
+    <li><b>Jane, starting fresh:</b> sign up, build a scenario (try "Use an example" or the Renewal defense template), run it yourself, feature the run, invite Sarah and Ben, then assign the scenario.</li>
+    <li><b>Sarah:</b> open <b>Demo controls</b> (bottom right) and sign in as Sarah. Read the briefing, write a note, have the conversation, keep the take or retake it, then read the report.</li>
+    <li><b>Jane again:</b> switch back, review Sarah's run from the feed and send the review.</li>
+    <li><b>Sarah again:</b> read Jane's review on the report and reply.</li>
+  </ol>
+  <p>Demo controls also change the difficulty, mute Cleo, and reset everything. The "Jane Smith" and "Sarah Chen" entries on the sign-in page open an established team with some history, which shows the fuller feed, a member challenge and the Alex Torres report.</p>
+
+  <div class="sec"><h2>2. The screens</h2><span>Fourteen, in the order a new team meets them</span></div>
+  <table>
+    <tr><th>Screen</th><th>File</th></tr>
+    <tr><td>Coach sign-up and workspace</td><td><code>signup.html</code></td></tr>
+    <tr><td>Scenario builder, one step at a time, then an editable summary</td><td><code>builder.html</code></td></tr>
+    <tr><td>Coach's own run, then the offer to feature it</td><td><code>briefing.html</code> with a coach banner, then <code>firstrun.html</code></td></tr>
+    <tr><td>Invite your team, with seat limit and email preview</td><td><code>team.html</code></td></tr>
+    <tr><td>Assign a scenario</td><td><code>assign.html</code></td></tr>
+    <tr><td>Coach feed, including the four setup steps for a new workspace</td><td><code>coach.html</code></td></tr>
+    <tr><td>Member setup: microphone, camera, and what happens if either is blocked</td><td><code>onboarding.html</code></td></tr>
+    <tr><td>Member runs page</td><td><code>home.html</code></td></tr>
+    <tr><td>Briefing</td><td><code>briefing.html</code></td></tr>
+    <tr><td>The conversation</td><td><code>run.html</code></td></tr>
+    <tr><td>Keep the take or retake it once</td><td><code>retake.html</code></td></tr>
+    <tr><td>Report being written, numbers first</td><td><code>pending.html</code></td></tr>
+    <tr><td>Report, for the member, the coach, or the coach's own private run</td><td><code>report.html</code></td></tr>
+    <tr><td>Coach review</td><td><code>review.html</code></td></tr>
+  </table>
+  <p>One small rule the app enforces, following the locked review spec: disagreeing with a read needs a band before the review sends.</p>
+  <p>Shared styles are in <code>assets/report.css</code>. The demo plumbing (state, demo controls) is <code>app.js</code>, and the example runs are <code>runs.js</code>. Neither is meant to be copied.</p>
+
+  <div class="sec"><h2>3. What is only pretend</h2></div>
+  <ul>
+    <li>Cleo always asks the same six lines, so edits made in the builder never reach the conversation. The acknowledgement lines are simulated too.</li>
+    <li>Every report shows the same example run, and all timings are example figures.</li>
+    <li>Only the Renewal defense template builds. The others show a message.</li>
+    <li>"Ask for another run" shows a confirmation and creates nothing.</li>
+    <li>The replay player, private runs, the scenario list, plans and billing are still to be designed, and clicking them says so.</li>
+    <li>The band ranges on pace and talk share (120 to 160 wpm, 30 to 50 percent) are borrowed from Ambr until we set our own.</li>
+  </ul>
+
+  <div class="sec"><h2>4. What Darren decided in this round</h2><span>His calls from this design session</span></div>
+  <ul>
+    <li>Turn-based conversation to start.</li>
+    <li>The coach never sees self-practice or learns that it happened.</li>
+    <li>Fillers stay in the report.</li>
+    <li>If the browser blocks the microphone or camera, members get a help screen with Try again and Skip for now. Skipping sends them back to setup before their first run.</li>
+    <li>The last setup step shows which run is waiting.</li>
+    <li>Members' own notes stay on screen at every difficulty. On Medium they sit behind Show with the key messages, and on Hard the key messages leave the screen while the notes stay.</li>
+    <li>"Partly" on a coach review has an optional reason, which the member sees.</li>
+    <li>A coach's band sits beside the original read and never changes the headline or the counts.</li>
+  </ul>
+
+  <div class="sec"><h2>5. Still open</h2></div>
+  <ul>
+    <li>Due dates. The app makes them optional when assigning and when asking for another run, which is Claude's proposal and still Darren's call. We don't yet know whether teams will use Clovelly for dated tasks or for general manager training.</li>
+    <li>Should a second custom scenario on the free plan open the upgrade prompt?</li>
+    <li>What the "Harder" option on the briefing does, which the scope never defined.</li>
+    <li>Whether the invite list needs an "opened" state, which means tracking email opens.</li>
+    <li>The report-writing stage names and timing, and whether the numbers really are ready before the written read.</li>
+    <li>Our own band ranges.</li>
+  </ul>
+
+  <div class="sec"><h2>6. Anything that gets us live sooner</h2></div>
+  <div class="box">
+    <p><b>We are open to any change, especially one that makes the MVP quicker.</b> If a screen or a state costs more than it's worth, tell us and we'll redesign around what's cheap to build. These are the candidates we can see. Nothing below is decided, so tell us which ones you'd take and what we've missed.</p>
+  </div>
+  <h3>Thinner versions of what's already in scope</h3>
+  <ul>
+    <li>Due date as a plain optional field, with no overdue states and no sorting on it.</li>
+    <li>"Ask for another run" reusing the normal assign screen with the member already ticked.</li>
+    <li>One static help page for a blocked microphone or camera, leaning on the camera check at the start of every run.</li>
+    <li>The report wait with two states, numbers ready and written read ready, plus a fixed tip.</li>
+    <li>The browser's default microphone and camera, with no device picker.</li>
+    <li>Invites that show sent and joined only.</li>
+    <li>One set of acknowledgement lines for every counterpart.</li>
+    <li>A single reply under the coach's note, with no threading.</li>
+  </ul>
+  <h3>Bigger items that are locked today and could move</h3>
+  <ul>
+    <li>Dropping the slide prop now (Darren already approved dropping it as the fallback, and we estimated it at 2 to 4 dev-days).</li>
+    <li>Deferring the presentation segment.</li>
+    <li>Deferring Showcase, including the coach's own recorded example.</li>
+    <li>Deferring the per-answer pacing chart.</li>
+    <li>Deferring the retake and the deletion job behind it.</li>
+  </ul>
+
+  <div class="sec"><h2>7. A question for your Claude</h2></div>
+  <p>What would it want from us to build these screens pixel perfect, in whatever format is quickest for your stack? We'd rather hand over something close to production than go screen by screen. Some options we could produce quickly:</p>
+  <ul>
+    <li>Design tokens as CSS variables or a Tailwind config.</li>
+    <li>A component list with every state (empty, loading, error, filled) and the exact copy for each.</li>
+    <li>All the interface copy as one JSON file, keyed by screen.</li>
+    <li>Screenshots of every screen at 1440, 1024 and 390 wide.</li>
+    <li>Components written straight into your repo's conventions, if you share them, so the designs arrive as code.</li>
+  </ul>
+  <p>Whichever shortens the path to live, we'll do it.</p>
+  <footer>Clovelly &nbsp;·&nbsp; Notes for Matt</footer>
+</main>
+</body></html>

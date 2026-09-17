@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clovelly · your run</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/report.css?v=6">
+<script src="app.js?v=8"></script><script src="runs.js?v=7"></script>
+<style>
+.offer{margin-top:clamp(2rem,3.5vw,2.75rem);background:linear-gradient(160deg,#f4f1ec 0%,var(--sand) 50%,var(--sand-2) 100%);border-radius:6px;padding:clamp(1.5rem,3vw,2.5rem);max-width:44rem}
+.offer small{font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;font-weight:600}
+.offer h2{margin-top:10px;font-family:var(--display);font-weight:300;font-size:clamp(1.5rem,2.4vw,2rem);letter-spacing:-.02em;line-height:1.2}
+.offer p{margin-top:10px;font-size:15px;line-height:1.6;max-width:48ch}
+.offer .row{margin-top:22px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.done{margin-top:clamp(2rem,3.5vw,2.75rem);max-width:44rem;background:var(--ink);color:#fff;border-radius:6px;padding:clamp(1.5rem,3vw,2rem)}
+.done b{display:block;font-family:var(--display);font-weight:300;font-size:1.6rem;letter-spacing:-.02em}
+.done p{margin-top:6px;font-size:14px;color:rgba(255,255,255,.7)}
+.done .bw{display:inline-flex;margin-top:18px}
+.priv{margin-top:clamp(2.5rem,4vw,3.25rem);max-width:44rem;border-top:1px solid var(--ink);padding-top:14px;display:flex;justify-content:space-between;gap:18px;align-items:baseline;flex-wrap:wrap}
+.priv small{display:block;font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;font-weight:600}
+.priv span{display:block;font-size:14px;color:var(--muted);margin-top:6px}
+</style></head>
+<body>
+<nav class="nav"><div class="in"><span class="mark">CLOVELLY</span><span class="links" id="links"></span></div></nav>
+<div class="split">
+  <aside class="canvas">
+    <img src="assets/img/loop.jpg" alt="" style="object-position:94% 60%">
+    <div class="shade"></div>
+    <div class="in">
+      <div class="klab">Your run</div>
+      <div class="ctitle">Renewal defense with Cleo Barnes</div>
+      <div class="cmeta" id="meta">Today · 11 minutes · 3 questions · recorded on your seat</div>
+      <div class="acts"><button class="bw line" data-later="The replay player is still to be designed."><span class="tri"></span>Watch it back · 11:24</button></div>
+    </div>
+  </aside>
+  <main class="read">
+    <h1 class="ph">That's your run, Jane.</h1>
+    <p class="p16">You've been through exactly what your team will, from the briefing to the questions.</p>
+
+    <div class="offer" id="offer">
+      <small>Your team's example</small>
+      <h2>Feature this run for your team?</h2>
+      <p>Your team would find the recording on the Renewal defense briefing and hear how you'd carry the conversation. Your report stays private either way, and you can re-record or remove the run whenever you like.</p>
+      <div class="row">
+        <button class="bk" id="feature">Feature this run</button>
+        <button class="bg" id="again">Run it again first</button>
+      </div>
+      <div class="row" style="margin-top:14px"><button class="lkq" id="skip">Skip, and invite your team</button></div>
+    </div>
+
+    <div class="done" id="done" hidden>
+      <b id="doneT">Featured for your team</b>
+      <p id="doneP">It appears on the Renewal defense briefing from now on.</p>
+      <button class="bw solid" data-go="team.html">Invite your team</button>
+    </div>
+
+    <div class="priv">
+      <div><small>Your report · private to you</small><span id="rline"></span></div>
+      <button class="lk" data-go="report.html?run=cleo&amp;self=1">Open your report</button>
+    </div>
+    <footer>Clovelly &nbsp;·&nbsp; Your run</footer>
+  </main>
+</div>
+<script>
+(function(){
+  var S=SIM.state, R=RUNS.cleo;
+  document.getElementById('links').innerHTML=SIM.coachNav('Scenarios');
+  document.getElementById('rline').textContent=R.verdict+' · '+R.verdictSub;
+  S.setup=S.setup||{}; S.setup.run=true; S.mode=null; SIM.save();
+  function finish(t,p){document.getElementById('offer').hidden=true;var d=document.getElementById('done');d.hidden=false;
+    document.getElementById('doneT').textContent=t;document.getElementById('doneP').textContent=p;}
+  document.getElementById('feature').onclick=function(){S.showcase=true;SIM.save();finish('Featured for your team','Your team will find it on the Renewal defense briefing, and you can remove it from the scenario at any time.');};
+  document.getElementById('skip').onclick=function(){location.href='team.html';};
+  document.getElementById('again').onclick=function(){S.mode='coachRun';S.retakeUsed=false;SIM.save();location.href='briefing.html';};
+  if(S.showcase) finish('Featured for your team','Your team will find it on the Renewal defense briefing, and you can remove it from the scenario at any time.');
+})();
+</script>
+</body></html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clovelly · create your workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/report.css?v=6">
+<script src="app.js?v=8"></script>
+<style>
+.step{display:none}.step.on{display:block}
+.auth{margin-top:clamp(2rem,3.5vw,2.75rem);max-width:26rem;display:flex;flex-direction:column;gap:10px}
+.auth .bg{justify-content:center;width:100%;color:var(--ink);border-color:var(--ink)}
+.auth .bg:hover{background:var(--ink);color:#fff}
+.or{display:flex;align-items:center;gap:14px;margin:18px 0 8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.fld{display:block;margin-top:14px}
+.fld span{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:8px}
+.fld input{display:block;width:100%;background:#fff;border:1px solid var(--line);border-radius:4px;padding:13px 14px;font:inherit;font-size:15px;color:var(--ink)}
+.fld input:focus{outline:none;border-color:var(--ink)}
+.err{font-size:13px;color:#8a2a1a;margin-top:8px;min-height:1px}
+.fine{margin-top:22px;font-size:12.5px;color:var(--muted);max-width:44ch}
+.inbox{margin-top:clamp(1.75rem,3vw,2.5rem);border:1px solid var(--line);background:#fff;border-radius:4px;padding:clamp(1.25rem,2.5vw,1.75rem);max-width:30rem}
+.inbox p{font-size:15px;line-height:1.6}
+.demo{margin-top:16px}
+.next{margin-top:18px;font-size:13.5px;color:var(--muted);border-left:1px solid var(--ink);padding-left:14px;max-width:44ch}
+</style></head>
+<body>
+<nav class="nav"><div class="in"><span class="mark">CLOVELLY</span></div></nav>
+<div class="split">
+  <aside class="canvas">
+    <img src="assets/img/hero.jpg" alt="" style="object-position:30% 45%">
+    <div class="shade"></div>
+    <div class="in">
+      <div class="klab">For coaches</div>
+      <div class="ctitle">Coach your team through the conversations that count</div>
+      <div class="cmeta">Build a scenario from your own notes, try it yourself, then send it to the people you coach.</div>
+    </div>
+  </aside>
+  <main class="read">
+
+    <section class="step on" id="s1">
+      <h1 class="ph">Get your team ready for the conversations that matter</h1>
+      <p class="p16">Free for three people, with no card needed.</p>
+      <div class="auth">
+        <button class="bk" data-auth="Google">Continue with Google</button>
+        <button class="bg" data-auth="Microsoft">Continue with Microsoft</button>
+        <div class="or">or</div>
+        <label class="fld"><span>Work email</span><input type="email" id="email" placeholder="you@company.com" autocomplete="email"></label>
+        <div class="err" id="emailErr"></div>
+        <button class="bg" id="magic">Email me a sign-in link</button>
+      </div>
+      <p class="fine">By continuing you agree to the terms and privacy policy.</p>
+    </section>
+
+    <section class="step" id="s1b">
+      <h1 class="ph">Check your inbox</h1>
+      <div class="inbox">
+        <p>We sent a sign-in link to <b id="sentTo"></b>. Open it on this device to sign in and come straight back here.</p>
+        <button class="lkq demo" onclick="toWorkspace()">Demo only: open the link</button>
+      </div>
+      <div class="foot" style="margin-top:22px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="bg" onclick="show('s1')">Use a different email</button>
+        <button class="bg" id="resend">Send it again</button>
+      </div>
+    </section>
+
+    <section class="step" id="s2">
+      <h1 class="ph">Name your workspace</h1>
+      <p class="p16">Your team sees this name on their invite and every time they sign in.</p>
+      <div style="max-width:26rem">
+        <label class="fld"><span>Workspace name</span><input id="ws" value="Voyage Sales"></label>
+        <label class="fld"><span>Your name</span><input id="nm" value="Jane Smith"></label>
+        <div class="err" id="wsErr"></div>
+        <button class="bk" id="create" style="margin-top:22px;width:100%">Create workspace</button>
+      </div>
+      <p class="next">Next, you'll turn a conversation your team has coming up into your first scenario.</p>
+    </section>
+
+    <footer>Clovelly &nbsp;·&nbsp; Create your workspace</footer>
+  </main>
+</div>
+<script>
+function show(id){document.querySelectorAll('.step').forEach(function(s){s.classList.toggle('on',s.id===id)});window.scrollTo(0,0);}
+function toWorkspace(){show('s2');document.getElementById('ws').focus();}
+(function(){
+  if(!SIM.state.newCoach) SIM.newCoach();
+  document.querySelectorAll('[data-auth]').forEach(function(b){b.onclick=function(){SIM.toast('Signed in with '+b.dataset.auth+'.');setTimeout(toWorkspace,600);};});
+  var em=document.getElementById('email'), er=document.getElementById('emailErr');
+  em.oninput=function(){er.textContent='';};
+  document.getElementById('magic').onclick=function(){
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em.value.trim())){er.textContent='Enter your work email first.';em.focus();return;}
+    document.getElementById('sentTo').textContent=em.value.trim();show('s1b');};
+  document.getElementById('resend').onclick=function(){SIM.toast('Sent again to '+em.value.trim()+'.');};
+  document.getElementById('create').onclick=function(){
+    var ws=document.getElementById('ws').value.trim(), nm=document.getElementById('nm').value.trim();
+    if(!ws||!nm){document.getElementById('wsErr').textContent='Add a workspace name and your name.';return;}
+    SIM.state.workspace=ws;SIM.state.coachName=nm;SIM.save();location.href='builder.html';};
+})();
+</script>
+</body></html>

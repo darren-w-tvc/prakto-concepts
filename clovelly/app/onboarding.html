@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clovelly · getting set up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/report.css?v=6">
+<style>
+.prog{margin-top:clamp(1.5rem,2.5vw,2rem);border-top:1px solid rgba(255,255,255,.2)}
+.pr{display:grid;grid-template-columns:20px 1fr;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.14);font-size:14px;color:rgba(255,255,255,.5)}
+.pr .dot{border-color:rgba(255,255,255,.5);margin-top:0}
+.pr.on{color:#fff}.pr.on .dot{border-color:#fff;background:linear-gradient(90deg,#fff 50%,transparent 50%)}
+.pr.done{color:rgba(255,255,255,.78)}.pr.done .dot{border-color:#fff;background:#fff}
+.skip{margin-top:18px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55);background:none;border:0;cursor:pointer;padding:0;align-self:flex-start}
+.skip:hover{color:#fff}
+.step{display:none}.step.on{display:block}
+.rows{margin-top:clamp(1.75rem,3vw,2.5rem);border-top:1px solid var(--ink)}
+.row{display:grid;grid-template-columns:28px 1fr;gap:14px;padding:18px 0;border-bottom:1px solid var(--line)}
+.row .n{font-family:var(--display);font-weight:300;font-size:20px;color:var(--stone);line-height:1.2}
+.row b{display:block;font-family:var(--display);font-weight:300;font-size:1.3rem;letter-spacing:-.01em}
+.row span{display:block;font-size:14.5px;color:var(--muted);margin-top:4px;max-width:48ch}
+.foot{margin-top:clamp(2rem,3.5vw,2.75rem);display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.foot .hint{font-size:13px;color:var(--muted)}
+.perm{margin-top:clamp(1.75rem,3vw,2.5rem);border:1px solid var(--line);background:#fff;border-radius:4px;padding:clamp(1.25rem,2.5vw,1.75rem);max-width:34rem}
+.perm p{font-size:15px;line-height:1.6}
+.perm .bk{margin-top:18px;display:inline-flex}
+.meter{margin-top:clamp(1.75rem,3vw,2.5rem);max-width:34rem}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;width:30%;background:var(--ink);transition:width .25s ease}
+.dev{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--line);font-size:14px;margin-top:18px;border-top:1px solid var(--ink)}
+.dev span{color:var(--muted)}
+.help{margin-top:12px;font-size:13px}
+.cam{margin-top:clamp(1.75rem,3vw,2.5rem);max-width:34rem;aspect-ratio:16/10;border-radius:6px;background:linear-gradient(160deg,#2b2a27,#171614);position:relative}
+.cam .live{position:absolute;top:14px;left:14px;border:1px solid rgba(255,255,255,.5);color:#fff;border-radius:999px;padding:3px 10px;font-size:10px;letter-spacing:.14em}
+.cam .live::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#fff;margin-right:7px;vertical-align:1px}
+.first{margin-top:22px;background:linear-gradient(160deg,#f4f1ec 0%,var(--sand) 50%,var(--sand-2) 100%);border-radius:6px;padding:18px 22px;max-width:34rem}
+.first small{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.first b{display:block;font-family:var(--display);font-weight:300;font-size:1.4rem;letter-spacing:-.01em;margin-top:6px}
+.first span{display:block;font-size:13.5px;color:var(--muted);margin-top:4px}
+.later{margin-top:22px;font-size:14px;color:var(--muted);max-width:48ch;border-left:1px solid var(--ink);padding-left:14px}
+</style>
+<script src="app.js?v=8"></script>
+</head>
+<body>
+<nav class="nav"><div class="in"><span class="mark">CLOVELLY</span><span class="links"><span>SC</span></span></div></nav>
+
+<div class="split">
+  <aside class="canvas">
+    <img src="assets/img/hero.jpg" alt="" style="object-position:30% 45%">
+    <div class="shade"></div>
+    <div class="in">
+      <div class="klab">Getting set up</div>
+      <div class="ctitle">Four short steps, then your first run</div>
+      <div class="prog" id="prog"></div>
+      <button class="skip" onclick="skipSetup()">Skip for now</button>
+    </div>
+  </aside>
+
+  <main class="read">
+
+    <section class="step on" id="s1">
+      <h1 class="ph">Practice the conversation before you have it</h1>
+      <p class="p16">You will talk out loud to someone who pushes back, then get honest feedback on how it went. It takes about fifteen minutes.</p>
+      <div class="rows">
+        <div class="row"><div class="n">1</div><div><b>It talks back</b><span>A real voice that asks real questions and keeps pushing where you are vague.</span></div></div>
+        <div class="row"><div class="n">2</div><div><b>Two kinds of run</b><span>Your coach sees the runs they set you, and anything you start on your own stays with you.</span></div></div>
+        <div class="row"><div class="n">3</div><div><b>You find out what landed</b><span>Which of your key messages made it into the room, and where you lost the thread.</span></div></div>
+      </div>
+      <div class="foot"><button class="bk" onclick="go(2)">Set up and try one</button></div>
+    </section>
+
+    <section class="step" id="s2">
+      <h1 class="ph">Can we hear you?</h1>
+      <div id="mic-ask" class="perm">
+        <p>Your browser will ask to use your microphone, so choose Allow when it does. You can change this later in your browser settings.</p>
+        <button class="bk" onclick="allow('mic')">Turn on my microphone</button>
+      </div>
+      <div id="mic-no" class="perm" hidden>
+        <p>Your browser kept the microphone off, so we can’t hear you yet. To turn it on, click the icon at the left of the address bar, set Microphone to Allow, then try again.</p>
+        <div class="foot" style="margin-top:18px"><button class="bk" style="margin-top:0" onclick="allow('mic')">Try again</button><button class="bg" onclick="skipSetup()">Skip for now</button></div>
+        <p class="hint" style="margin-top:14px;font-size:13px;color:var(--muted)">Your first run needs your microphone and camera, so we’ll ask again before it starts.</p>
+        <button class="lkq" style="margin-top:10px" onclick="show('mic')">Demo only: carry on as if allowed</button>
+      </div>
+      <div id="mic-ok" hidden>
+        <p class="p16">Say something and the bar should move.</p>
+        <div class="meter"><div class="bar"><i id="lvl"></i></div>
+          <div class="dev"><span>Microphone</span><b style="font-weight:500">MacBook Pro Microphone</b><button class="lkq">Change</button></div>
+          <div class="help"><button class="lkq">Bar staying still?</button></div></div>
+        <div class="foot"><button class="bg" onclick="go(1)">Back</button><button class="bk" onclick="go(3)">Sounds right</button></div>
+      </div>
+    </section>
+
+    <section class="step" id="s3">
+      <h1 class="ph">Can you see yourself?</h1>
+      <p class="p16">A run needs your camera, so you can watch yourself back afterwards.</p>
+      <div id="cam-ask" class="perm">
+        <p>Your browser will ask to use your camera next, so choose Allow when it does.</p>
+        <button class="bk" onclick="allow('cam')">Turn on my camera</button>
+      </div>
+      <div id="cam-no" class="perm" hidden>
+        <p>Your browser kept the camera off, so we can’t see you yet. To turn it on, click the icon at the left of the address bar, set Camera to Allow, then try again.</p>
+        <div class="foot" style="margin-top:18px"><button class="bk" style="margin-top:0" onclick="allow('cam')">Try again</button><button class="bg" onclick="skipSetup()">Skip for now</button></div>
+        <p class="hint" style="margin-top:14px;font-size:13px;color:var(--muted)">Your first run needs your camera, so we’ll ask again before it starts.</p>
+        <button class="lkq" style="margin-top:10px" onclick="show('cam')">Demo only: carry on as if allowed</button>
+      </div>
+      <div id="cam-ok" hidden>
+        <div class="cam"><span class="live">LIVE</span></div>
+        <div class="meter" style="margin-top:0"><div class="dev"><span>Camera</span><b style="font-weight:500">FaceTime HD Camera</b><button class="lkq">Change</button></div>
+          <div class="help"><button class="lkq">Preview staying dark?</button></div></div>
+        <div class="foot"><button class="bg" onclick="go(2)">Back</button><button class="bk" onclick="go(4)">That's me</button></div>
+      </div>
+    </section>
+
+    <section class="step" id="s4">
+      <h1 class="ph">How a run works</h1>
+      <p class="p16">Three questions, each with a follow up, in roughly fifteen minutes.</p>
+      <div class="rows">
+        <div class="row"><div class="n">1</div><div><b>Read the briefing</b><span>Who you are talking to, and the three messages you need to land.</span></div></div>
+        <div class="row"><div class="n">2</div><div><b>Have the conversation</b><span>Say it however it comes out, and focus on how you handle the room.</span></div></div>
+        <div class="row"><div class="n">3</div><div><b>Read your report</b><span>What landed, what slipped, and the moments worth watching again.</span></div></div>
+      </div>
+      <div class="first"><small>Your first run</small><b>Renewal defense with Cleo Barnes</b><span>The elusive buyer · Jane set this for you · due Tuesday · about 15 minutes</span></div>
+      <p class="later">First runs are meant to be rough, so you get one free retake at the end before anything is written down.</p>
+      <div class="foot"><button class="bg" onclick="go(3)">Back</button><button class="bk" data-go="briefing.html" onclick="SIM.state.onboarded=true;SIM.state.needsSetup=false;SIM.save()">Start my first run</button>
+        <span class="hint">You can stop at any time.</span></div>
+    </section>
+
+    <footer>Clovelly &nbsp;·&nbsp; Getting set up</footer>
+  </main>
+</div>
+
+<script>
+var cur=1, names=["What this is","Your microphone","Your camera","How a run works"];
+function prog(){var h='';names.forEach(function(n,i){var k=i+1;h+='<div class="pr '+(k===cur?'on':(k<cur?'done':''))+'"><span class="dot"></span><span>'+n+'</span></div>';});document.getElementById('prog').innerHTML=h;}
+function go(n){document.getElementById('s'+cur).classList.remove('on');cur=n;document.getElementById('s'+cur).classList.add('on');prog();window.scrollTo(0,0);}
+function show(w){document.getElementById(w+'-ask').hidden=true;document.getElementById(w+'-no').hidden=true;document.getElementById(w+'-ok').hidden=false;}
+function refused(w){document.getElementById(w+'-ask').hidden=true;document.getElementById(w+'-ok').hidden=true;document.getElementById(w+'-no').hidden=false;}
+function skipSetup(){SIM.state.onboarded=true;SIM.state.needsSetup=true;SIM.save();location.href='home.html';}
+var realMic=false;
+function allow(w){
+  var md=navigator.mediaDevices;
+  if(!md||!md.getUserMedia){show(w);return;}
+  md.getUserMedia(w==='mic'?{audio:true}:{video:true}).then(function(stream){
+    show(w);
+    if(w==='mic'){realMic=true;var ctx=new (window.AudioContext||window.webkitAudioContext)();var an=ctx.createAnalyser();an.fftSize=256;
+      ctx.createMediaStreamSource(stream).connect(an);var buf=new Uint8Array(an.frequencyBinCount);
+      (function tick(){an.getByteTimeDomainData(buf);var m=0;for(var i=0;i<buf.length;i++){m=Math.max(m,Math.abs(buf[i]-128));}
+        var l=document.getElementById('lvl');if(l)l.style.width=Math.min(100,6+m*1.6)+'%';requestAnimationFrame(tick);})();
+      var t=stream.getAudioTracks()[0]; if(t&&t.label){document.querySelector('#mic-ok .dev b').textContent=t.label;}
+    } else {
+      var cam=document.querySelector('#cam-ok .cam');var v=document.createElement('video');v.autoplay=true;v.muted=true;v.playsInline=true;v.srcObject=stream;
+      v.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:6px;transform:scaleX(-1)';cam.prepend(v);
+      var t=stream.getVideoTracks()[0]; if(t&&t.label){document.querySelector('#cam-ok .dev b').textContent=t.label;}
+    }
+  }).catch(function(){refused(w);});
+}
+if(location.hash==='#setup'){go(2);}
+prog();
+setInterval(function(){var l=document.getElementById('lvl');if(l&&cur===2&&!realMic){l.style.width=(18+Math.random()*62)+'%';}},260);
+</script>
+</body></html>

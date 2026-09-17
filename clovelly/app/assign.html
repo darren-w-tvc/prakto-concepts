@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clovelly · assign a scenario</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/report.css?v=6">
+<script src="app.js?v=8"></script>
+<style>
+.canvas.sand .in{justify-content:space-between}
+.going{margin-top:clamp(1.25rem,2.2vw,1.75rem);border-top:1px solid rgba(16,16,16,.2)}
+.going div{display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid rgba(16,16,16,.12);font-size:13.5px}
+.going div span:first-child{color:var(--muted)}
+.going div span:last-child{text-align:right;font-weight:500}
+.pick{max-width:44rem}
+.opt{display:grid;grid-template-columns:22px 1fr auto;gap:14px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:16px 0;font:inherit;color:var(--ink);cursor:pointer;align-items:start}
+.opt .dot{margin-top:5px}
+.opt.on .dot{background:var(--ink)}
+.opt b{font-weight:500;font-size:15.5px}
+.opt span.d{display:block;font-size:13.5px;color:var(--muted);margin-top:3px}
+.opt:hover:not([disabled]) b{text-decoration:underline;text-underline-offset:3px}
+.opt[disabled]{cursor:default;opacity:.45}
+.box{width:16px;height:16px;border:1.5px solid var(--ink);border-radius:3px;margin-top:4px;position:relative}
+.opt.on .box{background:var(--ink)}
+.opt.on .box::after{content:"";position:absolute;left:4px;top:1px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.tagp{margin-left:0;vertical-align:0}
+.fldrow{display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:16px 0;border-bottom:1px solid var(--line)}
+.fldrow input[type=date]{background:#fff;border:1px solid var(--line);border-radius:4px;padding:10px 12px;font:inherit;font-size:15px;color:var(--ink)}
+.fldrow input:focus,textarea.say:focus{outline:none;border-color:var(--ink)}
+.fldrow .m{font-size:13.5px;color:var(--muted)}
+textarea.say{display:block;width:100%;min-height:70px;margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:4px;padding:12px 14px;font:inherit;font-size:15px;resize:vertical}
+.err{font-size:13px;color:#8a2a1a;margin-top:12px;min-height:1px}
+.go2{margin-top:clamp(2rem,3.5vw,2.75rem);max-width:44rem;border-top:1px solid var(--ink);padding-top:20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.go2 p{font-size:13.5px;color:var(--muted);max-width:40ch}
+.sent{margin-top:clamp(2rem,3.5vw,2.75rem);max-width:44rem;background:var(--ink);color:#fff;border-radius:6px;padding:clamp(1.5rem,3vw,2rem)}
+.sent b{display:block;font-family:var(--display);font-weight:300;font-size:1.6rem;letter-spacing:-.02em}
+.sent p{margin-top:6px;font-size:14px;color:rgba(255,255,255,.72);max-width:48ch}
+.sent .row{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
+.sent .bw{display:inline-flex}
+.none{padding:16px 0;font-size:14px;color:var(--muted);border-bottom:1px solid var(--line)}
+</style></head>
+<body>
+<nav class="nav"><div class="in"><span class="mark">CLOVELLY</span><span class="links" id="links"></span></div></nav>
+<div class="split">
+  <aside class="canvas sand">
+    <div class="in">
+      <div>
+        <div class="klab">Assign</div>
+        <div class="ctitle" id="ctitle" style="font-size:clamp(1.9rem,3vw,2.6rem)">Pick a scenario</div>
+        <div class="cmeta" id="cmeta">Then choose who it's for.</div>
+      </div>
+      <div class="going">
+        <div><span>Going to</span><span id="gTo">Nobody yet</span></div>
+        <div><span>Due</span><span id="gDue">No due date</span></div>
+        <div><span>They receive</span><span>One email with a link to the briefing</span></div>
+      </div>
+    </div>
+  </aside>
+  <main class="read">
+    <div id="form">
+      <h1 class="ph">Assign a scenario</h1>
+      <p class="p16">Choose the conversation and the people who should practice it.</p>
+
+      <div class="sec"><h2>Which scenario?</h2><span id="scN"></span></div>
+      <div class="pick" id="scen"></div>
+
+      <div class="sec"><h2>Who is it for?</h2><span id="whoN"></span></div>
+      <div class="pick" id="who"></div>
+
+      <div class="sec"><h2>When is it due?</h2><span>Optional</span></div>
+      <div class="pick">
+        <div class="fldrow"><input type="date" id="due" aria-label="Due date"><button class="lkq" id="clearDue" hidden>Clear</button>
+          <span class="m">Leave it empty for general practice.</span></div>
+      </div>
+
+      <div class="sec"><h2>A line from you</h2><span>Optional</span></div>
+      <div class="pick"><textarea class="say" id="say" placeholder="Why this one matters, in a sentence"></textarea></div>
+
+      <div class="err" id="err"></div>
+      <div class="go2"><button class="bk" id="assign">Assign</button><p id="goLine">They'll each get one email, and their runs appear in your feed.</p></div>
+    </div>
+    <div class="sent" id="sent" hidden>
+      <b>Assigned</b>
+      <p id="sentP"></p>
+      <div class="row"><button class="bw solid" data-go="coach.html">Back to the feed</button><button class="bw line" id="another">Assign another</button></div>
+    </div>
+    <footer>Clovelly &nbsp;·&nbsp; Assign a scenario</footer>
+  </main>
+</div>
+<script>
+(function(){
+  var S=SIM.state, NEW=!!S.newCoach, q=new URLSearchParams(location.search);
+  document.getElementById('links').innerHTML=SIM.coachNav('Scenarios');
+  var mine=[{id:'cleo',t:'Renewal defense with Cleo Barnes',d:cap((S.scenario&&S.scenario.difficulty)||'medium')+' · 3 questions · about 15 minutes',tag:S.showcase?'Your example run attached':'Yours'}];
+  if(!NEW) mine.push({id:'alex',t:'Price rise with Alex Torres',d:'Medium · 3 questions · about 15 minutes',tag:'Yours'});
+  var tpls=[{id:'qbr',t:'QBR presentation',d:'Presentation first · Medium · about 20 minutes',tag:'Template'},
+            {id:'difficult',t:'Difficult conversation',d:'Medium · 3 questions · about 15 minutes',tag:'Template'},
+            {id:'feedback',t:'Giving hard feedback',d:'Medium · 3 questions · about 15 minutes',tag:'Template'}];
+  if(NEW) tpls.unshift({id:'price',t:'Price rise',d:'Medium · 3 questions · about 15 minutes',tag:'Template'});
+  var SC=mine.concat(tpls);
+
+  var people;
+  if(NEW){people=(S.invites||[]).filter(function(i){return i.status!=='cancelled'}).map(function(i){
+      var nm=i.email.split('@')[0].split(/[._-]/).map(cap).join(' ');
+      return {id:i.email,n:i.status==='joined'?nm:i.email,d:i.status==='joined'?'Joined':'Invited · gets it when they join',first:nm.split(' ')[0]};});}
+  else people=[{id:'sarah',n:'Sarah Chen',d:'Active · 2 of 3 sessions left this month',first:'Sarah'},{id:'ben',n:'Ben Singh',d:'Active',first:'Ben'},
+      {id:'priya',n:'Priya Nair',d:'Active',first:'Priya'},{id:'marcus',n:'Marcus V.',d:'Active',first:'Marcus'},
+      {id:'yuri',n:'Yuri Wang',d:'Reached limit · 3 of 3 sessions used until 1 October',cap:true,first:'Yuri'},
+      {id:'lperez',n:'l.perez@acmecorp.com',d:'Invited · gets it when they join',first:'L.'}];
+
+  var sel=q.get('scenario')||null, who={}; if(q.get('member'))people.forEach(function(p){if(p.id===q.get('member')||p.id.indexOf(q.get('member')+'.')===0)who[p.id]=true;});
+  if(sel&&!SC.some(function(s){return s.id===sel}))sel=null;
+
+  function names(){var p=people.filter(function(x){return who[x.id]});
+    if(!p.length)return 'Nobody yet'; var f=p.map(function(x){return x.first});
+    return f.length<3?f.join(' and '):f.slice(0,-1).join(', ')+' and '+f[f.length-1];}
+  function paint(){
+    document.getElementById('scen').innerHTML=SC.map(function(s){return '<button class="opt'+(sel===s.id?' on':'')+'" data-sc="'+s.id+'" role="radio" aria-checked="'+(sel===s.id)+'"><span class="dot"></span><span><b>'+s.t+'</b><span class="d">'+s.d+'</span></span><span class="tagp">'+s.tag+'</span></button>'}).join('');
+    document.getElementById('scN').textContent=mine.length+' yours · '+tpls.length+' templates';
+    document.getElementById('who').innerHTML=people.length?people.map(function(p){return '<button class="opt'+(who[p.id]?' on':'')+'" data-p="'+p.id+'" role="checkbox" aria-checked="'+!!who[p.id]+'"'+(p.cap?' disabled':'')+'><span class="box"></span><span><b>'+p.n+'</b><span class="d">'+p.d+'</span></span><span></span></button>'}).join('')
+      :'<div class="none">Nobody on your team yet. <button class="lk" data-go2="team.html">Invite your team</button></div>';
+    var n=people.filter(function(x){return who[x.id]}).length;
+    document.getElementById('whoN').textContent=n?n+' chosen':(people.length+' people');
+    var s=SC.filter(function(x){return x.id===sel})[0];
+    document.getElementById('ctitle').textContent=s?s.t:'Pick a scenario';
+    document.getElementById('cmeta').textContent=s?s.d:"Then choose who it's for.";
+    document.getElementById('gTo').textContent=names();
+    var dv=document.getElementById('due').value;
+    document.getElementById('gDue').textContent=dv?new Date(dv+'T12:00:00').toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}):'No due date';
+    document.getElementById('clearDue').hidden=!dv;
+    document.getElementById('assign').textContent=n?'Assign to '+(n===1?'1 person':n+' people'):'Assign';
+    document.getElementById('goLine').textContent=n===1?'They get one email, and their run appears in your feed.':'They each get one email, and their runs appear in your feed.';
+    document.querySelectorAll('[data-sc]').forEach(function(b){b.onclick=function(){sel=b.dataset.sc;err('');paint();};});
+    document.querySelectorAll('[data-p]').forEach(function(b){b.onclick=function(){if(b.disabled)return;who[b.dataset.p]=!who[b.dataset.p];err('');paint();};});
+    document.querySelectorAll('[data-go2]').forEach(function(b){b.onclick=function(){location.href=b.dataset.go2;};});
+  }
+  function err(t){document.getElementById('err').textContent=t;}
+  var due=document.getElementById('due'); due.min=new Date().toISOString().slice(0,10);
+  due.oninput=paint; document.getElementById('clearDue').onclick=function(){due.value='';paint();};
+
+  document.getElementById('assign').onclick=function(){
+    if(!sel){err('Pick a scenario first.');return;}
+    var p=people.filter(function(x){return who[x.id]});
+    if(!p.length){err('Choose at least one person.');return;}
+    var s=SC.filter(function(x){return x.id===sel})[0];
+    S.assignments=S.assignments||[];
+    S.assignments.push({scenario:s.t,people:p.map(function(x){return x.n}),due:due.value||null,note:document.getElementById('say').value.trim(),at:Date.now()});
+    S.setup=S.setup||{}; S.setup.assigned=true; SIM.save();
+    document.getElementById('form').hidden=true; document.getElementById('sent').hidden=false;
+    document.getElementById('sentP').textContent=names()+' '+(p.length===1?'has':'each have')+' '+s.t+' waiting'+(due.value?', due '+document.getElementById('gDue').textContent:'')+(p.length===1?'. The run appears in your feed once it\'s done.':'. Their runs appear in your feed as they finish.');
+    window.scrollTo(0,0);
+  };
+  document.getElementById('another').onclick=function(){sel=null;who={};due.value='';document.getElementById('say').value='';document.getElementById('form').hidden=false;document.getElementById('sent').hidden=true;paint();};
+  paint();
+})();
+</script>
+</body></html>

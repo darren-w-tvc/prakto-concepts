@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clovelly · your runs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/report.css?v=6">
+<script src="app.js?v=8"></script>
+</head>
+<body>
+<nav class="nav"><div class="in"><span class="mark">CLOVELLY</span>
+<span class="links"><span class="on" data-go="home.html" style="cursor:pointer">My runs</span><span data-later>Practice on my own</span><span>SC</span></span></div></nav>
+
+<div class="split">
+  <aside class="canvas sand">
+    <div class="in">
+      <div class="klab">Waiting for you</div>
+      <div class="cdisc">CB</div>
+      <div class="ctitle">Renewal defense with Cleo Barnes</div>
+      <div class="cmeta" id="wmeta">The elusive buyer · Hard · about 15 minutes<br>Assigned by Jane · due Tuesday</div>
+      <div class="verdict">
+        <div class="s" style="font-size:15px;color:var(--ink);line-height:1.55">A buyer who agrees with everything you say and then stalls once a date comes up. The briefing shows your key messages and who you are talking to.</div>
+      </div>
+      <div class="acts">
+        <button class="bk" id="waitBtn" data-go="briefing.html">Read the briefing</button>
+        <div class="small" id="wsmall">On camera, with your key messages off the screen once you start</div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="read">
+    <h1 class="ph">Your runs</h1>
+    <p class="p16">Between you and Jane, though runs you start on your own stay with you.</p>
+
+    <div class="sec"><h2>Recent</h2><span id="recentCount">Three runs this month</span></div><div id="justDone"></div><div id="history">
+
+    <article class="ent">
+      <div>
+        <div class="nm">Price rise with Alex Torres</div>
+        <div class="sub">The hard-nosed client · run 2 · yesterday</div>
+        <div class="quote">“Much stronger holding the line on price this time, Sarah. You held the silence, which is where she moved.”
+          <small>Jane · Lead Coach · the full note is in your report</small></div>
+        <p class="note" id="alexNote">Your Composure question is with Jane.</p>
+        <div class="links"><button class="lk" data-go="report.html?run=alex">Read your report</button><button class="lkq" data-later="The replay player is still to be designed.">Watch yourself back</button></div>
+      </div>
+      <div class="figs">
+        <div class="fig"><span class="k">Overall</span><span class="v">Solid</span></div>
+        <div class="fig"><span class="k">Criteria</span><span class="v">16 of 22</span></div>
+        <div class="fig"><span class="k">Key messages</span><span class="v">2 of 3</span></div>
+        <div class="fig"><span class="k">Difficulty</span><span class="v">Medium</span></div>
+      </div>
+    </article>
+
+    <article class="ent">
+      <div>
+        <div class="nm">Price rise with Alex Torres</div>
+        <div class="sub">The hard-nosed client · run 1 · last week</div>
+        <div class="links"><button class="lk" data-go="report.html?run=alex">Read your report</button><button class="lkq" data-later="The replay player is still to be designed.">Watch yourself back</button></div>
+      </div>
+      <div class="figs">
+        <div class="fig"><span class="k">Overall</span><span class="v">Developing</span></div>
+        <div class="fig"><span class="k">Criteria</span><span class="v">11 of 22</span></div>
+        <div class="fig"><span class="k">Key messages</span><span class="v">1 of 3</span></div>
+        <div class="fig"><span class="k">Difficulty</span><span class="v">Medium</span></div>
+      </div>
+    </article>
+
+    <article class="ent">
+      <div>
+        <div class="nm">Giving hard feedback with Sam Reid<span class="tagp">Private</span></div>
+        <div class="sub">Your own scenario · last week</div>
+        <p class="note">Only you can see this run or know it happened.</p>
+        <div class="links"><button class="lk" data-later="Private runs use the same report layout, which this demo has yet to wire up.">Read your report</button><button class="lkq" data-later="The replay player is still to be designed.">Watch yourself back</button></div>
+      </div>
+      <div class="figs">
+        <div class="fig"><span class="k">Overall</span><span class="v">Solid</span></div>
+        <div class="fig"><span class="k">Criteria</span><span class="v">13 of 18</span></div>
+        <div class="fig"><span class="k">Difficulty</span><span class="v">Easy</span></div>
+      </div>
+    </article>
+
+    </div>
+    <div class="own">
+      <div><b>Run one on your own</b>
+        <p>Pick any scenario and run it privately. You have 1 of 3 sessions left this month until they reset on 1 October, and retakes are free.</p></div>
+      <button class="bg" data-later>Start a private run</button>
+    </div>
+    <footer>Clovelly &nbsp;·&nbsp; Your runs</footer>
+  </main>
+</div>
+<script>
+(function(){
+  var S=SIM.state; S.onboarded=true; SIM.save();
+  var lvl=(S.scenario&&S.scenario.difficulty)||S.difficulty, A=(S.assignments||[]).filter(function(a){return /Sarah|sarah/.test(a.people.join(' '))})[0];
+  var SEE={easy:'On camera, with your key messages on screen the whole time',medium:'On camera, with your key messages one click away',hard:'On camera, with your key messages off the screen once you start'};
+  document.getElementById('wsmall').textContent=SEE[lvl];
+  document.getElementById('wmeta').innerHTML='The elusive buyer · '+cap(lvl)+' · about 15 minutes<br>Assigned by Jane · '+(S.newCoach?(A&&A.due?'due '+new Date(A.due+'T12:00:00').toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}):'no due date'):'due Tuesday');
+  if(S.newCoach){
+    if(A&&A.note&&!S.cleoDone){var v=document.querySelector('.canvas .verdict');v.insertAdjacentHTML('afterbegin','<div style="border-left:1px solid var(--ink);padding-left:12px;margin-bottom:12px;font-family:var(--display);font-weight:300;font-size:17px;line-height:1.45">“'+A.note.replace(/</g,'&lt;')+'”<small style="display:block;font-family:var(--sans);font-size:12px;color:var(--muted);margin-top:4px">Jane</small></div>');}
+    document.getElementById('history').innerHTML='<p class="note" style="padding:18px 0;border-bottom:1px solid var(--line);color:var(--muted)">Your runs appear here once you finish them, with Jane\'s notes alongside.</p>';
+    document.getElementById('recentCount').textContent='Nothing yet';
+    document.querySelector('.own p').textContent='Pick any scenario and run it privately. You have 3 sessions a month on the free plan, and retakes are free.';
+    if(!A){var c0=document.querySelector('.canvas.sand .in');c0.querySelector('.klab').textContent='Nothing waiting';c0.querySelector('.ctitle').textContent='No runs assigned yet';c0.querySelector('.cmeta').textContent='When Jane assigns you a scenario, it appears here.';document.getElementById('waitBtn').hidden=true;document.getElementById('wsmall').hidden=true;c0.querySelector('.verdict').hidden=true;}
+  }
+  if((S.reviews||{}).alex) document.getElementById('alexNote').textContent='Jane answered your Composure question, and her reply is in the report.';
+  if(S.needsSetup&&!S.cleoDone){var wb=document.getElementById('waitBtn');wb.dataset.go='onboarding.html#setup';wb.textContent='Set up your microphone and camera';}
+  if(!S.cleoDone) return;
+  var c=document.querySelector('.canvas.sand .in');
+  c.querySelector('.klab').textContent='Just finished';
+  c.querySelector('.cmeta').innerHTML='The elusive buyer · '+cap(lvl)+'<br>Assigned by Jane · finished today';
+  var rv=(S.reviews||{}).cleo;
+  c.querySelector('.verdict .s').textContent= rv ? 'Jane has reviewed your run and left you a note.' : 'Your report is ready, and Jane will add her note once she reviews it.';
+  var b=document.getElementById('waitBtn'); b.textContent='Read your report';
+  b.dataset.go='report.html?run=cleo';
+  c.querySelector('.small').textContent='Developing · 13 of 22 criteria · 1 of 3 key messages landed';
+  document.getElementById('recentCount').textContent=S.newCoach?'One run this month':'Four runs this month';
+  document.getElementById('justDone').innerHTML='<article class="ent"><div><div class="nm">Renewal defense with Cleo Barnes</div><div class="sub">The elusive buyer · run 1 · just now</div>'+
+    '<p class="note">'+(((S.reviews||{}).cleo)?'Jane reviewed this run, and her note is in your report.':'Jane has been told this run is ready for her review.')+'</p>'+
+    '<div class="links"><button class="lk" onclick="location.href=\'report.html?run=cleo\'">Read your report</button></div></div>'+
+    '<div class="figs"><div class="fig"><span class="k">Overall</span><span class="v">Developing</span></div><div class="fig"><span class="k">Criteria</span><span class="v">13 of 22</span></div>'+
+    '<div class="fig"><span class="k">Key messages</span><span class="v">1 of 3</span></div><div class="fig"><span class="k">Difficulty</span><span class="v">'+cap(S.difficulty)+'</span></div></div></article>';
+})();
+</script>
+</body></html>

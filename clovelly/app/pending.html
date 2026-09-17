@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clovelly · writing your report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/report.css?v=6">
+<script src="app.js?v=8"></script><script src="runs.js?v=7"></script>
+</head><body>
+<nav class="nav"><div class="in"><span class="mark">CLOVELLY</span>
+<span class="links"><span class="on" data-go="home.html" style="cursor:pointer">My runs</span><span data-later>Practice on my own</span><span>SC</span></span></div></nav>
+<div class="split">
+  <aside class="canvas">
+    <img src="assets/img/loop.jpg" alt="" style="object-position:94% 60%">
+    <div class="shade"></div>
+    <div class="in">
+      <div class="klab">Run report</div>
+      <div class="ctitle" id="title"></div>
+      <div class="cmeta" id="meta"></div>
+      <div class="verdict"><div class="v pulse" id="vv">Writing your report</div>
+        <div class="s" id="vs">Your numbers are ready now, and the written feedback follows in a few seconds.</div></div>
+      <div class="acts">
+        <button class="bw solid" data-later="The replay player is still to be designed."><span class="tri"></span>Watch it back while you wait</button>
+        <div class="small">We will let you know when it is ready, so you can close this page</div>
+      </div>
+    </div>
+  </aside>
+  <main class="read">
+    <p class="lede" id="lede"></p>
+    <div class="sec"><h2>What we are writing</h2><span id="count">Two of five done</span></div>
+    <div class="stages" id="stages"></div>
+    <div class="tip"><small>While you wait</small><p id="tip">The pause after you state a number is often where the other person decides how hard to push.</p></div>
+    <div class="sec"><h2>What did the numbers say?</h2><span>Measured from the recording</span></div>
+    <div class="nums" id="nums"></div>
+    <footer>Clovelly &nbsp;·&nbsp; Run report, while it is being written</footer>
+  </main>
+</div>
+<script>
+(function(){
+  var key=new URLSearchParams(location.search).get('run')||'cleo', R=RUNS[key], lvl=R.level||cap(SIM.state.difficulty);
+  document.getElementById('title').textContent=R.title;
+  document.getElementById('meta').innerHTML=(key==='alex'?'The hard-nosed client':'The elusive buyer')+' · '+lvl+' · '+R.runLabel+'<br>A moment ago · '+R.meta2.split(' · ')[1]+' · all of it arrived';
+  document.getElementById('lede').textContent=SIM.coachRun()?'Your run is in, all of it. We are reading what you said against the three key messages you wrote.':'Your run is in, all of it. We are reading what you said against the three key messages Jane gave you.';
+  document.getElementById('nums').innerHTML=R.nums.map(function(n){return '<div class="num"><span class="k">'+n[0]+'</span><span class="v">'+n[1]+(n[2]?'<small>'+n[2]+'</small>':'')+'</span></div>'}).join('');
+  var ST=[["Transcript","Every word you said, with its timing"],["Your numbers","Pace, pauses and filler words are below"],
+          ["Key messages","Each one checked against what you said"],["How you handled it","How you answered the pushback"],
+          ["Moments worth watching","The timestamps your report will point to"]];
+  var done=2, words=["None","One","Two","Three","Four","Five"];
+  function paint(){
+    document.getElementById('stages').innerHTML=ST.map(function(s,i){
+      var cls=i<done?'':(i===done?'working':'queued'), dot=i<done?'on':(i===done?'half pulse':''), st=i<done?'Done':(i===done?'Working':'Next');
+      return '<div class="stage '+cls+'"><div class="dot '+dot+'"></div><div><b>'+s[0]+'</b><span>'+s[1]+'</span></div><div class="st">'+st+'</div></div>';}).join('');
+    document.getElementById('count').textContent=words[done]+' of five done';
+  }
+  paint();
+  var TIPS=["The pause after you state a number is often where the other person decides how hard to push.",
+   "Key messages land best early, before the other side has settled on a position.",
+   "A concession offered before it is asked for tends to set the price of the next one."], ti=0, tip=document.getElementById('tip');
+  var tt=setInterval(function(){tip.style.opacity=0;setTimeout(function(){ti=(ti+1)%TIPS.length;tip.textContent=TIPS[ti];tip.style.opacity=1},400)},2600);
+  var iv=setInterval(function(){done++;paint();
+    if(done>=ST.length){clearInterval(iv);clearInterval(tt);
+      document.getElementById('vv').classList.remove('pulse');document.getElementById('vv').textContent='Your report is ready';
+      document.getElementById('vs').textContent=SIM.coachRun()?'Taking you to it now.':'Opening it now.';
+      setTimeout(function(){location.href=SIM.coachRun()?'firstrun.html':'report.html?run='+key},1200);}
+  },1800);
+})();
+</script>
+</body></html>

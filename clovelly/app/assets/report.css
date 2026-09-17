@@ -1,0 +1,150 @@
+[hidden]{display:none!important}
+:root{--paper:#f1f0ee;--ink:#101010;--black:#0a0a0a;--line:#d9d7d3;--muted:#5e5c58;
+  --sand:#e8e2d8;--sand-2:#d9cfc0;--stone:#cfc6b8;
+  --sans:"Inter",-apple-system,Helvetica,Arial,sans-serif;
+  --display:"Archivo",-apple-system,Helvetica,Arial,sans-serif;}
+*{box-sizing:border-box;margin:0}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+button{font-family:inherit}
+
+.nav{background:var(--black);color:#fff;height:62px;display:flex;align-items:center;padding:0 clamp(1.25rem,2.5vw,2.5rem);position:sticky;top:0;z-index:20}
+.nav .in{display:flex;justify-content:space-between;align-items:center;width:100%}
+.mark{font-family:var(--display);font-weight:400;letter-spacing:.34em;font-size:14px}
+.nav .links{display:flex;gap:24px;font-size:13px;color:rgba(255,255,255,.6)}
+.nav .links .on{color:#fff}
+
+.split{display:grid;grid-template-columns:minmax(320px,35%) 1fr}
+
+/* left canvas: the run, and what to do next */
+.canvas{position:sticky;top:62px;height:calc(100vh - 62px);overflow:hidden;background:var(--black)}
+.canvas img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 35%;filter:grayscale(.35) contrast(.95)}
+.canvas .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,.3) 0%,rgba(10,10,10,.55) 42%,rgba(10,10,10,.92) 100%)}
+.canvas .in{position:absolute;inset:0;padding:clamp(1.75rem,3vw,3rem);display:flex;flex-direction:column;justify-content:flex-end;color:#fff}
+.klab{font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.ctitle{font-family:var(--display);font-weight:300;letter-spacing:-.035em;line-height:1;font-size:clamp(2.1rem,3.4vw,3rem);margin-top:12px}
+.cmeta{margin-top:12px;font-size:13px;color:rgba(255,255,255,.66);line-height:1.6}
+.verdict{margin-top:clamp(1.25rem,2.2vw,1.75rem);border-top:1px solid rgba(255,255,255,.2);padding-top:16px}
+.verdict .v{font-family:var(--display);font-weight:300;font-size:clamp(1.6rem,2.4vw,2.1rem);letter-spacing:-.02em;line-height:1.1}
+.verdict .s{font-size:13px;color:rgba(255,255,255,.66);margin-top:6px}
+.acts{margin-top:clamp(1.25rem,2.2vw,1.75rem);display:flex;flex-direction:column;gap:10px}
+.bw{display:flex;justify-content:center;align-items:center;gap:10px;border-radius:4px;padding:15px 18px;min-height:48px;
+  font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;
+  transition:background 160ms ease,color 160ms ease,border-color 160ms ease}
+.bw.solid{background:#fff;color:var(--ink);border:1px solid #fff}
+.bw.solid:hover{background:transparent;color:#fff}
+.bw.line{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4)}
+.bw.line:hover{border-color:#fff}
+.tri{width:0;height:0;border-left:6px solid currentColor;border-top:4px solid transparent;border-bottom:4px solid transparent}
+.small{font-size:12px;color:rgba(255,255,255,.5);margin-top:4px;text-align:center}
+
+/* right: the read */
+.read{padding:clamp(2.25rem,3.5vw,3.75rem) clamp(1.5rem,4vw,4.5rem) 5rem;max-width:56rem}
+.lede{font-family:var(--display);font-weight:300;font-size:clamp(1.35rem,2vw,1.7rem);letter-spacing:-.015em;line-height:1.35;max-width:36ch}
+.src{margin-top:12px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.sec{margin-top:clamp(2.75rem,4.5vw,3.75rem);border-bottom:1px solid var(--ink);padding-bottom:10px;display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+.sec h2{font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;font-weight:600}
+.sec span{font-size:13px;color:var(--muted)}
+.lk{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;border-bottom:1px solid var(--ink);padding-bottom:2px;cursor:pointer;white-space:nowrap;background:none;border-top:0;border-left:0;border-right:0;color:var(--ink)}
+
+/* key messages */
+.kmr{display:grid;grid-template-columns:22px 1fr auto;gap:14px;padding:20px 0;border-bottom:1px solid var(--line);align-items:start}
+.dot{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--ink);margin-top:9px}
+.dot.on{background:var(--ink)}
+.dot.half{background:linear-gradient(90deg,var(--ink) 50%,transparent 50%)}
+.kmr q{display:block;font-family:var(--display);font-weight:300;font-size:clamp(1.15rem,1.7vw,1.4rem);letter-spacing:-.015em;line-height:1.3;quotes:none}
+.kmr .why{font-size:13.5px;color:var(--muted);margin-top:6px}
+.kmr .out{text-align:right}
+.kmr .out b{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:10px;white-space:nowrap}
+
+/* attributes */
+.attr{display:grid;grid-template-columns:200px 1fr;gap:clamp(1.25rem,3vw,2.5rem);padding:22px 0;border-bottom:1px solid var(--line)}
+.attr h3{font-size:15px;font-weight:500}
+.attr .band{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-top:6px}
+.attr .band i{font-style:normal;color:var(--muted);font-weight:500;letter-spacing:.06em;text-transform:none;font-size:12px}
+.attr blockquote{font-family:var(--display);font-weight:300;font-size:16.5px;line-height:1.5;letter-spacing:-.005em}
+.attr .at{margin-top:10px}
+.better{margin-top:14px;border-left:1px solid var(--ink);padding:2px 0 2px 16px}
+.better small{display:block;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.better p{font-family:var(--display);font-weight:300;font-size:16.5px;margin-top:5px}
+.better em{display:block;font-style:normal;font-size:12.5px;color:var(--muted);margin-top:5px}
+
+/* numbers ledger */
+.nums{display:grid;grid-template-columns:1fr 1fr;column-gap:clamp(2rem,4vw,3.5rem)}
+.num{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
+.num .k{color:var(--muted)}
+.num .v{font-family:var(--display);font-weight:300;font-size:19px;font-variant-numeric:tabular-nums;text-align:right}
+.num .v small{display:block;font-family:var(--sans);font-size:11px;color:var(--muted);letter-spacing:.02em}
+.aside{margin-top:14px;font-size:13.5px;color:var(--muted);max-width:56ch}
+
+/* coach note */
+.coach{display:grid;grid-template-columns:48px 1fr;gap:16px;padding:22px 0;border-bottom:1px solid var(--line)}
+.coach .disc{width:44px;height:44px;border-radius:50%;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font-size:13px;letter-spacing:.04em}
+.coach .who{font-size:14px;font-weight:500}
+.coach .who span{color:var(--muted);font-weight:400}
+.coach p{margin-top:10px;font-family:var(--display);font-weight:300;font-size:18px;line-height:1.5;max-width:44ch}
+
+/* transfer note */
+.transfer{margin-top:clamp(2.75rem,4.5vw,3.75rem);background:linear-gradient(160deg,#f4f1ec 0%,var(--sand) 50%,var(--sand-2) 100%);border-radius:6px;padding:clamp(1.5rem,3vw,2.5rem)}
+.transfer small{font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;font-weight:600}
+.transfer p{margin-top:12px;font-family:var(--display);font-weight:300;font-size:clamp(1.3rem,2vw,1.65rem);line-height:1.35;letter-spacing:-.015em;max-width:34ch}
+.again{margin-top:28px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.bd{display:inline-flex;align-items:center;gap:10px;border-radius:4px;padding:14px 20px;min-height:46px;background:var(--ink);color:#fff;border:1px solid var(--ink);
+  font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.bd:hover{background:transparent;color:var(--ink)}
+footer{margin-top:3rem;font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+
+/* pending */
+.stages{border-top:1px solid var(--ink)}
+.stage{display:grid;grid-template-columns:22px 1fr auto;gap:14px;padding:16px 0;border-bottom:1px solid var(--line);align-items:start}
+.stage b{font-weight:500;font-size:15px}
+.stage span{display:block;font-size:13.5px;color:var(--muted);margin-top:3px}
+.stage .st{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.stage.working .st{color:var(--ink);font-weight:600}
+.stage.queued{opacity:.55}
+.pulse{animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.tip{margin-top:22px;background:#fff;border:1px solid var(--line);border-radius:4px;padding:16px 18px;max-width:56ch}
+.tip small{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.tip p{margin-top:6px;font-size:14.5px;transition:opacity .4s ease}
+@media (prefers-reduced-motion:reduce){.pulse{animation:none}.tip p{transition:none}}
+@media(max-width:1000px){.split{grid-template-columns:1fr}.canvas{position:static;height:62vh}.attr{grid-template-columns:1fr}.nums{grid-template-columns:1fr}}
+
+/* sand canvas: used where the member is preparing */
+.canvas.sand{background:linear-gradient(162deg,#f4f1ec 0%,var(--sand) 44%,var(--sand-2) 100%);border-right:1px solid var(--line)}
+.canvas.sand .in{color:var(--ink)}
+.canvas.sand .klab{color:var(--muted)}
+.canvas.sand .cmeta{color:var(--muted)}
+.canvas.sand .verdict{border-color:rgba(16,16,16,.2)}
+.canvas.sand .verdict .s{color:var(--muted)}
+.canvas.sand .small{color:var(--muted)}
+.cdisc{width:64px;height:64px;border-radius:50%;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-weight:300;font-size:22px;margin:18px 0 16px}
+.bk{display:flex;justify-content:center;align-items:center;gap:10px;border-radius:4px;padding:15px 18px;min-height:48px;background:var(--ink);color:#fff;border:1px solid var(--ink);
+  font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:background 160ms ease,color 160ms ease}
+.bk:hover{background:transparent;color:var(--ink)}
+.bg{display:inline-flex;align-items:center;gap:10px;border-radius:4px;padding:14px 20px;min-height:46px;background:transparent;color:var(--muted);border:1px solid var(--line);
+  font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.bg:hover{border-color:var(--ink);color:var(--ink)}
+h1.ph{font-family:var(--display);font-weight:300;letter-spacing:-.035em;line-height:1;font-size:clamp(2.25rem,3.6vw,3.25rem)}
+.p16{margin-top:14px;font-size:16.5px;line-height:1.6;max-width:46ch}
+
+/* ledger entry with a figure column */
+.ent{padding:24px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr 220px;gap:clamp(1.5rem,3vw,3rem);align-items:start}
+.ent .nm{font-family:var(--display);font-weight:300;letter-spacing:-.02em;line-height:1.15;font-size:clamp(1.35rem,2vw,1.75rem)}
+.ent .sub{font-size:13px;color:var(--muted);margin-top:6px}
+.ent .quote{margin-top:14px;border-left:1px solid var(--ink);padding:2px 0 2px 16px;font-family:var(--display);font-weight:300;font-size:16.5px;line-height:1.5;max-width:44ch}
+.ent .quote small{display:block;font-family:var(--sans);font-size:12px;color:var(--muted);margin-top:6px}
+.ent .note{margin-top:12px;font-size:13.5px;color:var(--muted);max-width:50ch}
+.ent .links{margin-top:18px;display:flex;gap:20px;flex-wrap:wrap}
+.lkq{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;border:0;border-bottom:1px solid var(--line);padding:0 0 2px;background:none;color:var(--muted);cursor:pointer}
+.lkq:hover{border-color:var(--ink);color:var(--ink)}
+.figs{border-top:1px solid var(--ink)}
+.fig{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.fig .k{color:var(--muted)}
+.fig .v{font-weight:500;text-align:right;font-variant-numeric:tabular-nums}
+.tagp{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 9px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-left:8px;vertical-align:4px}
+.own{margin-top:clamp(2.5rem,4vw,3.5rem);display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;border-top:1px solid var(--ink);padding-top:18px}
+.own b{font-weight:500;font-size:15px}
+.own p{font-size:13.5px;color:var(--muted);margin-top:4px;max-width:46ch}
+@media(max-width:1000px){.ent{grid-template-columns:1fr}}

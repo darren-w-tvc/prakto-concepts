@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clovelly · conversation finished</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/report.css?v=6">
+<script src="app.js?v=8"></script>
+<style>.choice{margin-top:clamp(2rem,3.5vw,2.75rem);display:flex;gap:12px;flex-wrap:wrap}.note2{margin-top:22px;font-size:14px;color:var(--muted);max-width:48ch;border-left:1px solid var(--ink);padding-left:14px}</style>
+</head><body>
+<nav class="nav"><div class="in"><span class="mark">CLOVELLY</span><span class="links"><span>SC</span></span></div></nav>
+<div class="split">
+  <aside class="canvas">
+    <img src="assets/img/loop.jpg" alt="" style="object-position:94% 60%">
+    <div class="shade"></div>
+    <div class="in">
+      <div class="klab">Conversation finished</div>
+      <div class="ctitle">Renewal defense with Cleo Barnes</div>
+      <div class="cmeta">11 minutes · 3 questions · all of it recorded</div>
+    </div>
+  </aside>
+  <main class="read">
+    <h1 class="ph" id="hd">That's the conversation, Sarah.</h1>
+    <p class="p16" id="lead">Keep this take, or run it once more while it's fresh. Only the take you keep counts toward your monthly sessions.</p>
+    <div class="choice" id="choice">
+      <button class="bk" data-go="pending.html?run=cleo">Use this take</button>
+      <button class="bg" id="again">Retake it once</button>
+    </div>
+    <p class="note2" id="note">A retake covers the same ground in fresh words, and you get one before your report is written.</p>
+    <footer>Clovelly &nbsp;·&nbsp; Conversation finished</footer>
+  </main>
+</div>
+<script>
+(function(){
+  var S=SIM.state;
+  if(SIM.coachRun()){document.getElementById('hd').textContent="That's the conversation, Jane.";document.getElementById('lead').textContent='Keep this take, or run it once more while it\'s fresh.';document.querySelector('#choice .bk').dataset.go='pending.html?run=cleo';}
+  if(S.retakeUsed){
+    document.getElementById('lead').textContent='This was your retake, so this take goes to your report.';
+    document.getElementById('again').hidden=true;
+    document.querySelector('#choice .bk').textContent='See your report';
+    document.getElementById('note').hidden=true;
+  }
+  document.getElementById('again').addEventListener('click',function(){S.retakeUsed=true;SIM.save();location.href='run.html';});
+})();
+</script>
+</body></html>
