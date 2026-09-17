@@ -3,7 +3,7 @@
 <title>Clovelly · run</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="app.js?v=8"></script>
+<script src="app.js?v=10"></script>
 <style>
 :root{--ink:#101010;--black:#0a0a0a;--stage:#0f0f0e;--side:#171614;--rule:rgba(255,255,255,.14);--dim:rgba(255,255,255,.55);
   --sand:#e8e2d8;--stone:#cfc6b8;
@@ -78,7 +78,10 @@ button{font-family:inherit}
 .hint{font-size:12.5px;color:var(--dim);text-align:center}
 [hidden]{display:none!important}
 @media (prefers-reduced-motion:reduce){.rec::before,.speaking .disc::after,.speaking .state i{animation:none}}
-@media(max-width:900px){.room{grid-template-columns:1fr}.them{min-height:52vh}}
+/* The stage fills the screen, and the page grows when the side panel has more to show. */
+html,body{height:auto;min-height:100%}.room{flex:none;min-height:calc(100vh - 60px)}.you{overflow:visible}
+@media(max-width:900px){.room{grid-template-columns:1fr}.them{min-height:52vh}.you{overflow:visible;border-left:0;border-top:1px solid var(--rule)}}
+@media(max-width:700px){.top{height:auto;min-height:60px;flex-wrap:wrap;padding:10px 16px;gap:6px 14px}.top .mid{order:3;flex-basis:100%;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.top .right{gap:12px}}
 
 .self video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:6px;transform:scaleX(-1)}
 .caption .ack{color:var(--dim)}
@@ -154,7 +157,8 @@ button{font-family:inherit}
     }).catch(function(){});
   }
 
-  var SCRIPT=[
+  var _ST=window.STORIES&&STORIES[SIM.state.story];
+  var SCRIPT=(_ST&&_ST.script)?_ST.script:[
     {k:'q',n:1,say:"Honestly, the team's been great. I'm just not sure now is the right time to lock anything in."},
     {k:'ack',say:"Mm. Okay, I hear you."},
     {k:'f',n:1,say:"Could we pick this up again next quarter, once our budgets are clearer?"},

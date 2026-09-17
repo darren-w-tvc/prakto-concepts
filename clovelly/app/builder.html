@@ -3,8 +3,8 @@
 <title>Clovelly · new scenario</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/report.css?v=6">
-<script src="app.js?v=8"></script>
+<link rel="stylesheet" href="assets/report.css?v=7">
+<script src="app.js?v=10"></script>
 <style>
 .canvas.sand .in{justify-content:space-between}
 .prog{margin-top:clamp(1.5rem,2.5vw,2rem);border-top:1px solid rgba(16,16,16,.25)}
@@ -214,6 +214,7 @@ details.judge summary i{font-style:normal;font-weight:400;letter-spacing:.02em;t
   if(!S.newCoach) document.getElementById('hello').textContent='New scenario';
 
   var EXAMPLE="Sarah has her renewal with Cleo Barnes at Northwind next week. Cleo is friendly but never commits, and last year she pushed us to next quarter twice. I want Sarah to land that we've hit every milestone, that renewing for twelve months holds today's rate, and to ask for a decision by the end of the month.";
+  var _ST=window.STORIES&&STORIES[S.story]; if(_ST&&_ST.brief) EXAMPLE=_ST.brief;
   var TPL=[["renewal","Renewal defense"],["price","Price rise"],["qbr","QBR presentation"],["difficult","Difficult conversation"],["feedback","Giving hard feedback"]];
   function draft(){return {
     title:"Renewal defense with Cleo Barnes",

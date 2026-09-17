@@ -79,9 +79,9 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:
 .chip:hover{border-color:var(--ink)}
 .tl{font-size:12.5px;color:var(--muted);padding-top:14px}
 footer{margin-top:3.5rem;font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
-@media(max-width:980px){.split{grid-template-columns:1fr}.canvas{position:static;height:48vh}.ent{grid-template-columns:1fr}}
+@media(max-width:980px){.split{grid-template-columns:1fr}.canvas{position:relative;top:auto;height:auto;min-height:48vh}.canvas .in{position:relative;inset:auto;min-height:48vh}.ent{grid-template-columns:1fr}}
 </style>
-<script src="app.js?v=8"></script>
+<script src="app.js?v=10"></script>
 </head>
 <body>
 <nav class="nav"><div class="in"><span class="mark">CLOVELLY</span>

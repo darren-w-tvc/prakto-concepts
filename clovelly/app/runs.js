@@ -53,3 +53,11 @@ window.JUDGED=["Message control","Composure under pushback","Clarity and structu
 window.KMSHORT={alex:["Added scope","Service levels","Renewal terms"],cleo:["Milestones","Twelve-month offer","Decision date"]};
 window.MEMBER={alex:"Sarah Chen",cleo:"Sarah Chen"};
 window.cap=function(s){return s.charAt(0).toUpperCase()+s.slice(1)};
+
+// Alternate example stories (stories.js, loaded by app.js) override the Cleo run. Switch on with ?story=<key>.
+(function(){
+  var ST=window.STORIES&&window.SIM&&STORIES[SIM.state.story];
+  if(!ST) return;
+  ST.runs(RUNS.cleo);
+  if(ST.kmshort) KMSHORT.cleo=ST.kmshort.slice();
+})();

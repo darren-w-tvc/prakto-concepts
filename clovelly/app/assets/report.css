@@ -108,7 +108,7 @@ footer{margin-top:3rem;font-size:10.5px;letter-spacing:.15em;text-transform:uppe
 .tip small{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:600}
 .tip p{margin-top:6px;font-size:14.5px;transition:opacity .4s ease}
 @media (prefers-reduced-motion:reduce){.pulse{animation:none}.tip p{transition:none}}
-@media(max-width:1000px){.split{grid-template-columns:1fr}.canvas{position:static;height:62vh}.attr{grid-template-columns:1fr}.nums{grid-template-columns:1fr}}
+@media(max-width:1000px){.split{grid-template-columns:1fr}.canvas{position:relative;top:auto;height:auto;min-height:56vh}.canvas .in{position:relative;inset:auto;min-height:56vh}.attr{grid-template-columns:1fr}.nums{grid-template-columns:1fr}}
 
 /* sand canvas: used where the member is preparing */
 .canvas.sand{background:linear-gradient(162deg,#f4f1ec 0%,var(--sand) 44%,var(--sand-2) 100%);border-right:1px solid var(--line)}
