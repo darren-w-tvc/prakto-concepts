@@ -22,7 +22,7 @@
     <h1 class="ph" id="hd">That's the conversation, Sarah.</h1>
     <p class="p16" id="lead">Keep this take, or run it once more while it's fresh. Only the take you keep counts toward your monthly sessions.</p>
     <div class="choice" id="choice">
-      <button class="bk" data-go="pending.html?run=cleo">Use this take</button>
+      <button class="bk" data-go="report.html?run=cleo&amp;live=1">Use this take</button>
       <button class="bg" id="again">Retake it once</button>
     </div>
     <p class="note2" id="note">A retake covers the same ground in fresh words, and you get one before your report is written.</p>
@@ -32,7 +32,7 @@
 <script>
 (function(){
   var S=SIM.state;
-  if(SIM.coachRun()){document.getElementById('hd').textContent="That's the conversation, Jane.";document.getElementById('lead').textContent='Keep this take, or run it once more while it\'s fresh.';document.querySelector('#choice .bk').dataset.go='pending.html?run=cleo';}
+  if(SIM.coachRun()){document.getElementById('hd').textContent="That's the conversation, Jane.";document.getElementById('lead').textContent='Keep this take, or run it once more while it\'s fresh.';document.querySelector('#choice .bk').dataset.go='firstrun.html';}
   if(S.retakeUsed){
     document.getElementById('lead').textContent='This was your retake, so this take goes to your report.';
     document.getElementById('again').hidden=true;

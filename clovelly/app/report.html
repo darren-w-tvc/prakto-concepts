@@ -9,6 +9,12 @@
 .coachbar{background:#2a2926;color:#e8e2d8;padding:12px clamp(1.25rem,2.5vw,2.5rem);font-size:13.5px;display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap}
 .coachbar button{background:none;border:0;border-bottom:1px solid rgba(255,255,255,.4);color:#fff;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;padding:0 0 2px}
 .empty{padding:22px 0;border-bottom:1px solid var(--line);color:var(--muted);font-size:15px}
+.verdict .v.wait{color:rgba(255,255,255,.72)}
+.lede.held{color:var(--muted)}
+.src .dot{display:inline-block;width:8px;height:8px;margin:0 8px 0 0;vertical-align:middle}
+.kmr.held q,.attr.held h3{color:var(--muted)}
+.kmr.held .out b,.attr.held .band{color:var(--muted)}
+.attr.held{padding:16px 0}
 </style>
 </head><body>
 <nav class="nav"><div class="in"><span class="mark">CLOVELLY</span><span class="links" id="links"></span></div></nav>
@@ -31,6 +37,10 @@
 (function(){
   var q=new URLSearchParams(location.search), key=q.get('run')||'alex', coach=q.get('role')==='coach', self=q.get('self')==='1';
   var R=RUNS[key], lvl=R.level||cap(SIM.state.difficulty);
+  // Live fill: the member lands here straight after the run. Numbers are in first, each attribute's band arrives
+  // once all its criteria are read, key messages wait for the whole run, and the headline and Overall wait for everything.
+  var LIVE=q.get('live')==='1'&&!coach&&!self, NA=R.attrs.length, got=LIVE?0:NA;
+  function kmIn(){return got>=NA+1;} function allIn(){return got>=NA+2;}
   function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
   document.getElementById('links').innerHTML = coach
     ? '<span class="on" data-go="coach.html" style="cursor:pointer">Feed</span><span data-later>Team</span><span data-later>Scenarios</span><span>JS</span>'
@@ -42,23 +52,28 @@
   if(coach) document.getElementById('coachbar').innerHTML='<div class="coachbar"><span>You are reading Sarah\'s report as her coach'+(REV?', with your review included.':'.')+'</span><button data-go="'+(REV?'coach.html':'review.html?run='+key)+'">'+(REV?'Back to the feed':'Review this run')+'</button></div>';
   document.getElementById('title').textContent=R.title;
   document.getElementById('meta').innerHTML=esc(R.title.split(' with ')[0]==='Price rise'?'The hard-nosed client':'The elusive buyer')+' · '+lvl+' · '+R.runLabel+'<br>'+R.meta2;
-  document.getElementById('verdict').textContent=R.verdict;
-  document.getElementById('vsub').textContent=R.verdictSub;
+  function paint(){
+  var V=document.getElementById('verdict'), VS=document.getElementById('vsub');
+  if(allIn()){V.textContent=R.verdict;V.classList.remove('wait');VS.textContent=R.verdictSub;}
+  else {V.textContent='Overall';V.classList.add('wait');VS.textContent='Your overall band waits until every part of the run is read.';}
   document.getElementById('acts').innerHTML = coach
     ? '<button class="bw solid" data-go="review.html?run='+key+'">'+(REV?'Change your review':'Review this run')+'</button><button class="bw line" data-later="The replay player is still to be designed."><span class="tri"></span>Watch the full run · '+R.length+'</button>'
     : '<button class="bw solid" data-go="briefing.html">Run it again</button><button class="bw line" data-later="The replay player is still to be designed."><span class="tri"></span>Watch the full run · '+R.length+'</button><div class="small">Counts as one of your monthly sessions</div>';
   var h='';
-  h+='<p class="lede">'+esc(R.lede)+'</p><div class="src">From this run\'s transcript</div>';
-  h+='<div class="sec"><h2>Did you land your key messages?</h2><span>'+R.kmCount+'</span></div>';
-  R.kms.forEach(function(k){h+='<div class="kmr"><div class="dot '+k.dot+'"></div><div><q>'+esc(k.q)+'</q><div class="why">'+esc(k.why)+'</div></div><div class="out"><b>'+k.out+'</b><button class="lk" data-t="'+k.t+'">'+k.t+'</button></div></div>';});
-  h+='<div class="sec"><h2>How did you handle it?</h2><span>'+R.crit+'</span></div>';
+  if(allIn()) h+='<p class="lede">'+esc(R.lede)+'</p><div class="src">From this run\'s transcript</div>';
+  else h+='<p class="lede held">Your summary is written last, once every part of the run is read.</p><div class="src"><span class="dot half pulse"></span>'+Math.min(got,NA)+' of '+NA+' reads in so far</div>';
+  h+='<div class="sec"><h2>Did you land your key messages?</h2><span>'+(kmIn()?R.kmCount:'Once the whole run is read')+'</span></div>';
+  if(!kmIn()) R.kms.forEach(function(k){h+='<div class="kmr held"><div class="dot"></div><div><q>'+esc(k.q)+'</q></div><div class="out"><b>Waiting</b></div></div>';});
+  else R.kms.forEach(function(k){h+='<div class="kmr"><div class="dot '+k.dot+'"></div><div><q>'+esc(k.q)+'</q><div class="why">'+esc(k.why)+'</div></div><div class="out"><b>'+k.out+'</b><button class="lk" data-t="'+k.t+'">'+k.t+'</button></div></div>';});
+  h+='<div class="sec"><h2>How did you handle it?</h2><span>'+(allIn()?R.crit:Math.min(got,NA)+' of '+NA+' in')+'</span></div>';
   function janeRead(n){if(!REV)return '';var r=REV.reads.filter(function(x){return x.n===n})[0];if(!r||!r.v)return '';
     if(r.v==='agree')return '<div class="band" style="margin-top:8px;color:var(--muted)">Jane agrees</div>';
     if(r.v==='partly')return '<div class="band" style="margin-top:8px;color:var(--muted)">Jane partly agrees</div>';
     return '<div class="band" style="margin-top:8px">Jane\'s read · '+(r.b||'different')+'</div>';}
   function janeWhy(n){if(!REV)return '';var r=REV.reads.filter(function(x){return x.n===n})[0];
     if(!r||r.v==='agree'||!r.why)return '';return '<div class="better"><small>Jane on this read</small><p>'+esc(r.why)+'</p></div>';}
-  R.attrs.forEach(function(a){h+='<div class="attr"><div><h3>'+a.n+'</h3><div class="band">'+a.b+' <i>· '+a.c+'</i></div>'+janeRead(a.n)+'</div><div><blockquote>'+esc(a.q)+'</blockquote>'+janeWhy(a.n)+
+  R.attrs.forEach(function(a,ai){if(ai>=got){h+='<div class="attr held"><div><h3>'+a.n+'</h3><div class="band">'+(ai===got?'<span class="pulse">Being read</span>':'Still to read')+'</div></div><div></div></div>';return;}
+    h+='<div class="attr"><div><h3>'+a.n+'</h3><div class="band">'+a.b+' <i>· '+a.c+'</i></div>'+janeRead(a.n)+'</div><div><blockquote>'+esc(a.q)+'</blockquote>'+janeWhy(a.n)+
     (a.better?'<div class="better"><small>A stronger version of what you said</small><p>'+esc(a.better)+'</p><em>Examples like this sit outside your bands.</em></div>':'')+
     '<div class="at"><button class="lk" data-t="'+a.t+'">'+a.t+'</button></div></div></div>';});
   h+='<div class="sec"><h2>What did the numbers say?</h2><span>Measured from the recording</span></div><div class="nums">';
@@ -89,6 +104,9 @@
     SIM.state.replies=SIM.state.replies||{};SIM.state.replies[key]=THREAD;SIM.save();
     document.getElementById('replyWrap').outerHTML=msgHTML(THREAD[THREAD.length-1])+'<p class="aside" style="margin-top:12px">'+(coach?'Sarah will see this on her report.':'Jane will see this on her copy.')+'</p>';
     SIM.toast(coach?'Your reply is on its way to Sarah.':'Your reply is on its way to Jane.');};
+  }
+  paint();
+  if(LIVE){var iv=setInterval(function(){got++;paint();if(allIn()){clearInterval(iv);history.replaceState(null,'','report.html?run='+key);}},1500);}
   document.addEventListener('click',function(e){var t=e.target.closest('[data-t]');if(t)SIM.toast('The replay would open at '+t.dataset.t+'.');
     var g=e.target.closest('[data-go]');if(g){e.preventDefault();location.href=g.dataset.go;}
     var l=e.target.closest('[data-later]');if(l){e.preventDefault();SIM.toast(l.dataset.later||'This screen is still to be designed.');}});

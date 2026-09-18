@@ -99,7 +99,7 @@
   var MEMBERS=[["Sarah Chen","sarah.chen@voyage.co","Active","2 runs this month"],["Ben Singh","ben.singh@voyage.co","Active","1 run this month"],
     ["Priya Nair","priya.nair@voyage.co","Active","1 run this month"],["Marcus V.","marcus.v@voyage.co","Active","Camera blocked on Tuesday · no runs yet"],
     ["Yuri Wang","yuri.wang@voyage.co","Active","4 runs this month"]];
-  S.invites=S.invites||(NEW?[]:[{email:'l.perez@acmecorp.com',status:'expired',old:true}]);
+  S.invites=S.invites||(NEW?[]:[{email:'l.perez@acmecorp.com',status:'expired',old:true},{email:'b.nguyen@voyage.cmo',status:'bounced',old:true}]);
   function live(){return S.invites.filter(function(i){return i.status!=='cancelled'});}
   function seated(){return S.invites.filter(function(i){return i.status!=='cancelled'&&i.status!=='expired'});}
   function nameOf(e){var p=e.split('@')[0].split(/[._-]/);return p.map(cap).join(' ');}
@@ -113,8 +113,8 @@
     document.getElementById('seatLine').textContent=NEW?(used>=LIMIT?'All three free seats are in use, including yours.':'You count as one of the '+LIMIT+' free seats, so '+(LIMIT-used)+' '+(LIMIT-used===1?'is':'are')+' left.'):'Separate addresses with commas or new lines.';
     var h='';
     if(!NEW){h+=MEMBERS.map(function(m){return '<div class="tr"><div class="who"><b>'+m[0]+'</b><span>'+m[1]+'</span></div><div class="st"><span class="dot '+(m[2]==='Active'?'on':'half')+'"></span>'+m[2]+'</div><div class="acts2"><span class="m" style="font-size:13px;color:var(--muted)">'+m[3]+'</span></div></div>'}).join('');}
-    h+=inv.map(function(i){var lab={sent:'Sent',opened:'Opened',joined:'Joined',expired:'Expired'}[i.status], dot={sent:'',opened:'half',joined:'on',expired:''}[i.status];
-      return '<div class="tr"><div class="who"><b>'+(i.status==='joined'?nameOf(i.email):i.email)+'</b><span>'+(i.status==='joined'?i.email+' · joined just now':i.status==='expired'?'Expired on Monday, so the seat is free again':(i.old?'Invited 8 days ago':'Invited just now'))+'</span></div>'+
+    h+=inv.map(function(i){var lab={sent:'Sent',opened:'Opened',joined:'Joined',expired:'Expired',bounced:'Bounced'}[i.status], dot={sent:'',opened:'half',joined:'on',expired:'',bounced:''}[i.status];
+      return '<div class="tr"><div class="who"><b>'+(i.status==='joined'?nameOf(i.email):i.email)+'</b><span>'+(i.status==='joined'?i.email+' · joined just now':i.status==='expired'?'Expired on Monday, so the seat is free again':i.status==='bounced'?'Bounced on Tuesday, so the seat stays taken until you resend or cancel':(i.old?'Invited 8 days ago':'Invited just now'))+'</span></div>'+
         '<div class="st"><span class="dot '+dot+'"></span>'+lab+'</div><div class="acts2">'+(i.status==='joined'?'':'<button class="lkq" data-resend="'+i.email+'">Resend</button><button class="lkq" data-cancel="'+i.email+'">Cancel</button>')+'</div></div>';}).join('');
     if(!h) h='<div class="empty">Nobody invited yet.</div>';
     document.getElementById('tbl').innerHTML=h;
