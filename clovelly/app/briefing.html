@@ -183,7 +183,7 @@ var COPY={
     document.querySelectorAll('.secsub')[1].textContent='Take a moment to jot down points or questions, if you like. Only you see these notes.';
     document.getElementById('setLine').textContent='You set this scenario to '+d+', so the options here go up from there.';
     document.getElementById('asChip').textContent=c.lvl+', as you set it';
-  } else if(S.showcase){document.getElementById('showrow').hidden=false;}
+  } else if(S.showcase||!S.newCoach){document.getElementById('showrow').hidden=false;}
   document.getElementById('startBtn').addEventListener('click',function(){S.retakeUsed=false;SIM.save();location.href='run.html';});
   window.onSimChange=function(){location.reload();};
 })();

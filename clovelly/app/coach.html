@@ -113,11 +113,11 @@ footer{margin-top:3.5rem;font-size:10.5px;letter-spacing:.15em;text-transform:up
         <div class="sub">Price rise with Alex Torres, the hard-nosed client · run 2 · yesterday</div>
         <div class="band">Solid · 16 of 22 criteria</div>
         <p>Held structure well; the pause after the anchor stretched to 3.4 seconds and the recovery leaned on fillers.</p>
-        <p class="note">Her challenge to the Composure band is waiting for your answer in her report.</p>
+        
         <div class="acts"><span class="lk" data-go="review.html?run=alex" style="cursor:pointer" id="alexBtn">Review her run</span><span class="lk q" data-later="That view is still to be designed." style="cursor:pointer">Watch the pause · 3:10</span></div>
       </div>
       <div class="figs">
-        <div class="fig"><span class="k">Pace</span><span class="v">135 wpm<span class="band-ok">Within 120 to 160</span></span></div>
+        <div class="fig"><span class="k">Pace</span><span class="v">135 wpm<span class="band-ok">Within 130 to 170</span></span></div>
         <div class="fig"><span class="k">Talk share</span><span class="v">54%<span class="band-ok">Above 30 to 50</span></span></div>
         <div class="fig"><span class="k">Fillers</span><span class="v">12</span></div>
         <div class="fig"><span class="k">Weak words</span><span class="v">5</span></div>
@@ -134,7 +134,7 @@ footer{margin-top:3.5rem;font-size:10.5px;letter-spacing:.15em;text-transform:up
         <div class="acts"><span class="lk" data-later="That view is still to be designed." style="cursor:pointer">Watch the moment · 6:40</span><span class="lk q" data-later="That view is still to be designed." style="cursor:pointer">Open the report</span></div>
       </div>
       <div class="figs">
-        <div class="fig"><span class="k">Pace</span><span class="v">142 wpm<span class="band-ok">Within 120 to 160</span></span></div>
+        <div class="fig"><span class="k">Pace</span><span class="v">142 wpm<span class="band-ok">Within 130 to 170</span></span></div>
         <div class="fig"><span class="k">Talk share</span><span class="v">46%<span class="band-ok">Within 30 to 50</span></span></div>
         <div class="fig"><span class="k">Fillers</span><span class="v">4</span></div>
         <div class="fig"><span class="k">Weak words</span><span class="v">3</span></div>
@@ -148,11 +148,11 @@ footer{margin-top:3.5rem;font-size:10.5px;letter-spacing:.15em;text-transform:up
         <div class="sub">QBR presentation to Dana Whitfield · 12 minutes presenting · yesterday</div>
         <div class="band">Developing · 9 of 22 criteria</div>
         <p>The deck section ran long and squeezed the Q&amp;A answers, though her strongest minute came at 9:12 with the churn-number defense.</p>
-        <p class="note">Her report explains a skipped follow-up question and confirms her bands are unchanged.</p>
+        <p class="note">One follow-up could not be asked.</p>
         <div class="acts"><span class="lk" data-later="That view is still to be designed." style="cursor:pointer">Watch the moment · 9:12</span><span class="lk q" data-later="That view is still to be designed." style="cursor:pointer">Open the report</span></div>
       </div>
       <div class="figs">
-        <div class="fig"><span class="k">Pace</span><span class="v">168 wpm<span class="band-ok">Above 120 to 160</span></span></div>
+        <div class="fig"><span class="k">Pace</span><span class="v">168 wpm<span class="band-ok">Above 130 to 170</span></span></div>
         <div class="fig"><span class="k">Talk share</span><span class="v">71%<span class="band-ok">Above 30 to 50</span></span></div>
         <div class="fig"><span class="k">Fillers</span><span class="v">7</span></div>
         <div class="fig"><span class="k">Weak words</span><span class="v">4</span></div>
@@ -203,7 +203,7 @@ footer{margin-top:3.5rem;font-size:10.5px;letter-spacing:.15em;text-transform:up
      '<p>She opened well on milestones, and the twelve-month offer stalled once Cleo followed up, so the date is still to be asked for.</p>'+
      '<p class="note">'+(rv?((S.replies||{}).cleo?'You reviewed this run, and Sarah has replied to your note.':'You reviewed this run just now.'):'This run is waiting for your review.')+'</p>'+
      '<div class="acts"><span class="lk" data-go="'+(rv?'report.html?run=cleo&role=coach':'review.html?run=cleo')+'">'+(rv?'See her report':'Review her run')+'</span></div></div>'+
-     '<div class="figs"><div class="fig"><span class="k">Pace</span><span class="v">142 wpm<span class="band-ok">Within 120 to 160</span></span></div>'+
+     '<div class="figs"><div class="fig"><span class="k">Pace</span><span class="v">142 wpm<span class="band-ok">Within 130 to 170</span></span></div>'+
      '<div class="fig"><span class="k">Talk share</span><span class="v">58%<span class="band-ok">Above 30 to 50</span></span></div>'+
      '<div class="fig"><span class="k">Fillers</span><span class="v">4</span></div><div class="fig"><span class="k">Weak words</span><span class="v">7</span></div>'+
      '<div class="fig"><span class="k">Length</span><span class="v">11:24</span></div></div></article>';
@@ -228,7 +228,7 @@ footer{margin-top:3.5rem;font-size:10.5px;letter-spacing:.15em;text-transform:up
   var pending=1+(S.cleoDone?1:0)-(R.alex?1:0)-(R.cleo&&S.cleoDone?1:0);
   if(R.alex){var a=document.getElementById('alexBtn');a.textContent='See her report';a.dataset.go='report.html?run=alex&role=coach';
     a.onclick=function(e){e.preventDefault();e.stopImmediatePropagation();location.href='report.html?run=alex&role=coach';};
-    var n=a.closest('.ent').querySelector('.note'); if(n) n.textContent='You reviewed this run and her challenge to the Composure band.';}
+    var n=a.closest('.ent').querySelector('.note'); if(n) n.textContent='You reviewed this run just now.';}
   var strip0=document.querySelectorAll('.strip div b'); if(strip0.length) strip0[1].textContent=String(pending);
   if(!S.cleoDone) return;
   document.getElementById('weekCount').textContent='Four runs';
@@ -239,7 +239,7 @@ footer{margin-top:3.5rem;font-size:10.5px;letter-spacing:.15em;text-transform:up
    '<p>She opened well on milestones, and the twelve-month offer stalled once Cleo followed up, so the date is still to be asked for.</p>'+
    '<p class="note" id="cleoNote">This run is waiting for your review.</p>'+
    '<div class="acts"><span class="lk" style="cursor:pointer" id="cleoBtn" onclick="location.href=\'review.html?run=cleo\'">Review her run</span></div></div>'+
-   '<div class="figs"><div class="fig"><span class="k">Pace</span><span class="v">142 wpm<span class="band-ok">Within 120 to 160</span></span></div>'+
+   '<div class="figs"><div class="fig"><span class="k">Pace</span><span class="v">142 wpm<span class="band-ok">Within 130 to 170</span></span></div>'+
    '<div class="fig"><span class="k">Talk share</span><span class="v">58%<span class="band-ok">Above 30 to 50</span></span></div>'+
    '<div class="fig"><span class="k">Fillers</span><span class="v">4</span></div><div class="fig"><span class="k">Weak words</span><span class="v">7</span></div>'+
    '<div class="fig"><span class="k">Length</span><span class="v">11:24</span></div></div></article>';

@@ -19,8 +19,8 @@ window.RUNS={
    {n:"Pauses",b:"Strong",c:"2 of 2",q:"You let 3.4 seconds sit after the term constraint.",t:"3:18"},
    {n:"Answer economy",b:"Solid",c:"2 of 3",q:"48 seconds on average; the longest ran to 1:40 on the governance question.",t:"9:30"},
    {n:"Linguistic tone",b:"Solid",c:"3 of 3",q:"“Let's reconvene Tuesday once you have reviewed the distributed timeline option with your board.”",t:"12:40"}],
-  nums:[["Pace","135 wpm","Within 120 to 160"],["You talked","54%","Above 30 to 50"],["Fillers","12"],["Silence","9%"],["Weak words","5"],["Longest pause","3.4 s"],["Questions you asked","4"],["Average answer","48 s"],["Words","1,180"]],
-  aside:"This run skipped one follow-up question, which leaves your bands unchanged.",
+  nums:[["Pace","135 wpm","Within 130 to 170"],["You talked","54%","Above 30 to 50"],["Fillers","12"],["Silence","9%"],["Weak words","5"],["Longest pause","3.4 s"],["Questions you asked","4"],["Average answer","48 s"],["Words","1,180"]],
+  aside:"One follow-up question could not be asked.",
   coach:{who:"Jane Smith",role:"Lead Coach",when:"Two hours ago",text:"Much stronger holding the line on price this time, Sarah. You held the silence after the 24-month term constraint, which is where she moved. You yielded slightly too early on the setup fee when pressured, so hold that concession for later in the conversation."},
   challenge:{attr:"Composure under pushback",reason:"Too harsh",text:"I held my position through both pushes, and the pause at 3:10 was deliberate."},
   transfer:"Alex was a stand-in, so the person you meet for real will push in their own way. Take your three key messages into that room in the order you want them to land."
@@ -44,7 +44,7 @@ window.RUNS={
    {n:"Pauses",b:"Developing",c:"0 of 2",q:"You answered within a second each time Cleo stalled.",t:"5:20"},
    {n:"Answer economy",b:"Solid",c:"2 of 3",q:"52 seconds on average, and your longest answer ran 1:30 on the budget question.",t:"5:50"},
    {n:"Linguistic tone",b:"Strong",c:"3 of 3",q:"“We'd love to keep working with your team for another year.”",t:"10:10"}],
-  nums:[["Pace","142 wpm","Within 120 to 160"],["You talked","58%","Above 30 to 50"],["Fillers","4"],["Silence","6%"],["Weak words","7"],["Longest pause","1.1 s"],["Questions you asked","1"],["Average answer","52 s"],["Words","1,560"]],
+  nums:[["Pace","142 wpm","Within 130 to 170"],["You talked","58%","Above 30 to 50"],["Fillers","4"],["Silence","6%"],["Weak words","7"],["Longest pause","1.1 s"],["Questions you asked","1"],["Average answer","52 s"],["Words","1,560"]],
   aside:null, coach:null, coachEmpty:"Jane will add her note here when she reviews this run.",
   transfer:"Cleo was a stand-in, so the buyer you meet for real will stall in their own way. Take your three key messages into that room in the order you want them to land."
  }

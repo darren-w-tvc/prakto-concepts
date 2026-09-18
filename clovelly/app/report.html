@@ -3,8 +3,8 @@
 <title>Clovelly · run report</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/report.css?v=7">
-<script src="app.js?v=10"></script><script src="runs.js?v=9"></script>
+<link rel="stylesheet" href="assets/report.css?v=8">
+<script src="app.js?v=10"></script><script src="runs.js?v=10"></script>
 <style>
 .coachbar{background:#2a2926;color:#e8e2d8;padding:12px clamp(1.25rem,2.5vw,2.5rem);font-size:13.5px;display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap}
 .coachbar button{background:none;border:0;border-bottom:1px solid rgba(255,255,255,.4);color:#fff;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;padding:0 0 2px}
@@ -37,7 +37,8 @@
     : '<span class="on" data-go="home.html" style="cursor:pointer">My runs</span><span data-later>Practice on my own</span><span>SC</span>';
   if(self) document.getElementById('links').innerHTML=SIM.coachNav('Scenarios');
   var REV=self?null:(SIM.state.reviews||{})[key];
-  var REPLY=(SIM.state.replies||{})[key]||null;
+  var RAW=(SIM.state.replies||{})[key];
+  var THREAD=Array.isArray(RAW)?RAW:(RAW?[{who:'member',text:RAW}]:[]);
   if(coach) document.getElementById('coachbar').innerHTML='<div class="coachbar"><span>You are reading Sarah\'s report as her coach'+(REV?', with your review included.':'.')+'</span><button data-go="'+(REV?'coach.html':'review.html?run='+key)+'">'+(REV?'Back to the feed':'Review this run')+'</button></div>';
   document.getElementById('title').textContent=R.title;
   document.getElementById('meta').innerHTML=esc(R.title.split(' with ')[0]==='Price rise'?'The hard-nosed client':'The elusive buyer')+' · '+lvl+' · '+R.runLabel+'<br>'+R.meta2;
@@ -68,7 +69,7 @@
   else h+='<div class="sec"><h2>What did Jane say?</h2><span>'+when+'</span></div>';
   if(noteText){
     h+='<div class="coach"><div class="disc">JS</div><div><div class="who">Jane Smith <span>· Lead Coach</span></div><p>'+esc(noteText)+'</p>'+
-       (REPLY?replyHTML():coach?'':'<div id="replyWrap" style="margin-top:14px"><textarea class="notebox2" id="reply" placeholder="Reply to Jane" style="display:block;width:100%;max-width:40rem;min-height:70px;background:#fff;border:1px solid var(--line);border-radius:4px;padding:12px 14px;font:inherit;font-size:14.5px"></textarea><button class="lk" id="replyBtn" style="margin-top:10px">Send reply</button></div>')+
+       threadHTML()+
        '</div></div>';
   } else if(!self){
     h+='<p class="empty">'+esc(REV?'Jane reviewed this run and marked her reads above.':R.coachEmpty)+'</p>';
@@ -77,12 +78,17 @@
   if(!coach) h+='<div class="again"><button class="bd" data-go="briefing.html">Run it again</button><span>This uses the same scenario with fresh questions and counts as one of your monthly sessions.</span></div>';
   h+='<footer>Clovelly &nbsp;·&nbsp; Run report</footer>';
   document.getElementById('read').innerHTML=h;
-  function replyHTML(){return '<div class="coach" style="grid-template-columns:48px 1fr;border-bottom:0;padding-bottom:0;margin-top:14px"><div class="disc">SC</div><div><div class="who">'+(coach?'Sarah Chen':'You')+' <span>· just now</span></div><p>'+esc(REPLY)+'</p></div></div>';}
+  function msgHTML(m){var mine=(m.who==='coach')===coach;
+    return '<div class="coach" style="grid-template-columns:48px 1fr;border-bottom:0;padding-bottom:0;margin-top:14px"><div class="disc">'+(m.who==='coach'?'JS':'SC')+'</div>'+
+      '<div><div class="who">'+(mine?'You':(m.who==='coach'?'Jane Smith':'Sarah Chen'))+' <span>· just now</span></div><p>'+esc(m.text)+'</p></div></div>';}
+  function threadHTML(){var box='<div id="replyWrap" style="margin-top:14px"><textarea class="notebox2" id="reply" placeholder="'+(coach?'Reply to Sarah':'Reply to Jane')+'" style="display:block;width:100%;max-width:40rem;min-height:70px;background:#fff;border:1px solid var(--line);border-radius:4px;padding:12px 14px;font:inherit;font-size:14.5px"></textarea><button class="lk" id="replyBtn" style="margin-top:10px">Send reply</button></div>';
+    return THREAD.map(msgHTML).join('')+(self?'':box);}
   var rb=document.getElementById('replyBtn');
   if(rb) rb.onclick=function(){var t=document.getElementById('reply');if(!t.value.trim()){SIM.toast('Write a reply first.');return;}
-    SIM.state.replies=SIM.state.replies||{};SIM.state.replies[key]=t.value.trim();SIM.save();REPLY=t.value.trim();
-    document.getElementById('replyWrap').outerHTML=replyHTML();
-    SIM.toast('Your reply is on its way to Jane.');};
+    THREAD.push({who:coach?'coach':'member',text:t.value.trim()});
+    SIM.state.replies=SIM.state.replies||{};SIM.state.replies[key]=THREAD;SIM.save();
+    document.getElementById('replyWrap').outerHTML=msgHTML(THREAD[THREAD.length-1])+'<p class="aside" style="margin-top:12px">'+(coach?'Sarah will see this on her report.':'Jane will see this on her copy.')+'</p>';
+    SIM.toast(coach?'Your reply is on its way to Sarah.':'Your reply is on its way to Jane.');};
   document.addEventListener('click',function(e){var t=e.target.closest('[data-t]');if(t)SIM.toast('The replay would open at '+t.dataset.t+'.');
     var g=e.target.closest('[data-go]');if(g){e.preventDefault();location.href=g.dataset.go;}
     var l=e.target.closest('[data-later]');if(l){e.preventDefault();SIM.toast(l.dataset.later||'This screen is still to be designed.');}});

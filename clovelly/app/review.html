@@ -3,8 +3,8 @@
 <title>Clovelly · review</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/report.css?v=7">
-<script src="app.js?v=10"></script><script src="runs.js?v=9"></script>
+<link rel="stylesheet" href="assets/report.css?v=8">
+<script src="app.js?v=10"></script><script src="runs.js?v=10"></script>
 <style>
 .canvas.plain{background:var(--black)}
 .canvas.plain .in{justify-content:flex-start;gap:0;overflow:auto}
@@ -103,13 +103,13 @@
   h+='<div class="sec"><h2>Your read</h2><span>Four judged attributes</span></div>';
   h+='<p class="sub2">Pace, fillers and the other measured numbers are counted from the recording, so they stay above as context.</p>';
   reads.forEach(function(a,i){
-    var ch=(R.challenge&&R.challenge.attr===a.n)?'<div class="challenge"><small>Sarah challenged this read · '+R.challenge.reason+'</small><p>'+esc(R.challenge.text)+'</p></div>':'';
+    var ch=''; // a member's challenge stays private from the coach (v1-scope:21, enforced in Matt's build)
     h+='<div class="ra" data-i="'+i+'"><div class="top"><div><h3>'+a.n+'</h3><div class="ai">'+a.b+' <i>· '+a.c+' · the read from this run</i></div></div>'+
        '<div class="seg"><button data-v="agree">Agree</button><button data-v="partly">Partly</button><button data-v="disagree">Disagree</button></div></div>'+
        '<blockquote>'+esc(a.q)+' <button class="lk" data-t="'+a.t+'">'+a.t+'</button></blockquote>'+ch+
        '<div class="miss" hidden><div class="bandwrap"><small>Your band</small><div class="bands">'+['Developing','Solid','Strong'].map(function(b){return '<button data-b="'+b+'"'+(b===a.b?' disabled style="opacity:.35;cursor:default"':'')+'>'+b+'</button>'}).join('')+'</div></div>'+
        '<small class="mq">What did the read miss?</small><textarea placeholder="Say what you saw, with a time if it helps."></textarea>'+
-       '<p class="mp">Sarah sees your band beside the original one, and your reason helps future reads get better.</p></div></div>';
+       '<p class="mp">Sarah sees your band beside the original one, and we read these to find where the reads go wrong.</p></div></div>';
   });
   h+='<div class="sec"><h2>Your note to Sarah</h2><span>Optional</span></div>';
   h+='<textarea class="notebox" id="note" placeholder="One thing to take into the real conversation"></textarea>';
@@ -132,7 +132,7 @@
       box.hidden=!(dis||part); row.querySelector('.bandwrap').hidden=!dis;
       if(!dis){state[i].b=null;row.querySelectorAll('.bands button').forEach(function(x){x.classList.remove('on')});}
       row.querySelector('.mq').textContent=dis?'What did the read miss?':'What would you add? (optional)';
-      row.querySelector('.mp').textContent=dis?'Sarah sees your band beside the original one, and your reason helps future reads get better.':'Sarah sees this under “Jane partly agrees”.';
+      row.querySelector('.mp').textContent=dis?'Sarah sees your band beside the original one, and we read these to find where the reads go wrong.':'Sarah sees this under “Jane partly agrees”.';
       tally();};});
     row.querySelectorAll('.bands button').forEach(function(b){b.onclick=function(){if(b.disabled)return;state[i].b=b.dataset.b;row.querySelectorAll('.bands button').forEach(function(x){x.classList.toggle('on',x===b)});};});
     row.querySelector('.miss textarea').oninput=function(){state[i].why=this.value;};

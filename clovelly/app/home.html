@@ -5,7 +5,7 @@
 <title>Clovelly · your runs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/report.css?v=7">
+<link rel="stylesheet" href="assets/report.css?v=8">
 <script src="app.js?v=10"></script>
 </head>
 <body>
@@ -41,7 +41,7 @@
         <div class="sub">The hard-nosed client · run 2 · yesterday</div>
         <div class="quote">“Much stronger holding the line on price this time, Sarah. You held the silence, which is where she moved.”
           <small>Jane · Lead Coach · the full note is in your report</small></div>
-        <p class="note" id="alexNote">Your Composure question is with Jane.</p>
+        <p class="note" id="alexNote">Thank you for your feedback on the Composure read.</p>
         <div class="links"><button class="lk" data-go="report.html?run=alex">Read your report</button><button class="lkq" data-later="The replay player is still to be designed.">Watch yourself back</button></div>
       </div>
       <div class="figs">
@@ -103,7 +103,7 @@
     document.querySelector('.own p').textContent='Pick any scenario and run it privately. You have 3 sessions a month on the free plan, and retakes are free.';
     if(!A){var c0=document.querySelector('.canvas.sand .in');c0.querySelector('.klab').textContent='Nothing waiting';c0.querySelector('.ctitle').textContent='No runs assigned yet';c0.querySelector('.cmeta').textContent='When Jane assigns you a scenario, it appears here.';document.getElementById('waitBtn').hidden=true;document.getElementById('wsmall').hidden=true;c0.querySelector('.verdict').hidden=true;}
   }
-  if((S.reviews||{}).alex) document.getElementById('alexNote').textContent='Jane answered your Composure question, and her reply is in the report.';
+  
   if(S.needsSetup&&!S.cleoDone){var wb=document.getElementById('waitBtn');wb.dataset.go='onboarding.html#setup';wb.textContent='Set up your microphone and camera';}
   if(!S.cleoDone) return;
   var c=document.querySelector('.canvas.sand .in');
