@@ -36,6 +36,10 @@ textarea.say{display:block;width:100%;min-height:70px;margin-top:16px;background
 .sent p{margin-top:6px;font-size:14px;color:rgba(255,255,255,.72);max-width:48ch}
 .sent .row{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
 .sent .bw{display:inline-flex}
+.limit{margin-top:16px;max-width:44rem;background:linear-gradient(160deg,#f4f1ec 0%,var(--sand) 50%,var(--sand-2) 100%);border-radius:6px;padding:16px 18px;font-size:14.5px;line-height:1.55}
+.limit b{font-weight:500}
+.limit .lk{margin-top:10px;display:inline-block}
+.opt[disabled] .d{color:var(--ink)}
 .none{padding:16px 0;font-size:14px;color:var(--muted);border-bottom:1px solid var(--line)}
 </style></head>
 <body>
@@ -65,6 +69,7 @@ textarea.say{display:block;width:100%;min-height:70px;margin-top:16px;background
 
       <div class="sec"><h2>Who is it for?</h2><span id="whoN"></span></div>
       <div class="pick" id="who"></div>
+      <div class="limit" id="limit" hidden></div>
 
       <div class="sec"><h2>When is it due?</h2><span>Optional</span></div>
       <div class="pick">
@@ -99,12 +104,15 @@ textarea.say{display:block;width:100%;min-height:70px;margin-top:16px;background
   var SC=mine.concat(tpls);
 
   var people;
+  var FREE_ASSIGNED=3;
+  function usedBy(name){var n=0;(S.assignments||[]).forEach(function(a){if(a.people.indexOf(name)>=0)n++;});return n;}
   if(NEW){people=(S.invites||[]).filter(function(i){return i.status!=='cancelled'}).map(function(i){
-      var nm=i.email.split('@')[0].split(/[._-]/).map(cap).join(' ');
-      return {id:i.email,n:i.status==='joined'?nm:i.email,d:i.status==='joined'?'Joined':'Invited · gets it when they join',first:nm.split(' ')[0]};});}
-  else people=[{id:'sarah',n:'Sarah Chen',d:'Active · 2 of 3 sessions left this month',first:'Sarah'},{id:'ben',n:'Ben Singh',d:'Active',first:'Ben'},
+      var nm=i.email.split('@')[0].split(/[._-]/).map(cap).join(' '), shown=i.status==='joined'?nm:i.email, left=FREE_ASSIGNED-usedBy(shown);
+      var d=(i.status==='joined'?'Joined':'Invited · gets it when they join')+' · '+(left>0?left+' of '+FREE_ASSIGNED+' assigned runs left this month':'No assigned runs left this month');
+      return {id:i.email,n:shown,d:d,first:nm.split(' ')[0],cap:left<=0};});}
+  else people=[{id:'sarah',n:'Sarah Chen',d:'Active',first:'Sarah'},{id:'ben',n:'Ben Singh',d:'Active',first:'Ben'},
       {id:'priya',n:'Priya Nair',d:'Active',first:'Priya'},{id:'marcus',n:'Marcus V.',d:'Active',first:'Marcus'},
-      {id:'yuri',n:'Yuri Wang',d:'Reached limit · 3 of 3 sessions used until 1 October',cap:true,first:'Yuri'},
+      {id:'yuri',n:'Yuri Wang',d:'Active',first:'Yuri'},
       {id:'lperez',n:'l.perez@acmecorp.com',d:'Invited · gets it when they join',first:'L.'}];
 
   var sel=q.get('scenario')||null, who={}; if(q.get('member'))people.forEach(function(p){if(p.id===q.get('member')||p.id.indexOf(q.get('member')+'.')===0)who[p.id]=true;});
@@ -118,6 +126,12 @@ textarea.say{display:block;width:100%;min-height:70px;margin-top:16px;background
     document.getElementById('scN').textContent=mine.length+' yours · '+tpls.length+' templates';
     document.getElementById('who').innerHTML=people.length?people.map(function(p){return '<button class="opt'+(who[p.id]?' on':'')+'" data-p="'+p.id+'" role="checkbox" aria-checked="'+!!who[p.id]+'"'+(p.cap?' disabled':'')+'><span class="box"></span><span><b>'+p.n+'</b><span class="d">'+p.d+'</span></span><span></span></button>'}).join('')
       :'<div class="none">Nobody on your team yet. <button class="lk" data-go2="team.html">Invite your team</button></div>';
+    var capped=people.filter(function(x){return x.cap});
+    var lim=document.getElementById('limit');
+    if(NEW&&capped.length){lim.hidden=false;var f=capped.map(function(x){return x.first});
+      lim.innerHTML='<b>'+(f.length===1?f[0]+' has':f.join(' and ')+' have')+' used all three assigned runs for this month.</b> On the free plan each person gets three assigned runs a month, and they start again on the 1st. The Team plan removes the limit.<br><button class="lk" data-later="Plans and billing are still to be designed.">See plans</button>';
+      lim.querySelectorAll('[data-later]').forEach(function(b){b.onclick=function(){SIM.toast(b.dataset.later);};});}
+    else lim.hidden=true;
     var n=people.filter(function(x){return who[x.id]}).length;
     document.getElementById('whoN').textContent=n?n+' chosen':(people.length+' people');
     var s=SC.filter(function(x){return x.id===sel})[0];

@@ -117,7 +117,7 @@
   h+='<div class="send" id="sendRow"><button class="bd" id="send">Send review</button><span class="sub2" style="margin:0" id="tally">Nothing marked yet</span></div><div id="sendErr" style="font-size:13px;color:#8a2a1a;margin-top:10px"></div>';
   h+='<div id="sentBox"></div>';
   h+='<div class="sec"><h2>What next?</h2></div>';
-  h+='<div class="nextrow"><div><b>Ask for another run</b><span>Sarah gets the same scenario with fresh questions, and a due date if you want one.</span></div><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><label style="font-size:13px;color:var(--muted)">Due (optional) <input type="date" id="dueDate" style="font:inherit;font-size:13.5px;color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:8px 10px;background:#fff"></label><button class="bg" id="askAgain">Ask Sarah</button></div></div>';
+  h+='<div class="nextrow"><div><b>Ask for another run</b><span>Opens Assign with Sarah and this scenario already chosen.</span></div><button class="bg" id="askAgain">Ask Sarah</button></div>';
   h+='<div class="nextrow"><div><b>Assign a different scenario</b><span>Pick from your scenarios or write a new one.</span></div><button class="bg" id="chooseBtn">Choose</button></div>';
   h+='<footer>Clovelly &nbsp;·&nbsp; Review</footer>';
   document.getElementById('read').innerHTML=h;
@@ -144,9 +144,7 @@
       if(r.why){var t=row.querySelector('.miss textarea');t.value=r.why;state[i].why=r.why;}});
     document.getElementById('send').textContent='Update review';}
   document.getElementById('chooseBtn').onclick=function(){location.href='assign.html?member=sarah';};
-  var dd=document.getElementById('dueDate');dd.min=new Date().toISOString().slice(0,10);
-  document.getElementById('askAgain').onclick=function(){var d=dd.value?new Date(dd.value+'T12:00:00').toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}):null;
-    S.askedAgain=dd.value||true;SIM.save();SIM.toast('Sarah now has a new run waiting'+(d?', due '+d:'')+'.');};
+  document.getElementById('askAgain').onclick=function(){location.href='assign.html?member=sarah&scenario='+key;};
   document.getElementById('send').onclick=function(){
     var miss=reads.filter(function(a,i){return state[i].v==='disagree'&&!state[i].b;})[0];
     var er=document.getElementById('sendErr');

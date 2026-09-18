@@ -83,7 +83,7 @@
     </div>
     <div class="own">
       <div><b>Run one on your own</b>
-        <p>Pick any scenario and run it privately. You have 1 of 3 sessions left this month until they reset on 1 October, and retakes are free.</p></div>
+        <p>Pick any scenario and run it privately. Retakes are free, and your coach never sees these runs.</p></div>
       <button class="bg" data-later>Start a private run</button>
     </div>
     <footer>Clovelly &nbsp;·&nbsp; Your runs</footer>
@@ -100,7 +100,7 @@
     if(A&&A.note&&!S.cleoDone){var v=document.querySelector('.canvas .verdict');v.insertAdjacentHTML('afterbegin','<div style="border-left:1px solid var(--ink);padding-left:12px;margin-bottom:12px;font-family:var(--display);font-weight:300;font-size:17px;line-height:1.45">“'+A.note.replace(/</g,'&lt;')+'”<small style="display:block;font-family:var(--sans);font-size:12px;color:var(--muted);margin-top:4px">Jane</small></div>');}
     document.getElementById('history').innerHTML='<p class="note" style="padding:18px 0;border-bottom:1px solid var(--line);color:var(--muted)">Your runs appear here once you finish them, with Jane\'s notes alongside.</p>';
     document.getElementById('recentCount').textContent='Nothing yet';
-    document.querySelector('.own p').textContent='Pick any scenario and run it privately. You have 3 sessions a month on the free plan, and retakes are free.';
+    document.querySelector('.own p').textContent='Pick any scenario and run it privately. You have ten private runs a month on the free plan, retakes are free, and Jane never sees them.';
     if(!A){var c0=document.querySelector('.canvas.sand .in');c0.querySelector('.klab').textContent='Nothing waiting';c0.querySelector('.ctitle').textContent='No runs assigned yet';c0.querySelector('.cmeta').textContent='When Jane assigns you a scenario, it appears here.';document.getElementById('waitBtn').hidden=true;document.getElementById('wsmall').hidden=true;c0.querySelector('.verdict').hidden=true;}
   }
   

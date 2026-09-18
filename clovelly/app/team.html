@@ -21,11 +21,11 @@
 .wall p{margin-top:6px;font-size:14.5px;max-width:50ch}
 .wall .row{margin-top:16px;display:flex;gap:12px;flex-wrap:wrap}
 .tbl{max-width:44rem}
-.tr{display:grid;grid-template-columns:1fr 170px auto;gap:16px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.tr{display:grid;grid-template-columns:minmax(0,1fr) 120px 230px;gap:16px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);font-size:14.5px}
 .tr .who b{font-weight:500;display:block}.tr .who span{font-size:13px;color:var(--muted)}
 .st{display:flex;align-items:center;gap:8px;font-size:13px}
 .st .dot{margin-top:0;width:10px;height:10px}
-.tr .acts2{display:flex;gap:16px}
+.tr .acts2{display:flex;gap:16px;justify-content:flex-end;text-align:right}
 .empty{padding:16px 0;font-size:14px;color:var(--muted);border-bottom:1px solid var(--line)}
 .mail{max-width:44rem;margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:4px}
 .mail .hd{padding:12px 16px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted);line-height:1.7}
@@ -97,28 +97,29 @@
   document.querySelector('.mail .btn').textContent='Join '+ws;
 
   var MEMBERS=[["Sarah Chen","sarah.chen@voyage.co","Active","2 runs this month"],["Ben Singh","ben.singh@voyage.co","Active","1 run this month"],
-    ["Priya Nair","priya.nair@voyage.co","Active","1 run this month"],["Marcus V.","marcus.v@voyage.co","Active","Nothing run yet"],
-    ["Yuri Wang","yuri.wang@voyage.co","Reached limit","3 of 3 sessions used this month"]];
-  S.invites=S.invites||(NEW?[]:[{email:'l.perez@acmecorp.com',status:'sent',old:true}]);
+    ["Priya Nair","priya.nair@voyage.co","Active","1 run this month"],["Marcus V.","marcus.v@voyage.co","Active","Camera blocked on Tuesday · no runs yet"],
+    ["Yuri Wang","yuri.wang@voyage.co","Active","4 runs this month"]];
+  S.invites=S.invites||(NEW?[]:[{email:'l.perez@acmecorp.com',status:'expired',old:true}]);
   function live(){return S.invites.filter(function(i){return i.status!=='cancelled'});}
+  function seated(){return S.invites.filter(function(i){return i.status!=='cancelled'&&i.status!=='expired'});}
   function nameOf(e){var p=e.split('@')[0].split(/[._-]/);return p.map(cap).join(' ');}
   function seatsUsed(){return 1+live().length;}
 
   function paint(){
-    var inv=live(), used=NEW?seatsUsed():1+MEMBERS.length+inv.length;
+    var inv=live(), used=NEW?seatsUsed():1+MEMBERS.length+seated().length;
     document.getElementById('seats').textContent=NEW?(used+' of '+LIMIT):String(used);
     document.getElementById('plan').textContent=NEW?'Free':'Team';
     document.getElementById('joined').textContent=NEW?inv.filter(function(i){return i.status==='joined'}).length:MEMBERS.length;
     document.getElementById('seatLine').textContent=NEW?(used>=LIMIT?'All three free seats are in use, including yours.':'You count as one of the '+LIMIT+' free seats, so '+(LIMIT-used)+' '+(LIMIT-used===1?'is':'are')+' left.'):'Separate addresses with commas or new lines.';
     var h='';
     if(!NEW){h+=MEMBERS.map(function(m){return '<div class="tr"><div class="who"><b>'+m[0]+'</b><span>'+m[1]+'</span></div><div class="st"><span class="dot '+(m[2]==='Active'?'on':'half')+'"></span>'+m[2]+'</div><div class="acts2"><span class="m" style="font-size:13px;color:var(--muted)">'+m[3]+'</span></div></div>'}).join('');}
-    h+=inv.map(function(i){var lab={sent:'Sent',opened:'Opened',joined:'Joined'}[i.status], dot={sent:'',opened:'half',joined:'on'}[i.status];
-      return '<div class="tr"><div class="who"><b>'+(i.status==='joined'?nameOf(i.email):i.email)+'</b><span>'+(i.status==='joined'?i.email+' · joined just now':(i.old?'Invited 8 days ago':'Invited just now'))+'</span></div>'+
+    h+=inv.map(function(i){var lab={sent:'Sent',opened:'Opened',joined:'Joined',expired:'Expired'}[i.status], dot={sent:'',opened:'half',joined:'on',expired:''}[i.status];
+      return '<div class="tr"><div class="who"><b>'+(i.status==='joined'?nameOf(i.email):i.email)+'</b><span>'+(i.status==='joined'?i.email+' · joined just now':i.status==='expired'?'Expired on Monday, so the seat is free again':(i.old?'Invited 8 days ago':'Invited just now'))+'</span></div>'+
         '<div class="st"><span class="dot '+dot+'"></span>'+lab+'</div><div class="acts2">'+(i.status==='joined'?'':'<button class="lkq" data-resend="'+i.email+'">Resend</button><button class="lkq" data-cancel="'+i.email+'">Cancel</button>')+'</div></div>';}).join('');
     if(!h) h='<div class="empty">Nobody invited yet.</div>';
     document.getElementById('tbl').innerHTML=h;
     document.getElementById('tblH').textContent=NEW?'Invites':'Team and invites';
-    document.getElementById('tblN').textContent=NEW?(inv.length?inv.length+' sent':''):(MEMBERS.length+' members · '+inv.length+' waiting to join');
+    document.getElementById('tblN').textContent=NEW?(inv.length?inv.length+' sent':''):(function(){var n=inv.filter(function(i){return i.status!=='joined'}).length;return MEMBERS.length+' members'+(n?' · '+n+(n===1?' invite':' invites')+' to sort out':'');})();
     document.querySelectorAll('[data-resend]').forEach(function(b){b.onclick=function(){SIM.toast('Invite sent again to '+b.dataset.resend+'.');};});
     document.querySelectorAll('[data-cancel]').forEach(function(b){b.onclick=function(){S.invites.forEach(function(i){if(i.email===b.dataset.cancel)i.status='cancelled';});SIM.save();paint();SIM.toast('Invite cancelled, and the link no longer works.');};});
     document.getElementById('nextbar').hidden=!(NEW&&inv.length&&!(S.setup&&S.setup.assigned));
